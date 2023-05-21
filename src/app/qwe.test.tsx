@@ -1,5 +1,8 @@
-import { render } from '@testing-library/react';
+import Home from '@/src/app/page';
+import { render, screen } from '@testing-library/react';
 
 test('qwe', () => {
-  rend;
+  render(<Home />);
+  const hel = screen.getAllByRole('heading');
+  expect(hel[0]).toBeInTheDocument();
 });

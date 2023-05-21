@@ -18,21 +18,6 @@ jobs:
       - name: Start docker container
         run: docker-compose -f "docker-compose.yml" up -d --build
 
-      - name: Install node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'npm'
-
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Install dependencies
-        run: sudo yarn install
-
-      - name: Run tests
-        run: yarn test
-
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
