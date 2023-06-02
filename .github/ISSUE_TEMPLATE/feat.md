@@ -1,8 +1,8 @@
 ---
 name: Feat
 about: 프로젝트 개발 기능 이슈
-title: 'Feat'
-labels: '✨ feat'
+title: 'Feat: '
+labels: '✨ Feat'
 ---
 
 ## 💎 개발할 기능
