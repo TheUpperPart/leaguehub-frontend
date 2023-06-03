@@ -24,6 +24,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@react-icons/all-files": "^4.1.0",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -40,6 +41,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.4.3",
+    "@types/react-icons": "^3.0.0",
     "@types/testing-library__jest-dom": "^5.14.5",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
@@ -47,6 +49,7 @@
     "jest-dom": "^4.0.0",
     "jest-environment-jsdom": "^29.5.0",
     "lint-staged": "^13.2.2",
+    "msw": "^1.2.1",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.0"
   }
