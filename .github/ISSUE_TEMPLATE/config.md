@@ -1,5 +1,5 @@
 ---
-name: Config.md
+name: Config
 about: 환경 설정 및 라이브러리 설정
 title: 'Config: '
 labels: "⚙️ Config"
