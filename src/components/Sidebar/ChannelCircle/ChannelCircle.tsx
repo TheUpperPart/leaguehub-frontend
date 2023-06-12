@@ -1,14 +1,9 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-interface Props {
-  channelId: string;
-  channelName: string;
-  channelGame: string;
-  imgSrc?: string;
-}
+import { ChannelCircleProps } from 'src/@types/channelCircle';
 
-const ChannelCircle = ({ channelId, channelName, channelGame, imgSrc }: Props) => {
+const ChannelCircle = ({ channelId, channelName, channelGame, imgSrc }: ChannelCircleProps) => {
   return (
     <ChannelBtn key={channelId} url={imgSrc}>
       <ChannelName>{channelName}</ChannelName>
