@@ -14,6 +14,7 @@ const customJestConfig = {
     '^@pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@mocks/(.*)$': '<rootDir>/__mocks__/$1',
     '^@config/(.*)$': '<rootDir>/src/config/$1',
+    '^@type/(.*)$': '<rootDir>/src/@types/$1',
   },
 };
 
