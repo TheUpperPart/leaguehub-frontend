@@ -21,6 +21,8 @@
       "@config/*": ["src/config/*"],
       "@mocks/*": ["__mocks__/*"],
       "@mocks/*": ["__mocks__/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@type/*": ["src/@types/*"]
     },
     "jsxImportSource": "@emotion/react"
