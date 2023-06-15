@@ -13,6 +13,7 @@ const customJestConfig = {
     '^@components/(.*)$': '<rootDir>/src/components/$1',
     '^@pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@mocks/(.*)$': '<rootDir>/__mocks__/$1',
+    '^@config/(.*)$': '<rootDir>/src/config/$1',
     '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@type/(.*)$': '<rootDir>/src/@types/$1',
