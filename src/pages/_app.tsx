@@ -1,4 +1,5 @@
 import Layout from '@components/layout';
+import initMockAPI from '@mocks/index';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
