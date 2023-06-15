@@ -19,6 +19,8 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@mocks/*": ["__mocks__/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@type/*": ["src/@types/*"]
     },
     "jsxImportSource": "@emotion/react"
