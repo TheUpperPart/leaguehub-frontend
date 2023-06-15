@@ -18,6 +18,7 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
+      "@config/*": ["src/config/*"],
       "@mocks/*": ["__mocks__/*"]
     },
     "jsxImportSource": "@emotion/react"
