@@ -20,7 +20,8 @@
       "@pages/*": ["src/pages/*"],
       "@mocks/*": ["__mocks__/*"],
       "@contexts/*": ["src/contexts/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@type/*": ["src/@types/*"]
     },
     "jsxImportSource": "@emotion/react"
   },

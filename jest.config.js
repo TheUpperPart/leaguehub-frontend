@@ -15,6 +15,7 @@ const customJestConfig = {
     '^@mocks/(.*)$': '<rootDir>/__mocks__/$1',
     '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@type/(.*)$': '<rootDir>/src/@types/$1',
   },
 };
 
