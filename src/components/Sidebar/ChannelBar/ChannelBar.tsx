@@ -26,6 +26,9 @@ const ChannelBar = ({ ChannelCircles }: ChannelBarProps) => {
           />
         </div>
       ))}
+      <ChannelParticipate>
+        <CenteredIcon kind='plus' color='white' />
+      </ChannelParticipate>
     </ChannelbarContainer>
   );
 };
@@ -41,6 +44,24 @@ const ChannelbarContainer = styled.div`
   flex-direction: column;
   z-index: 10;
   overflow: auto;
+`;
+
+const ChannelParticipate = styled.button`
+  min-width: 6rem;
+  min-height: 6rem;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  margin: 0 auto;
+  background: #344051;
+`;
+
+const CenteredIcon = styled(Icon)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 export default ChannelBar;
