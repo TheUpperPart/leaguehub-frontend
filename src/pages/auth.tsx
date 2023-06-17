@@ -3,11 +3,11 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Login, LoginFail } from '@type/login';
+import { Login } from '@type/login';
 import { SERVER_URL } from '@config/index';
 
 interface Props {
-  data: Login | LoginFail;
+  data: Login;
 }
 
 const Auth = (props: Props) => {
@@ -15,7 +15,7 @@ const Auth = (props: Props) => {
 
   useEffect(() => {
     // 로그인 성공했을 때
-    if (props.data.success) {
+    if (props.data.success && props.data.accessToken && props.data.refreshToken) {
       localStorage.setItem('accessToken', props.data.accessToken);
       localStorage.setItem('refreshToken', props.data.refreshToken);
     }
@@ -34,9 +34,7 @@ const Auth = (props: Props) => {
 
 export default Auth;
 
-export const getServerSideProps: GetServerSideProps<{ data: Login | LoginFail }> = async (
-  context,
-) => {
+export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (context) => {
   if (context.query.code) {
     const res = await axios<Omit<Login, 'success'>>({
       method: 'get',
