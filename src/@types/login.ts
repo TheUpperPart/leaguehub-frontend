@@ -1,5 +1,5 @@
 export interface Login {
-  accessToken?: string;
-  refreshToken?: string;
+  accessToken: string;
+  refreshToken: string;
   success: boolean;
 }
