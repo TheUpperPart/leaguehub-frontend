@@ -48,8 +48,8 @@ const ChannelbarContainer = styled.div`
 `;
 
 const ChannelParticipate = styled.button`
-  min-width: 6rem;
-  min-height: 6rem;
+  width: 6rem;
+  height: 6rem;
   border: 0;
   border-radius: 50%;
   cursor: pointer;
