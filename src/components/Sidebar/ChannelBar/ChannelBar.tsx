@@ -11,21 +11,22 @@ interface ChannelBarProps {
 const ChannelBar = ({ ChannelCircles }: ChannelBarProps) => {
   return (
     <ChannelbarContainer>
-      {ChannelCircles.map(({ channelId, channelName, channelGame }) => (
-        <div
-          key={channelId}
-          css={css`
-            margin: 0 auto;
-            margin-bottom: 2.2rem;
-          `}
-        >
-          <ChannelCircle
-            channelId={channelId}
-            channelName={channelName}
-            channelGame={channelGame}
-          />
-        </div>
-      ))}
+      {ChannelCircles &&
+        ChannelCircles.map(({ channelId, channelName, channelGame }) => (
+          <div
+            key={channelId}
+            css={css`
+              margin: 0 auto;
+              margin-bottom: 2.2rem;
+            `}
+          >
+            <ChannelCircle
+              channelId={channelId}
+              channelName={channelName}
+              channelGame={channelGame}
+            />
+          </div>
+        ))}
       <ChannelParticipate>
         <CenteredIcon kind='plus' color='white' />
       </ChannelParticipate>
