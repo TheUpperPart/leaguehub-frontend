@@ -15,7 +15,7 @@ const Auth = (props: Props) => {
 
   useEffect(() => {
     // 로그인 성공했을 때
-    if (props.data.success && props.data.accessToken && props.data.refreshToken) {
+    if (props.data.success) {
       localStorage.setItem('accessToken', props.data.accessToken);
       localStorage.setItem('refreshToken', props.data.refreshToken);
     }
@@ -35,7 +35,7 @@ const Auth = (props: Props) => {
 export default Auth;
 
 export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (context) => {
-  if (context.query.code) {
+  try {
     const res = await axios<Omit<Login, 'success'>>({
       method: 'get',
       url: SERVER_URL + '/app/login/kakao',
@@ -43,25 +43,23 @@ export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (co
         'Kakao-Code': `${context.query.code}`,
       },
     });
-
-    if (res.status === 200) {
-      const { accessToken, refreshToken } = res.data;
-      return {
-        props: {
-          data: {
-            accessToken,
-            refreshToken,
-            success: true,
-          },
+    const { accessToken, refreshToken } = res.data;
+    return {
+      props: {
+        data: {
+          accessToken,
+          refreshToken,
+          success: true,
         },
-      };
-    }
-  }
-  return {
-    props: {
-      data: {
-        success: false,
       },
-    },
-  };
+    };
+  } catch (error) {
+    // 실패 시 login 페이지로 redirect
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+    };
+  }
 };
