@@ -17,4 +17,14 @@ const globalCss = css`
     padding: 0;
     margin: 0;
   }
+  a {
+    text-decoration: none !important;
+  }
+  a:hover {
+    text-decoration: none !import;
+  }
+  a:visited {
+    color: inherit;
+    text-decoration: none;
+  }
 `;
