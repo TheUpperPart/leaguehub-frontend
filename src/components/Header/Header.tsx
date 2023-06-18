@@ -27,7 +27,7 @@ const Header = () => {
 export default Header;
 
 const Headers = styled.header`
-  width: 95rem;
+  width: 100%;
 
   background-color: #141c24;
 `;
