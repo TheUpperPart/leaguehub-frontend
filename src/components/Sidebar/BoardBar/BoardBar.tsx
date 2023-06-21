@@ -41,7 +41,7 @@ const Container = styled.div`
   height: 100vh;
   background-color: #202b37;
   overflow: auto;
-  padding: 5%;
+  padding: 1%;
 `;
 
 export default BoardBar;
