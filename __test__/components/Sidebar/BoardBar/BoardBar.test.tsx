@@ -1,5 +1,7 @@
 import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn().mockImplementation(() => {
@@ -26,6 +28,13 @@ jest.mock('@tanstack/react-query', () => ({
   }),
 }));
 
+const mockSetState = jest.fn();
+
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useState: (initial: string) => [initial, mockSetState],
+}));
+
 describe('채널 게시판 테스트', () => {
   it('헤더 렌더링 테스트', async () => {
     render(<BoardBar channelId='1' />);
@@ -47,5 +56,16 @@ describe('채널 게시판 테스트', () => {
     expect(leagueNoti).toBeInTheDocument();
     expect(leagueRules).toBeInTheDocument();
     expect(addNoti).toBeInTheDocument();
+  });
+
+  it('게시판 바디 클릭된 li 상태 변경 테스트', async () => {
+    render(<BoardBar channelId='1' />);
+    const boardElements = screen.getAllByRole('listitem');
+
+    await userEvent.click(boardElements[0]);
+    expect(mockSetState).toHaveBeenCalledWith('1');
+
+    await userEvent.click(boardElements[1]);
+    expect(mockSetState).toHaveBeenCalledWith('2');
   });
 });
