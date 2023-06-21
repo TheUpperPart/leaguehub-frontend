@@ -27,7 +27,7 @@ describe('채널 게시판 테스트', () => {
     render(<BoardBar channelId='1' />);
     const hostName = await screen.findByText('host1');
     const leagueTitle = await screen.findByText('부경대 총장기');
-    const game = await screen.findByText('TFT');
+    const game = await screen.findByText('롤토체스');
 
     expect(hostName).toBeInTheDocument();
     expect(leagueTitle).toBeInTheDocument();
