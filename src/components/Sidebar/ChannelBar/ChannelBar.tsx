@@ -31,7 +31,7 @@ const ChannelBar = ({ ChannelCircles, ChannelHandler }: ChannelBarProps) => {
           </div>
         ))}
       <ChannelParticipate>
-        <CenteredIcon kind='plus' color='white' />
+        <CenteredIcon kind='plus' color='white' size={24} />
       </ChannelParticipate>
     </ChannelbarContainer>
   );

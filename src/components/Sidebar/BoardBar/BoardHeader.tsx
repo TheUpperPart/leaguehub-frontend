@@ -45,7 +45,7 @@ const BoardHeader = ({ hostname, leagueTitle, game, participateNum }: BoardHeade
       <ParticipateWrapper>
         <span>참여자(팀)</span>
         <ParticipateBox>
-          <Icon kind='team' color='#637083' />
+          <Icon kind='team' color='#637083' size='2rem' />
           {participateNum}
         </ParticipateBox>
       </ParticipateWrapper>

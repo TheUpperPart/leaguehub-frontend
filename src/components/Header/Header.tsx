@@ -16,7 +16,7 @@ const Header = () => {
     <Headers>
       <Container>
         <LoginBtn onClick={handleLink}>
-          <Icon kind='my' color='white' />
+          <Icon kind='my' color='white' size={24} />
           <Text>로그인</Text>
         </LoginBtn>
       </Container>
