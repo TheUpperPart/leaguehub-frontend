@@ -13,6 +13,10 @@ jest.mock('@tanstack/react-query', () => ({
           id: '1',
           name: '공지사항',
         },
+        {
+          id: '2',
+          name: '참여자 규칙',
+        },
       ],
       permission: 0,
     };
@@ -23,7 +27,7 @@ jest.mock('@tanstack/react-query', () => ({
 }));
 
 describe('채널 게시판 테스트', () => {
-  it('렌더링 테스트', async () => {
+  it('헤더 렌더링 테스트', async () => {
     render(<BoardBar channelId='1' />);
     const hostName = await screen.findByText('host1');
     const leagueTitle = await screen.findByText('부경대 총장기');
@@ -32,5 +36,16 @@ describe('채널 게시판 테스트', () => {
     expect(hostName).toBeInTheDocument();
     expect(leagueTitle).toBeInTheDocument();
     expect(game).toBeInTheDocument();
+  });
+
+  it('바디 (공지사항, 규칙 등) 게시판 내용 렌더링 테스트', async () => {
+    render(<BoardBar channelId='1' />);
+    const leagueNoti = await screen.findByText('공지사항');
+    const leagueRules = await screen.findByText('참여자 규칙');
+    const addNoti = await screen.findByText('공지 추가하기');
+
+    expect(leagueNoti).toBeInTheDocument();
+    expect(leagueRules).toBeInTheDocument();
+    expect(addNoti).toBeInTheDocument();
   });
 });
