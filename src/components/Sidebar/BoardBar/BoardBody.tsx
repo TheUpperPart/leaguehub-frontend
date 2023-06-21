@@ -16,11 +16,16 @@ const BoardBody = ({ channels }: Pick<BoardInfo, 'channels'>) => {
   return (
     <Container>
       {channels.map((channel) => (
-        <Wrapper key={channel.id} data-id={channel.id} onClick={onClick}>
+        <Wrapper
+          key={channel.id}
+          data-id={channel.id}
+          onClick={onClick}
+          isSelected={channel.id === selected}
+        >
           {channel.name}
         </Wrapper>
       ))}
-      <Wrapper>공지 추가하기</Wrapper>
+      <Wrapper isSelected={false}>공지 추가하기</Wrapper>
     </Container>
   );
 };
@@ -31,4 +36,6 @@ const Container = styled.ul`
   color: white;
 `;
 
-const Wrapper = styled.li``;
+const Wrapper = styled.li<{ isSelected: boolean }>`
+  ${({ isSelected }) => isSelected && `background-color: #39587E`}
+`;
