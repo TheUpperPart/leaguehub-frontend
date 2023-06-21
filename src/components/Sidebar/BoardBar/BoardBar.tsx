@@ -39,11 +39,10 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
 };
 
 const Container = styled.div`
-  width: 22rem;
+  width: 24rem;
   height: 100vh;
   background-color: #202b37;
   overflow: auto;
-  padding: 1%;
 `;
 
 export default BoardBar;

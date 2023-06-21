@@ -31,6 +31,7 @@ const BoardBody = ({ channels }: Pick<BoardInfo, 'channels'>) => {
         공지 추가하기
         <Icon kind='plus' color='#637083' size='1.6rem' />
       </Wrapper>
+      <Boarder></Boarder>
     </Container>
   );
 };
@@ -39,15 +40,19 @@ export default BoardBody;
 
 const Container = styled.ul`
   color: white;
-  border-bottom: solid 1px #344051;
 `;
 
 const Wrapper = styled.li<{ isSelected: boolean }>`
   font-size: 1.5rem;
-  padding: 1.5rem 0 1.5rem;
+  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
   ${({ isSelected }) => isSelected && `background-color: #39587E`}
+`;
+
+const Boarder = styled.div`
+  margin: 1.4rem;
+  border-bottom: solid 1px #344051;
 `;

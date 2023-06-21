@@ -56,6 +56,7 @@ const BoardHeader = ({ hostname, leagueTitle, game, participateNum }: BoardHeade
 export default BoardHeader;
 
 const Container = styled.div`
+  padding: 1.4rem;
   color: white;
   font-size: 1.3rem;
 `;
@@ -98,7 +99,7 @@ const ParticipateWrapper = styled.div`
 
 const ParticipateBox = styled.div`
   background-color: #344051;
-  padding: 2% 3% 2% 3%;
+  padding: 1rem 1rem 1rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
