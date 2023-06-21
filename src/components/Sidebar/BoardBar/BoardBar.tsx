@@ -1,3 +1,4 @@
+import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
 import BoardHeader from '@components/Sidebar/BoardBar/BoardHeader';
 import { SERVER_URL } from '@config/index';
 import styled from '@emotion/styled';
@@ -30,6 +31,7 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
             game={data.game}
             participateNum={data.participateNum}
           />
+          <BoardBody channels={data.channels} />
         </div>
       )}
     </Container>
