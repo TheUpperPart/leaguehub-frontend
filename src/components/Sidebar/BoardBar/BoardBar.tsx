@@ -1,4 +1,5 @@
 import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
+import BoardFooter from '@components/Sidebar/BoardBar/BoardFooter';
 import BoardHeader from '@components/Sidebar/BoardBar/BoardHeader';
 import { SERVER_URL } from '@config/index';
 import styled from '@emotion/styled';
@@ -24,16 +25,21 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
   return (
     <Container>
       {data && (
-        <div>
-          <BoardHeader
-            hostname={data.hostName}
-            leagueTitle={data.leagueTitle}
-            game={data.game}
-            participateNum={data.participateNum}
-          />
-          <BoardBody channels={data.channels} />
-        </div>
+        <ContentContainer>
+          <div>
+            <BoardHeader
+              hostname={data.hostName}
+              leagueTitle={data.leagueTitle}
+              game={data.game}
+              participateNum={data.participateNum}
+            />
+            <BoardBody channels={data.channels} />
+          </div>
+        </ContentContainer>
       )}
+      <FooterContainer>
+        <BoardFooter channelId={channelId} />
+      </FooterContainer>
     </Container>
   );
 };
@@ -43,6 +49,20 @@ const Container = styled.div`
   height: 100vh;
   background-color: #202b37;
   overflow: auto;
+  position: relative;
+`;
+
+const ContentContainer = styled.div`
+  height: 96%;
+  padding-bottom: 3rem;
+`;
+
+const FooterContainer = styled.div`
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3rem;
 `;
 
 export default BoardBar;
