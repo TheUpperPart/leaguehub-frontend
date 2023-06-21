@@ -1,3 +1,4 @@
+import Icon from '@components/Icon';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -41,7 +42,13 @@ const BoardHeader = ({ hostname, leagueTitle, game, participateNum }: BoardHeade
         <TitleContainer>{leagueTitle}</TitleContainer>
         <GameNameWrapper>{getGameFullName(game)}</GameNameWrapper>
       </Wrapper>
-      <div>{participateNum}</div>
+      <ParticipateWrapper>
+        <span>참여자(팀)</span>
+        <ParticipateBox>
+          <Icon kind='team' color='#637083' />
+          {participateNum}
+        </ParticipateBox>
+      </ParticipateWrapper>
     </Container>
   );
 };
@@ -82,4 +89,19 @@ const TitleContainer = styled.div`
 const GameNameWrapper = styled.div`
   text-align: center;
   padding: 1rem 0 1rem;
+`;
+
+const ParticipateWrapper = styled.div`
+  padding: 1rem 0 1rem;
+  border-bottom: solid 1px #344051;
+`;
+
+const ParticipateBox = styled.div`
+  background-color: #344051;
+  padding: 2% 3% 2% 3%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem;
+  margin: 1rem 0 1rem;
 `;
