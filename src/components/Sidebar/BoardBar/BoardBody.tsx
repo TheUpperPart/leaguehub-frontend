@@ -1,17 +1,26 @@
 import styled from '@emotion/styled';
 import { BoardInfo } from '@type/board';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
 const BoardBody = ({ channels }: Pick<BoardInfo, 'channels'>) => {
-  const addNoti = {
-    id: 'add',
-    name: '공지 추가하기',
+  const [selected, setSelected] = useState<string>('');
+
+  const onClick: MouseEventHandler<HTMLElement> = (e) => {
+    if (e.target !== e.currentTarget) return;
+    const clickedId = e.currentTarget.dataset.id;
+    if (clickedId) {
+      setSelected(clickedId);
+    }
   };
-  channels.push(addNoti);
+
   return (
     <Container>
       {channels.map((channel) => (
-        <Wrapper key={channel.id}>{channel.name}</Wrapper>
+        <Wrapper key={channel.id} data-id={channel.id} onClick={onClick}>
+          {channel.name}
+        </Wrapper>
       ))}
+      <Wrapper>공지 추가하기</Wrapper>
     </Container>
   );
 };
