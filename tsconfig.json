@@ -20,10 +20,10 @@
       "@pages/*": ["src/pages/*"],
       "@config/*": ["src/config/*"],
       "@mocks/*": ["__mocks__/*"],
-      "@mocks/*": ["__mocks__/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@type/*": ["src/@types/*"]
+      "@type/*": ["src/@types/*"],
+      "@apis/*": ["src/apis/*"]
     },
     "jsxImportSource": "@emotion/react"
   },
