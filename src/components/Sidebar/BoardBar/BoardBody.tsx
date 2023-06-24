@@ -49,7 +49,11 @@ const Wrapper = styled.li<{ isSelected: boolean }>`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  ${({ isSelected }) => isSelected && `background-color: #39587E`}
+  &:hover {
+    background-color: #39587e;
+  }
+
+  ${({ isSelected }) => isSelected && `background-color: #39587E`};
 `;
 
 const Boarder = styled.div`
