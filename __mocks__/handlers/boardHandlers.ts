@@ -5,7 +5,7 @@ import { BoardInfo } from '@type/board';
 const boardHandlers = [
   rest.get(SERVER_URL + '/api/channel/:channelid', (req, res, ctx) => {
     const { channelid } = req.params;
-    let boardInfo: BoardInfo | undefined;
+    let boardInfo: BoardInfo;
     if (channelid === '1') {
       boardInfo = {
         hostName: 'host1',

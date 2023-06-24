@@ -26,15 +26,13 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
     <Container>
       {data && (
         <ContentContainer>
-          <div>
-            <BoardHeader
-              hostname={data.hostName}
-              leagueTitle={data.leagueTitle}
-              game={data.game}
-              participateNum={data.participateNum}
-            />
-            <BoardBody channels={data.channels} />
-          </div>
+          <BoardHeader
+            hostname={data.hostName}
+            leagueTitle={data.leagueTitle}
+            game={data.game}
+            participateNum={data.participateNum}
+          />
+          <BoardBody channels={data.channels} />
         </ContentContainer>
       )}
       <FooterContainer>
