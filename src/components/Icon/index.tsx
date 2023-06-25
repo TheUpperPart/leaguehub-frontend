@@ -28,11 +28,12 @@ interface IconProps {
   kind: IconKind;
   onClick?: () => void;
   color?: string;
+  size?: string | number;
 }
 
 const Icon = ({ kind, ...props }: IconProps) => {
   const TargetIcon = ICON[kind];
-  return <TargetIcon size={28} {...props} />;
+  return <TargetIcon {...props} />;
 };
 
 export default Icon;

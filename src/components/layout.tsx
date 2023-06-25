@@ -3,9 +3,10 @@ import { SERVER_URL } from '@config/index';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import GlobalStyle from 'src/styles/GlobalStyle';
 import Header from './Header/Header';
+import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
 
 const fetchData = async () => {
   const response = await axios.get(SERVER_URL + '/api/channels', {
@@ -18,15 +19,22 @@ const fetchData = async () => {
 };
 
 const Layout = ({ children }: PropsWithChildren) => {
+  const [selectedChannel, setSelectedChannel] = useState<string>('0');
   const { data } = useQuery(['getChannels'], fetchData, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
+
+  const updateSelectedChannel = (channelId: string) => {
+    setSelectedChannel(channelId);
+  };
+
   return (
     <>
       <GlobalStyle />
       <CommonLayout>
-        <ChannelBar ChannelCircles={data} />
+        <ChannelBar ChannelCircles={data} ChannelHandler={updateSelectedChannel} />
+        <BoardBar channelId={selectedChannel} />
         <Wrapper>
           <Header />
           <main>{children}</main>
