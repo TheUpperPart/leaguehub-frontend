@@ -1,8 +1,9 @@
-import LoginContext from '@contexts/login';
 import { useContext } from 'react';
 
+import ProfileContext from '@contexts/ProfileContext';
+
 const useLogin = () => {
-  const context = useContext(LoginContext);
+  const context = useContext(ProfileContext);
 
   if (!context) {
     throw new Error('LoginContext does not exists.');
