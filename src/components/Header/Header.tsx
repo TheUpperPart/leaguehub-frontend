@@ -2,15 +2,35 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import Icon from '@components/Icon';
+import { useContext } from 'react';
+import Image from 'next/image';
+import ProfileContext from '@contexts/ProfileContext';
 
 const Header = () => {
   const router = useRouter();
 
+  const context = useContext(ProfileContext);
+
+  // 로그인을 누른 url 저장
   const handleLink = () => {
     if (!router.asPath.includes('login?callback=')) {
       router.push(`/login?callback=${router.asPath}`);
     }
   };
+
+  // 로그인 되어 있다면
+  if (context?.profile) {
+    return (
+      <Headers>
+        <Container>
+          <LoginBtn onClick={handleLink}>
+            <ProfileImg src={context.profile.profileUrl} width={24} height={24} alt='profile' />
+            <Text>{context.profile.nickname}</Text>
+          </LoginBtn>
+        </Container>
+      </Headers>
+    );
+  }
 
   return (
     <Headers>
@@ -38,6 +58,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+`;
+
+const ProfileImg = styled(Image)`
+  border-radius: 50%;
 `;
 
 const LoginBtn = styled.button`
