@@ -9,7 +9,7 @@ import ProfileContext from '@contexts/ProfileContext';
 const Header = () => {
   const router = useRouter();
 
-  const context = useContext(ProfileContext);
+  const profileContext = useContext(ProfileContext);
 
   // 로그인을 누른 url 저장
   const handleLink = () => {
@@ -18,27 +18,25 @@ const Header = () => {
     }
   };
 
-  // 로그인 되어 있다면
-  if (context?.profile) {
-    return (
-      <Headers>
-        <Container>
-          <LoginBtn onClick={handleLink}>
-            <ProfileImg src={context.profile.profileUrl} width={24} height={24} alt='profile' />
-            <Text>{context.profile.nickname}</Text>
-          </LoginBtn>
-        </Container>
-      </Headers>
-    );
-  }
-
   return (
     <Headers>
       <Container>
-        <LoginBtn onClick={handleLink}>
-          <Icon kind='my' color='white' size={24} />
-          <Text>로그인</Text>
-        </LoginBtn>
+        {profileContext?.profile ? (
+          <LoginBtn onClick={handleLink}>
+            <ProfileImg
+              src={profileContext.profile.profileUrl}
+              width={24}
+              height={24}
+              alt='profile'
+            />
+            <Text>{profileContext.profile.nickname}</Text>
+          </LoginBtn>
+        ) : (
+          <LoginBtn onClick={handleLink}>
+            <Icon kind='my' color='white' size={24} />
+            <Text>로그인</Text>
+          </LoginBtn>
+        )}
       </Container>
     </Headers>
   );
