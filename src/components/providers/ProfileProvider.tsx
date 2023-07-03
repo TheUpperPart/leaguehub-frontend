@@ -1,13 +1,21 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import ProfileContext from '@contexts/ProfileContext';
 import { Profile } from '@type/profile';
-import fetchProfile from '@apis/fetchProfile';
+import authAPI from '@apis/authAPI';
 
 interface ProfileProviderProps {
   children: React.ReactNode;
 }
+
+const fetchProfile = async () => {
+  const res = await authAPI<Profile>({
+    method: 'get',
+    url: '/api/profile',
+  });
+  return res.data;
+};
 
 const ProfileProvider = ({ children }: ProfileProviderProps) => {
   // 유저가 로그인 되어있는지 확인
