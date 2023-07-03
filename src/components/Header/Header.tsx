@@ -2,10 +2,16 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import Icon from '@components/Icon';
+import { useContext } from 'react';
+import Image from 'next/image';
+import ProfileContext from '@contexts/ProfileContext';
 
 const Header = () => {
   const router = useRouter();
 
+  const profileContext = useContext(ProfileContext);
+
+  // 로그인을 누른 url 저장
   const handleLink = () => {
     if (!router.asPath.includes('login?callback=')) {
       router.push(`/login?callback=${router.asPath}`);
@@ -15,10 +21,22 @@ const Header = () => {
   return (
     <Headers>
       <Container>
-        <LoginBtn onClick={handleLink}>
-          <Icon kind='my' color='white' size={24} />
-          <Text>로그인</Text>
-        </LoginBtn>
+        {profileContext?.profile ? (
+          <LoginBtn onClick={handleLink}>
+            <ProfileImg
+              src={profileContext.profile.profileUrl}
+              width={24}
+              height={24}
+              alt='profile'
+            />
+            <Text>{profileContext.profile.nickname}</Text>
+          </LoginBtn>
+        ) : (
+          <LoginBtn onClick={handleLink}>
+            <Icon kind='my' color='white' size={24} />
+            <Text>로그인</Text>
+          </LoginBtn>
+        )}
       </Container>
     </Headers>
   );
@@ -38,6 +56,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+`;
+
+const ProfileImg = styled(Image)`
+  border-radius: 50%;
 `;
 
 const LoginBtn = styled.button`
