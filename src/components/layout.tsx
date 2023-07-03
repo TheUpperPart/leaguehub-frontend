@@ -7,9 +7,6 @@ import ChannelBar from '@components/Sidebar/ChannelBar/ChannelBar';
 import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
 import Header from '@components/Header/Header';
 import { SERVER_URL } from '@config/index';
-import fetchProfile from '@apis/fetchProfile';
-import { Profile } from '@type/profile';
-import ProfileContext from '@contexts/ProfileContext';
 
 import GlobalStyle from 'src/styles/GlobalStyle';
 
