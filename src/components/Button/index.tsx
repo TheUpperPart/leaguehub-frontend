@@ -10,8 +10,6 @@ interface ButtonProps {
   padding?: number;
   margin?: number;
   borderRadius?: number;
-
-  border?: string;
 }
 
 const Button = ({ onClick, children, type = 'button', ...rest }: ButtonProps) => {
@@ -30,7 +28,7 @@ const CustomBtn = styled.button<ButtonProps>`
 
   border-radius: ${(prop) => (prop.borderRadius ? prop.borderRadius + 'rem' : '1rem')};
 
-  border: ${(prop) => (prop.border ? prop.border : 'none')};
+  border: none;
 
   background-color: #202b37;
   border-radius: 1rem;
