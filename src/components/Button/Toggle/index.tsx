@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 interface Props {
-  curState: boolean;
-  changeCurState: () => void;
+  isOn: boolean;
+  changeState: () => void;
 }
 
 interface Circle {
@@ -10,15 +10,15 @@ interface Circle {
 }
 
 const ToggleButton = (props: Props) => {
-  const { curState, changeCurState } = props;
+  const { isOn, changeState } = props;
 
   const handleToggle = () => {
-    changeCurState();
+    changeState();
   };
 
   return (
-    <Button onClick={handleToggle} on={curState}>
-      <Circle on={curState} />
+    <Button onClick={handleToggle} on={isOn}>
+      <Circle on={isOn} />
     </Button>
   );
 };
@@ -35,7 +35,7 @@ const Button = styled.button<Circle>`
 
   transition: all 0.3s ease-in-out;
 
-  background-color: ${(prop) => (prop.on ? '#9BA4B5' : '#1D5D9B')};
+  background-color: ${(prop) => (prop.on ? '#1D5D9B' : '#9BA4B5')};
   border-radius: 3rem;
   cursor: pointer;
 `;
@@ -45,7 +45,7 @@ const Circle = styled.div<Circle>`
   width: 3rem;
   height: 3rem;
   top: 1rem;
-  left: ${(prop) => (prop.on ? '1rem' : '6rem')};
+  left: ${(prop) => (prop.on ? '6rem' : '1rem')};
 
   transition: all 0.3s ease-in-out;
 
