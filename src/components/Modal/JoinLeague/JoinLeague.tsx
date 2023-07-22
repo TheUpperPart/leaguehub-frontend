@@ -26,14 +26,18 @@ const JoinLeague = () => {
         <p>이름</p>
         {profile?.nickname}
         <p>게임 아이디</p>
-        <Input type='text' placeholder='게임 아이디' onChange={(e) => setGameId(e.target.value)} />
+        <Input
+          type='text'
+          placeholder='게임 아이디'
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setGameId(e.target.value)}
+        />
         <Button onClick={submitGameId}>입력</Button>
         {tier && <p>{tier}</p>}
         <p>참여 코드</p>
         <Input
           type='text'
           placeholder='코드번호'
-          onChange={(e) => setJoinCode(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setJoinCode(e.target.value)}
         ></Input>
         <Input type='checkbox' id='confirmJoin' onClick={() => setChecked(!checked)} />
         <label htmlFor='confirmJoin'>신청 하시겠습니까?</label>
