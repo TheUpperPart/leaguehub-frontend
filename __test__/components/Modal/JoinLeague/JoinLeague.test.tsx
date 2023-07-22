@@ -42,4 +42,19 @@ describe('리그 참여하는 모달 테스트', () => {
 
     expect(screen.getByText('브론즈 1')).toBeInTheDocument();
   });
+
+  it('신청 확인 체크 눌렀는지 확인', async () => {
+    render(<JoinLeague />);
+
+    const checkbox = screen.getByRole('checkbox', {
+      name: '신청 하시겠습니까?',
+    });
+    const submit = screen.getByRole('button', {
+      name: '신청',
+    });
+
+    expect(submit).toBeDisabled();
+    await userEvent.click(checkbox);
+    expect(submit).toBeEnabled();
+  });
 });
