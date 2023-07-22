@@ -9,6 +9,7 @@ const JoinLeague = () => {
   const [gameId, setGameId] = useState<string>('');
   const [joinCode, setJoinCode] = useState<string>('');
   const [tier, setTier] = useState<string | null>(null);
+  const [checked, setChecked] = useState<boolean>(false);
   const { profile } = useProfile();
 
   const submitGameId: MouseEventHandler<HTMLElement> = async () => {
@@ -34,6 +35,10 @@ const JoinLeague = () => {
           placeholder='코드번호'
           onChange={(e) => setJoinCode(e.target.value)}
         ></Input>
+        <Input type='checkbox' id='confirmJoin' onClick={() => setChecked(!checked)} />
+        <label htmlFor='confirmJoin'>신청 하시겠습니까?</label>
+        <Button>취소</Button>
+        <Button disabled={!checked}>신청</Button>
       </>
     </Modal>
   );
