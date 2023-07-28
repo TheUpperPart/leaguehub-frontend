@@ -7,4 +7,5 @@ export type IconKind =
   | 'plus'
   | 'toggleOn'
   | 'toggleOff'
-  | 'clock';
+  | 'clock'
+  | 'modify';
