@@ -8,7 +8,6 @@ import { ChangeEvent, useState, MouseEventHandler, useEffect } from 'react';
 const JoinLeague = () => {
   const [nickname, setNickname] = useState<string>();
   const [gameId, setGameId] = useState<string>('');
-  const [joinCode, setJoinCode] = useState<string>('');
   const [tier, setTier] = useState<string | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const { profile } = useProfile();
@@ -59,16 +58,6 @@ const JoinLeague = () => {
         <Wrapper>
           <FlexWrapper>현재 티어</FlexWrapper>
           <FlexWrapper>{tier && <div>{tier}</div>}</FlexWrapper>
-        </Wrapper>
-        <Wrapper>
-          <FlexWrapper>참여 코드</FlexWrapper>
-          <FlexWrapper>
-            <Input
-              type='text'
-              placeholder='코드번호'
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setJoinCode(e.target.value)}
-            ></Input>
-          </FlexWrapper>
         </Wrapper>
         <Wrapper>
           <Input type='checkbox' id='confirmJoin' onClick={() => setChecked(!checked)} />
