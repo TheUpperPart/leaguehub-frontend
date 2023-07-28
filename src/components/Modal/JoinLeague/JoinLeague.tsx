@@ -30,6 +30,11 @@ const JoinLeague = () => {
     if (inputVal) setNickname(inputVal);
   };
 
+  const submitHandler = (): boolean => {
+    if (nickname && checked) return false;
+    return true;
+  };
+
   useEffect(() => {
     if (profile) setNickname(profile.nickname);
   }, []);
@@ -71,7 +76,7 @@ const JoinLeague = () => {
         </Wrapper>
         <Wrapper>
           <Button>취소</Button>
-          <Button disabled={!checked}>신청</Button>
+          <Button disabled={submitHandler()}>신청</Button>
         </Wrapper>
       </Container>
     </Modal>
