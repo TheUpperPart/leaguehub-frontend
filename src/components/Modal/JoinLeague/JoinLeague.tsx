@@ -3,14 +3,15 @@ import { SERVER_URL } from '@config/index';
 import styled from '@emotion/styled';
 import useProfile from '@hooks/useProfile';
 import axios from 'axios';
-import { ChangeEvent, useState, MouseEventHandler, useEffect } from 'react';
+import { ChangeEvent, useState, MouseEventHandler, useEffect, useRef } from 'react';
 
 const JoinLeague = () => {
-  const [nickname, setNickname] = useState<string>();
+  const [nickname, setNickname] = useState<string | null>(null);
   const [gameId, setGameId] = useState<string>('');
   const [tier, setTier] = useState<string | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const { profile } = useProfile();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const submitGameId: MouseEventHandler<HTMLElement> = async () => {
     if (gameId.length < 2) {
@@ -18,6 +19,15 @@ const JoinLeague = () => {
     }
     const userTier: string = (await axios.get(SERVER_URL + '/api/stat?gameid=' + gameId)).data.tier;
     setTier(userTier);
+  };
+
+  const nicknameHandler: MouseEventHandler<HTMLElement> = () => {
+    if (nickname) {
+      setNickname(null);
+      return;
+    }
+    const inputVal = inputRef.current?.value;
+    if (inputVal) setNickname(inputVal);
   };
 
   useEffect(() => {
@@ -34,14 +44,10 @@ const JoinLeague = () => {
               nickname
             ) : (
               <>
-                <Input
-                  type='text'
-                  placeholder='닉네임'
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNickname(e.target.value)}
-                />
-                <Button onClick={() => setNickname()}>수정</Button>
+                <Input type='text' placeholder='닉네임' ref={inputRef} />
               </>
             )}
+            <Button onClick={nicknameHandler}>{nickname ? '수정' : '확인'}</Button>
           </FlexWrapper>
         </Wrapper>
         <Wrapper>
