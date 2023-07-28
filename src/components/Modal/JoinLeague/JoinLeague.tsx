@@ -7,7 +7,12 @@ import useProfile from '@hooks/useProfile';
 import axios from 'axios';
 import { ChangeEvent, useState, MouseEventHandler, useEffect, useRef } from 'react';
 
-const JoinLeague = () => {
+interface JoinLeagueProps {
+  onClose: MouseEventHandler<HTMLElement>;
+  channelId: string;
+}
+
+const JoinLeague = ({ onClose }: JoinLeagueProps) => {
   const [nickname, setNickname] = useState<string | null>(null);
   const [gameId, setGameId] = useState<string>('');
   const [tier, setTier] = useState<string | null>(null);
@@ -120,7 +125,7 @@ const JoinLeague = () => {
           </label>
         </CheckboxWrapper>
         <Wrapper>
-          <SubmitButton>취소</SubmitButton>
+          <SubmitButton onClick={onClose}>취소</SubmitButton>
           <SubmitButton disabled={submitHandler()}>신청</SubmitButton>
         </Wrapper>
       </Container>
@@ -202,6 +207,13 @@ const SubmitButton = styled.button`
   border-radius: 0.5rem;
   color: white;
   margin: 0 6rem 0 6rem;
+  &:hover {
+    cursor: pointer;
+  }
+  &:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+  }
 `;
 
 const IconWrapper = styled.div`
