@@ -44,9 +44,20 @@ describe('리그 참여하는 모달 테스트', () => {
     expect(screen.getByText('브론즈 1')).toBeInTheDocument();
   });
 
-  it('신청 확인 체크 눌렀는지 확인', async () => {
+  it('닉네임 입력과 신청 확인 체크 눌러야 리그 참여가능한지 체크', async () => {
+    mockUseProfile.mockReturnValue({
+      setProfile: mockSetProfile,
+      profile: {
+        nickname: '',
+        profileUrl: 'testURL',
+      },
+    });
     render(<JoinLeague />);
 
+    const nicknameInputElement = screen.getByPlaceholderText('닉네임');
+    const confirmButton = screen.getByRole('button', {
+      name: '확인',
+    });
     const checkbox = screen.getByRole('checkbox', {
       name: '신청 하시겠습니까?',
     });
@@ -55,6 +66,15 @@ describe('리그 참여하는 모달 테스트', () => {
     });
 
     expect(submit).toBeDisabled();
+
+    await userEvent.click(checkbox);
+    expect(submit).toBeDisabled();
+
+    await userEvent.click(checkbox);
+    await userEvent.type(nicknameInputElement, 'testInput');
+    await userEvent.click(confirmButton);
+    expect(submit).toBeDisabled();
+
     await userEvent.click(checkbox);
     expect(submit).toBeEnabled();
   });
