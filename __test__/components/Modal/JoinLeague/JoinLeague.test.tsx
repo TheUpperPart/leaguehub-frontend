@@ -1,8 +1,9 @@
 import JoinLeague from '@components/Modal/JoinLeague/JoinLeague';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import useProfile from '@hooks/useProfile';
 import { Profile } from '@type/profile';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 
 const mockProfile: Profile = {
   nickname: '현석',
@@ -56,5 +57,27 @@ describe('리그 참여하는 모달 테스트', () => {
     expect(submit).toBeDisabled();
     await userEvent.click(checkbox);
     expect(submit).toBeEnabled();
+  });
+
+  it('프로필에 이름이 있는 경우 수정 버튼을 통해 이름을 변경할 수 있는지 테스트', async () => {
+    render(<JoinLeague />);
+    const modifyButton = screen.getByRole('button', {
+      name: '수정',
+    });
+
+    await act(async () => await userEvent.click(modifyButton));
+    const nicknameInput = await screen.findByPlaceholderText('닉네임');
+    const confirmButton = await screen.findByRole('button', {
+      name: '확인',
+    });
+
+    await userEvent.type(nicknameInput, '릭헙');
+    await act(async () => await userEvent.click(confirmButton));
+
+    const beforeModifiedName = screen.queryByText('현석');
+    const modifiedName = await screen.findByText('릭헙');
+
+    expect(beforeModifiedName).not.toBeInTheDocument();
+    expect(modifiedName).toBeInTheDocument();
   });
 });
