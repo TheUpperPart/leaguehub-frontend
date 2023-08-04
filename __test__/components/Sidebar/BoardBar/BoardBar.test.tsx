@@ -2,6 +2,7 @@ import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import { useRouter } from 'next/router';
 
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn().mockImplementation(() => {
@@ -29,13 +30,24 @@ jest.mock('@tanstack/react-query', () => ({
 }));
 
 const mockSetState = jest.fn();
+const mockPush = jest.fn();
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
   useState: (initial: string) => [initial, mockSetState],
 }));
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
+
 describe('채널 게시판 테스트', () => {
+  beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue({
+      query: {},
+      push: mockPush,
+    });
+  });
   it('헤더 렌더링 테스트', async () => {
     render(<BoardBar channelId='1' />);
     const hostName = await screen.findByText('host1');
@@ -64,8 +76,10 @@ describe('채널 게시판 테스트', () => {
 
     await userEvent.click(boardElements[0]);
     expect(mockSetState).toHaveBeenCalledWith('1');
+    expect(mockPush).toHaveBeenCalledWith('/contents/1/1');
 
     await userEvent.click(boardElements[1]);
     expect(mockSetState).toHaveBeenCalledWith('2');
+    expect(mockPush).toHaveBeenCalledWith('/contents/1/2');
   });
 });
