@@ -32,7 +32,7 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
             game={data.game}
             participateNum={data.participateNum}
           />
-          <BoardBody channels={data.channels} />
+          <BoardBody channelId={channelId} channels={data.channels} />
         </ContentContainer>
       )}
       <FooterContainer>
