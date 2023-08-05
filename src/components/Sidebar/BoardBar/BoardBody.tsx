@@ -1,16 +1,28 @@
+import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import styled from '@emotion/styled';
-import { BoardInfo } from '@type/board';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { MouseEventHandler, useState } from 'react';
 
-const BoardBody = ({ channels }: Pick<BoardInfo, 'channels'>) => {
+interface BoardBodyProps {
+  channelId: string;
+  channels: {
+    id: string;
+    name: string;
+  }[];
+}
+
+const BoardBody = ({ channels, channelId }: BoardBodyProps) => {
   const [selected, setSelected] = useState<string>('');
+  const router = useRouter();
 
   const onClick: MouseEventHandler<HTMLElement> = (e) => {
     if (e.target !== e.currentTarget) return;
     const clickedId = e.currentTarget.dataset.id;
+    if (clickedId === selected) return;
     if (clickedId) {
       setSelected(clickedId);
+      router.push(`/contents/${channelId}/${clickedId}`);
     }
   };
 

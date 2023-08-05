@@ -67,6 +67,17 @@ const boardHandlers = [
     }
     return res(ctx.json(boardInfo));
   }),
+  rest.get(SERVER_URL + '/api/channel/:channelLink/:boardId', (req, res, ctx) => {
+    const { channelLink, boardId } = req.params;
+    const content = `# H1
+## H2
+### H3
+#### H4
+##### H5
+, React Markdown!\nThis is **${channelLink} ${boardId}** text rendered in a React component`;
+
+    return res(ctx.json(content));
+  }),
 ];
 
 export default boardHandlers;
