@@ -22,6 +22,7 @@ const boardContents = () => {
   };
 
   useEffect(() => {
+    setIsModify(false);
     if (!channelLink || !boardId) {
       router.push('/');
       return;
