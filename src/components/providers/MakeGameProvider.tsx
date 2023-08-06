@@ -1,5 +1,5 @@
 import MakeGameContext from '@contexts/MakeGameContext';
-import { ChangeEvent, ChangeEventHandler, MouseEventHandler, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 interface MakeGameProps {
   children: React.ReactNode;
@@ -12,14 +12,14 @@ export interface BasicInfo {
 }
 
 export interface IsUseCustomRule {
-  tier: boolean;
+  tierMax: boolean;
+  tierMin: boolean;
   playCount: boolean;
 }
 
 export interface CustomRule {
-  tierMax: string;
-  tierMin: string;
-  gradeMax: string;
+  tierMax: number;
+  tierMin: number;
   playCountMin: number;
 }
 
@@ -37,14 +37,14 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
   });
 
   const [isUseCustomRule, setIsUseCustomRule] = useState<IsUseCustomRule>({
-    tier: false,
+    tierMax: false,
+    tierMin: false,
     playCount: false,
   });
 
   const [customRule, setCustomRule] = useState<CustomRule>({
-    tierMax: '100',
-    tierMin: 'asd',
-    gradeMax: 'asd',
+    tierMax: 400,
+    tierMin: 0,
     playCountMin: 100,
   });
 
@@ -71,8 +71,8 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     setIsUseCustomRule((prev) => ({ ...prev, [type]: !prev[type] }));
   };
 
-  const handleCustomRule = (type: keyof CustomRule, e: ChangeEvent<HTMLInputElement>) => {
-    setCustomRule({ ...customRule, [type]: e.target.value });
+  const handleCustomRule = (type: keyof CustomRule, value: number) => {
+    setCustomRule({ ...customRule, [type]: value });
   };
 
   const contextValue = {

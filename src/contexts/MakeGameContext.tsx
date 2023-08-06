@@ -13,7 +13,7 @@ interface MakeGameState {
   isUseCustomRule: IsUseCustomRule;
   handleIsUseCustomRule: (type: keyof IsUseCustomRule) => void;
   customRule: CustomRule;
-  handleCustomRule: (type: keyof CustomRule, e: ChangeEvent<HTMLInputElement>) => void;
+  handleCustomRule: (type: keyof CustomRule, value: number) => void;
 }
 
 const MakeGameContext = createContext<MakeGameState | null>(null);
