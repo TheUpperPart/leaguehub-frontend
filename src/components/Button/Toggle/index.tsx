@@ -6,19 +6,21 @@ interface Props {
 }
 
 interface Circle {
-  on: boolean;
+  isOn: boolean;
 }
 
 const ToggleButton = (props: Props) => {
   const { isOn, changeState } = props;
+
+  console.log(isOn, typeof isOn);
 
   const handleToggle = () => {
     changeState();
   };
 
   return (
-    <Button onClick={handleToggle} on={isOn}>
-      <Circle on={isOn} />
+    <Button onClick={handleToggle} isOn={isOn}>
+      <Circle isOn={isOn} />
     </Button>
   );
 };
@@ -35,7 +37,7 @@ const Button = styled.button<Circle>`
 
   transition: all 0.3s ease-in-out;
 
-  background-color: ${(prop) => (prop.on ? '#1D5D9B' : '#9BA4B5')};
+  background-color: ${(prop) => (prop.isOn ? '#1D5D9B' : '#9BA4B5')};
   border-radius: 3rem;
   cursor: pointer;
 `;
@@ -45,7 +47,7 @@ const Circle = styled.div<Circle>`
   width: 3rem;
   height: 3rem;
   top: 1rem;
-  left: ${(prop) => (prop.on ? '6rem' : '1rem')};
+  left: ${(prop) => (prop.isOn ? '6rem' : '1rem')};
 
   transition: all 0.3s ease-in-out;
 
