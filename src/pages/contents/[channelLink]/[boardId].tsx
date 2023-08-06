@@ -1,4 +1,5 @@
 import authAPI from '@apis/authAPI';
+import ContentModify from '@components/Content/ContentModify';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
@@ -7,6 +8,7 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 const boardContents = () => {
   const [contents, setContents] = useState('');
+  const [isModify, setIsModify] = useState(false);
 
   const router = useRouter();
   const { channelLink, boardId } = router.query;
@@ -31,14 +33,21 @@ const boardContents = () => {
 
   return (
     <Container>
-      <div
-        css={css`
-          padding-bottom: 1rem;
-        `}
-      >
-        <ReactMarkdown children={contents} />
-      </div>
-      <ModifyButton>내용 수정</ModifyButton>
+      {isModify ? (
+        <ContentModify content={contents} />
+      ) : (
+        <>
+          <div
+            css={css`
+              padding-bottom: 1rem;
+            `}
+          >
+            <ReactMarkdown children={contents} />
+          </div>
+          <ModifyButton>공지 삭제</ModifyButton>
+          <ModifyButton onClick={() => setIsModify(true)}>내용 수정</ModifyButton>
+        </>
+      )}
     </Container>
   );
 };
