@@ -1,4 +1,4 @@
-import { GameEnum } from '@constants/MakeGameEnum';
+import { GameEnum } from '@constants/MakeGame';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useMakeGame from '@hooks/useMakeGame';
