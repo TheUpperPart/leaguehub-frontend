@@ -1,3 +1,4 @@
+import { TFTInitialValue } from '@constants/MakeGame';
 import MakeGameContext from '@contexts/MakeGameContext';
 import { ChangeEvent, useState } from 'react';
 
@@ -24,29 +25,26 @@ export interface CustomRule {
 }
 
 const MakeGameProvider = ({ children }: MakeGameProps) => {
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const {
+    initCurrentStep,
+    initCategory,
+    initMatchFormat,
+    initBasicInfo,
+    initIsUseCustomRule,
+    initCustomRule,
+  } = TFTInitialValue;
 
-  const [category, setCategory] = useState<number>(1);
+  const [currentStep, setCurrentStep] = useState<number>(initCurrentStep);
 
-  const [matchFormat, setMatchFormat] = useState<number>(0);
+  const [category, setCategory] = useState<number>(initCategory);
 
-  const [basicInfo, setBasicInfo] = useState<BasicInfo>({
-    title: '',
-    participationNum: 0,
-    channelImageUrl: '',
-  });
+  const [matchFormat, setMatchFormat] = useState<number>(initMatchFormat);
 
-  const [isUseCustomRule, setIsUseCustomRule] = useState<IsUseCustomRule>({
-    tierMax: false,
-    tierMin: false,
-    playCount: false,
-  });
+  const [basicInfo, setBasicInfo] = useState<BasicInfo>(initBasicInfo);
 
-  const [customRule, setCustomRule] = useState<CustomRule>({
-    tierMax: 400,
-    tierMin: 0,
-    playCountMin: 100,
-  });
+  const [isUseCustomRule, setIsUseCustomRule] = useState<IsUseCustomRule>(initIsUseCustomRule);
+
+  const [customRule, setCustomRule] = useState<CustomRule>(initCustomRule);
 
   const handleCurrentStep = () => {
     if (currentStep < 3) {
@@ -72,7 +70,20 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
   };
 
   const handleCustomRule = (type: keyof CustomRule, value: number) => {
+    if (isNaN(Number(value))) {
+      return alert('숫자만 입력하세요!');
+    }
+
     setCustomRule({ ...customRule, [type]: value });
+  };
+
+  const resetState = () => {
+    setCurrentStep(initCurrentStep);
+    setCategory(initCategory);
+    setMatchFormat(initMatchFormat);
+    setBasicInfo(initBasicInfo);
+    setIsUseCustomRule(initIsUseCustomRule);
+    setCustomRule(initCustomRule);
   };
 
   const contextValue = {
@@ -88,6 +99,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     handleIsUseCustomRule,
     customRule,
     handleCustomRule,
+    resetState,
   };
 
   return <MakeGameContext.Provider value={contextValue}>{children}</MakeGameContext.Provider>;

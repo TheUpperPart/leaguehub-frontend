@@ -14,6 +14,7 @@ interface MakeGameState {
   handleIsUseCustomRule: (type: keyof IsUseCustomRule) => void;
   customRule: CustomRule;
   handleCustomRule: (type: keyof CustomRule, value: number) => void;
+  resetState: () => void;
 }
 
 const MakeGameContext = createContext<MakeGameState | null>(null);
