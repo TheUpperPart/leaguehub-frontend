@@ -3,31 +3,26 @@ import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ChannelCircleProps } from '@type/channelCircle';
-import React from 'react';
 
 interface ChannelBarProps {
-  ChannelCircles: ChannelCircleProps[];
-  ChannelHandler: (channelId: string) => void;
+  channels: ChannelCircleProps[];
+  updateSelectedChannel: (channelId: string) => void;
 }
 
-const ChannelBar = ({ ChannelCircles, ChannelHandler }: ChannelBarProps) => {
+const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
   return (
     <ChannelbarContainer>
-      {ChannelCircles &&
-        ChannelCircles.map(({ channelId, channelName, channelGame }) => (
+      {channels &&
+        channels.map(({ channelLink, title, category }) => (
           <div
-            key={channelId}
-            onClick={() => ChannelHandler(channelId)}
+            key={channelLink}
+            onClick={() => updateSelectedChannel(channelLink)}
             css={css`
               margin: 0 auto;
               margin-bottom: 2.2rem;
             `}
           >
-            <ChannelCircle
-              channelId={channelId}
-              channelName={channelName}
-              channelGame={channelGame}
-            />
+            <ChannelCircle channelLink={channelLink} title={title} category={category} />
           </div>
         ))}
       <ChannelParticipate>
