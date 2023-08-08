@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export interface LastVisitedBoardList {
   [key: string]: {
-    [lastVisitedBoardId: string]: string;
+    [boardId: string]: string;
   };
 }
 
@@ -17,7 +17,7 @@ const ChannelProvider = ({ children }: ChannelProviderProps) => {
   const handleBoard = (key: keyof LastVisitedBoardList, boardId: string) => {
     setLastVisitedBoardIdLists({
       ...lastVisitedBoardIdLists,
-      [key]: { lastVisitedBoardId: boardId },
+      [key]: { boardId },
     });
   };
 
