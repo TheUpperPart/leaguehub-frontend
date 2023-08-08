@@ -7,6 +7,7 @@ import Layout from '@components/layout';
 import ProfileProvider from '@components/providers/ProfileProvider';
 
 import initMockAPI from '@mocks/index';
+import ChannelProvider from '@components/providers/ChannelProvider';
 
 if (process.env.NODE_ENV === 'development') {
   initMockAPI();
@@ -20,9 +21,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps.dehydratedState}>
         <ReactQueryDevtools initialIsOpen={false} />
         <ProfileProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <ChannelProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ChannelProvider>
         </ProfileProvider>
       </Hydrate>
     </QueryClientProvider>
