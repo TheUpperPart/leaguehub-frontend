@@ -23,7 +23,8 @@
       "@contexts/*": ["src/contexts/*"],
       "@hooks/*": ["src/hooks/*"],
       "@type/*": ["src/@types/*"],
-      "@apis/*": ["src/apis/*"]
+      "@apis/*": ["src/apis/*"],
+      "@constants/*": ["src/constants/*"]
     },
     "jsxImportSource": "@emotion/react"
   },
