@@ -12,8 +12,6 @@ interface Circle {
 const ToggleButton = (props: Props) => {
   const { isOn, changeState } = props;
 
-  console.log(isOn, typeof isOn);
-
   const handleToggle = () => {
     changeState();
   };
@@ -38,6 +36,7 @@ const Button = styled.button<Circle>`
   transition: all 0.3s ease-in-out;
 
   background-color: ${(prop) => (prop.isOn ? '#1D5D9B' : '#9BA4B5')};
+
   border-radius: 3rem;
   cursor: pointer;
 `;
