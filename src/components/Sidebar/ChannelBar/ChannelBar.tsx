@@ -1,15 +1,28 @@
 import Icon from '@components/Icon';
+import Modal from '@components/Modal';
 import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ChannelCircleProps } from '@type/channelCircle';
+
+import { useState } from 'react';
+import SelectChannelType from '@components/Sidebar/ChannelBar/SelectChannelType';
+
 
 interface ChannelBarProps {
   channels: ChannelCircleProps[];
   updateSelectedChannel: (channelId: string) => void;
 }
 
+
 const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
+
+  const [isModal, setIsModal] = useState<boolean>(false);
+
+  const handleModal = () => {
+    setIsModal((prev) => !prev);
+  };
+
   return (
     <ChannelbarContainer>
       {channels &&
@@ -25,9 +38,14 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
             <ChannelCircle channelLink={channelLink} title={title} category={category} />
           </div>
         ))}
-      <ChannelParticipate>
+      <ChannelParticipate onClick={() => setIsModal(true)}>
         <CenteredIcon kind='plus' color='white' size={24} />
       </ChannelParticipate>
+      {isModal && (
+        <Modal onClose={() => setIsModal(!isModal)}>
+          <SelectChannelType handleModal={handleModal} />
+        </Modal>
+      )}
     </ChannelbarContainer>
   );
 };

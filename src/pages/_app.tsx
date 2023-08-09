@@ -7,7 +7,11 @@ import Layout from '@components/layout';
 import ProfileProvider from '@components/providers/ProfileProvider';
 
 import initMockAPI from '@mocks/index';
+
 import ChannelProvider from '@components/providers/ChannelProvider';
+
+import MakeGameProvider from '@components/providers/MakeGameProvider';
+
 
 if (process.env.NODE_ENV === 'development') {
   initMockAPI();
@@ -22,9 +26,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <ReactQueryDevtools initialIsOpen={false} />
         <ProfileProvider>
           <ChannelProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <MakeGameProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+             </MakeGameProvider>
           </ChannelProvider>
         </ProfileProvider>
       </Hydrate>
