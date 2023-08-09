@@ -20,7 +20,12 @@ const ContentModify = ({ content, onUpdateContent }: ContentModifyProps) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const handleUpdateContent = () => {
-    if (textRef.current) onUpdateContent(textRef.current.value);
+    if (textRef.current === null) alert('글자를 입력해주세요!');
+    else if (textRef.current.value.length < 5) alert('5글자 이상 입력해주세요!');
+    else {
+      const res = window.confirm('수정하겠습니까?');
+      if (res) onUpdateContent(textRef.current.value);
+    }
   };
 
   return (
