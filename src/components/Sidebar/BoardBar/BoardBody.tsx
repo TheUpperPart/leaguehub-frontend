@@ -1,41 +1,62 @@
 import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import styled from '@emotion/styled';
+import useBoardIdLists from '@hooks/useBoardIdLists';
 import { useRouter } from 'next/router';
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
 interface BoardBodyProps {
   channelId: string;
-  channels: {
+  boards: {
     id: string;
     name: string;
   }[];
 }
 
-const BoardBody = ({ channels, channelId }: BoardBodyProps) => {
-  const [selected, setSelected] = useState<string>('');
+const BoardBody = ({ boards, channelId }: BoardBodyProps) => {
   const router = useRouter();
 
+  const { lastVisitedBoardIdLists, handleBoard } = useBoardIdLists();
+
+  const [selected, setSelected] = useState<string>('');
+
   const onClick: MouseEventHandler<HTMLElement> = (e) => {
-    if (e.target !== e.currentTarget) return;
     const clickedId = e.currentTarget.dataset.id;
-    if (clickedId === selected) return;
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+    if (clickedId === selected) {
+      return;
+    }
+
     if (clickedId) {
       setSelected(clickedId);
+      handleBoard(channelId, clickedId);
       router.push(`/contents/${channelId}/${clickedId}`);
     }
   };
 
+  useEffect(() => {
+    const lastVisitBoardId = lastVisitedBoardIdLists[channelId]?.boardId;
+
+    if (!lastVisitBoardId) {
+      setSelected(boards[0].id);
+      return;
+    }
+
+    setSelected(lastVisitBoardId);
+  }, [selected, channelId]);
+
   return (
     <Container>
-      {channels.map((channel) => (
+      {boards.map((board) => (
         <Wrapper
-          key={channel.id}
-          data-id={channel.id}
+          key={board.id}
+          data-id={board.id}
           onClick={onClick}
-          isSelected={channel.id === selected}
+          isSelected={board.id === selected}
         >
-          {channel.name}
+          {board.name}
           <Icon kind='lock' color='#637083' size='1.5rem' />
         </Wrapper>
       ))}

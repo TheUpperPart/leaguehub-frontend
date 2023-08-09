@@ -3,9 +3,9 @@ import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
 
 describe('채널 테스트', () => {
   const initalState = {
-    channelId: 'ab5gx',
-    channelName: '부경대 총장기',
-    channelGame: 'TFT',
+    channelLink: 'ab5gx',
+    title: '부경대 총장기',
+    category: 'TFT',
   };
 
   it('채널 이름을 가진 컴포넌트가 있다.', () => {
@@ -15,9 +15,9 @@ describe('채널 테스트', () => {
   });
 
   const initalState2 = {
-    channelId: 'ab5gx',
-    channelName: '부경대 총장기',
-    channelGame: 'TFT',
+    channelLink: 'ab5gx',
+    title: '부경대 총장기',
+    category: 'TFT',
     imgSrc: '1.jpeg',
   };
 

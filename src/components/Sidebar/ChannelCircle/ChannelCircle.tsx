@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 
 import { ChannelCircleProps } from 'src/@types/channelCircle';
 
-const ChannelCircle = ({ channelId, channelName, channelGame, imgSrc }: ChannelCircleProps) => {
+const ChannelCircle = ({ channelLink, title, category, imgSrc }: ChannelCircleProps) => {
   return (
-    <ChannelBtn key={channelId} url={imgSrc}>
-      <ChannelName>{channelName}</ChannelName>
-      <ChannelGame>{channelGame}</ChannelGame>
+    <ChannelBtn key={channelLink} url={imgSrc}>
+      <ChannelName>{title}</ChannelName>
+      <ChannelGame>{category}</ChannelGame>
     </ChannelBtn>
   );
 };

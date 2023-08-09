@@ -1,6 +1,6 @@
 export interface ChannelCircleProps {
-  channelId: string;
-  channelName: string;
-  channelGame: string;
+  channelLink: string;
+  title: string;
+  category: string;
   imgSrc?: string;
 }
