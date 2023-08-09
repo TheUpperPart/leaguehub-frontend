@@ -21,6 +21,11 @@ const boardContents = () => {
     setContents(res.data);
   };
 
+  const handleContentUpdate = (updatedContent: string) => {
+    setContents(updatedContent);
+    setIsModify(false);
+  };
+
   useEffect(() => {
     setIsModify(false);
     if (!channelLink || !boardId) {
@@ -35,7 +40,7 @@ const boardContents = () => {
   return (
     <Container>
       {isModify ? (
-        <ContentModify content={contents} />
+        <ContentModify content={contents} onUpdateContent={handleContentUpdate} />
       ) : (
         <>
           <div

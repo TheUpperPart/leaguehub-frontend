@@ -1,11 +1,12 @@
 import Modal from '@components/Modal';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 interface ContentModifyProps {
   content: string;
+  onUpdateContent: (updatedContent: string) => void;
 }
 
 interface ContentButtonProps {
@@ -14,9 +15,13 @@ interface ContentButtonProps {
   backgroundColor: string;
 }
 
-const ContentModify = ({ content }: ContentModifyProps) => {
+const ContentModify = ({ content, onUpdateContent }: ContentModifyProps) => {
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleUpdateContent = () => {
+    if (textRef.current) onUpdateContent(textRef.current.value);
+  };
 
   return (
     <>
@@ -32,17 +37,13 @@ const ContentModify = ({ content }: ContentModifyProps) => {
         </Modal>
       )}
       <InputField placeholder={'텍스트를 입력해주세요'} defaultValue={content} ref={textRef} />
-      <ContentButton right='25rem' backgroundColor='#ff0044'>
+      <ContentButton right='25' backgroundColor='#ff0044'>
         삭제하기
       </ContentButton>
-      <ContentButton
-        right='15rem'
-        backgroundColor='grey'
-        onClick={() => setIsPreviewModalOpen(true)}
-      >
+      <ContentButton right='15' backgroundColor='grey' onClick={() => setIsPreviewModalOpen(true)}>
         미리보기
       </ContentButton>
-      <ContentButton right='5rem' backgroundColor='#0067a3'>
+      <ContentButton right='5' backgroundColor='#0067a3' onClick={handleUpdateContent}>
         수정완료
       </ContentButton>
     </>
@@ -75,6 +76,6 @@ const ContentButton = styled.button<ContentButtonProps>`
     cursor: pointer;
   }
 
-  right: ${(props) => props.right};
+  right: ${(props) => props.right + 'rem'};
   background-color: ${(props) => props.backgroundColor};
 `;
