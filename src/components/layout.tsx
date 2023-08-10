@@ -9,6 +9,7 @@ import Header from '@components/Header/Header';
 import { SERVER_URL } from '@config/index';
 import GlobalStyle from 'src/styles/GlobalStyle';
 import { ChannelCircleProps } from '@type/channelCircle';
+import { useRouter } from 'next/router';
 
 const fetchData = async () => {
   const response = await axios.get(SERVER_URL + '/api/channels', {
@@ -21,6 +22,8 @@ const fetchData = async () => {
 };
 
 const Layout = ({ children }: PropsWithChildren) => {
+  const router = useRouter();
+
   const [selectedChannelId, setSelectedChannelId] = useState<string | null>(null);
 
   const { data, isSuccess } = useQuery<ChannelCircleProps[]>(['getChannels'], fetchData, {
@@ -34,7 +37,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     // 새로고침시 첫 번째 채널 보여주도록 설정
-    if (isSuccess) {
+    if (isSuccess && router.asPath === '/') {
       setSelectedChannelId(data[0].channelLink);
     }
   }, [data]);
