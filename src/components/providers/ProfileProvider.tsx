@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import ProfileContext from '@contexts/ProfileContext';
 import { Profile } from '@type/profile';
 import authAPI from '@apis/authAPI';
+import Cookies from 'js-cookie';
 
 interface ProfileProviderProps {
   children: React.ReactNode;
@@ -19,8 +20,8 @@ const fetchProfile = async () => {
 
 const ProfileProvider = ({ children }: ProfileProviderProps) => {
   // 유저가 로그인 되어있는지 확인
-  const isHaveAccessToken =
-    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null; // 액세스 토큰 있는지 확인
+
+  const isHaveAccessToken = Cookies.get('accessToken');
 
   const [profile, setProfile] = useState<Profile | null>(null);
 
