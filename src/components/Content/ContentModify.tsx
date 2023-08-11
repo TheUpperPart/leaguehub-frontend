@@ -80,7 +80,6 @@ const ContentButton = styled.button<ContentButtonProps>`
   &: hover {
     cursor: pointer;
   }
-
   right: ${(props) => props.right + 'rem'};
   background-color: ${(props) => props.backgroundColor};
 `;

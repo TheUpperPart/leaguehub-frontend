@@ -8,15 +8,12 @@ import { ChannelCircleProps } from '@type/channelCircle';
 import { useState } from 'react';
 import SelectChannelType from '@components/Sidebar/ChannelBar/SelectChannelType';
 
-
 interface ChannelBarProps {
   channels: ChannelCircleProps[];
   updateSelectedChannel: (channelId: string) => void;
 }
 
-
 const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
-
   const [isModal, setIsModal] = useState<boolean>(false);
 
   const handleModal = () => {

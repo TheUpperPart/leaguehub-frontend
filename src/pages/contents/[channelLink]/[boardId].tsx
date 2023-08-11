@@ -80,7 +80,7 @@ const ModifyButton = styled.button`
   padding: 1rem;
   border-radius: 1rem;
 
-  &: hover {
+  &:hover {
     cursor: pointer;
   }
 `;

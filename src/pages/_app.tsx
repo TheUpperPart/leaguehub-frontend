@@ -12,7 +12,6 @@ import ChannelProvider from '@components/providers/ChannelProvider';
 
 import MakeGameProvider from '@components/providers/MakeGameProvider';
 
-
 if (process.env.NODE_ENV === 'development') {
   initMockAPI();
 }
@@ -30,7 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               <Layout>
                 <Component {...pageProps} />
               </Layout>
-             </MakeGameProvider>
+            </MakeGameProvider>
           </ChannelProvider>
         </ProfileProvider>
       </Hydrate>
