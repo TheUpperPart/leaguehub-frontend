@@ -109,6 +109,7 @@ const boardHandlers = [
 
   rest.get(SERVER_URL + '/api/channel/:channelLink/:boardId', (req, res, ctx) => {
     const { channelLink, boardId } = req.params;
+    const title = '임시제목';
     const content = `# H1
 ## H2
 ### H3
@@ -116,7 +117,7 @@ const boardHandlers = [
 ##### H5
 , React Markdown!\nThis is **${channelLink} ${boardId}** text rendered in a React component`;
 
-    return res(ctx.json(content));
+    return res(ctx.json({ title, content }));
   }),
 ];
 
