@@ -23,17 +23,22 @@ const ContentModify = ({ title, content, onUpdateContent }: ContentModifyProps) 
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const handleUpdateContent = () => {
-    if (textRef.current === null || titleRef.current === null) alert('글자를 입력해주세요!');
-    else if (textRef.current.value.length < 5) alert('5글자 이상 입력해주세요!');
-    else {
-      const res = window.confirm('수정하겠습니까?');
-      if (res) {
-        const modifiedContent: Content = {
-          title: titleRef.current.value,
-          content: textRef.current.value,
-        };
-        onUpdateContent(modifiedContent);
-      }
+    if (textRef.current === null || titleRef.current === null) {
+      alert('글자를 입력해주세요!');
+      return;
+    }
+    if (textRef.current.value.length < 5) {
+      alert('5글자 이상 입력해주세요!');
+      return;
+    }
+
+    const res = window.confirm('수정하겠습니까?');
+    if (res) {
+      const modifiedContent: Content = {
+        title: titleRef.current.value,
+        content: textRef.current.value,
+      };
+      onUpdateContent(modifiedContent);
     }
   };
 
