@@ -46,6 +46,7 @@ const ContentModify = ({ title, content, onUpdateContent }: ContentModifyProps) 
               text-align: start;
             `}
           >
+            <PreviewTitle>{titleRef.current.value}</PreviewTitle>
             <ReactMarkdown children={textRef.current.value} />
           </div>
         </Modal>
@@ -102,4 +103,13 @@ const ContentButton = styled.button<ContentButtonProps>`
   }
   right: ${(props) => props.right + 'rem'};
   background-color: ${(props) => props.backgroundColor};
+`;
+
+const PreviewTitle = styled.div`
+  font-size: 2em;
+  font-weight: 900;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #c0c0c0;
+  text-align: center;
 `;
