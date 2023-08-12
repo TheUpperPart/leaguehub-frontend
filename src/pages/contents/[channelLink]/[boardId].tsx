@@ -6,22 +6,31 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
+export interface Content {
+  title: string;
+  content: string;
+}
+
 const boardContents = () => {
-  const [contents, setContents] = useState('');
+  const [contents, setContents] = useState<Content>({ title: '', content: '' });
   const [isModify, setIsModify] = useState(false);
 
   const router = useRouter();
   const { channelLink, boardId } = router.query;
 
   const fetchBoardContent = async (channelLink: string, boardId: string) => {
-    const res = await authAPI<string>({
+    const res = await authAPI<Content>({
       method: 'get',
       url: `/api/channel/${channelLink}/${boardId}`,
     });
     setContents(res.data);
   };
 
-  const handleContentUpdate = (updatedContent: string) => {
+  const handleContentUpdate = ({ title, content }: Content) => {
+    const updatedContent: Content = {
+      title,
+      content,
+    };
     setContents(updatedContent);
     setIsModify(false);
   };
@@ -40,15 +49,21 @@ const boardContents = () => {
   return (
     <Container>
       {isModify ? (
-        <ContentModify content={contents} onUpdateContent={handleContentUpdate} />
+        <ContentModify
+          title={contents.title}
+          content={contents.content}
+          onUpdateContent={handleContentUpdate}
+        />
       ) : (
         <>
+          <Title>{contents.title}</Title>
           <div
             css={css`
+              padding-top: 2rem;
               padding-bottom: 1rem;
             `}
           >
-            <ReactMarkdown children={contents} />
+            <ReactMarkdown children={contents.content} />
           </div>
           <ModifyButton>공지 삭제</ModifyButton>
           <ModifyButton onClick={() => setIsModify(true)}>내용 수정</ModifyButton>
@@ -67,6 +82,13 @@ const Container = styled.div`
   max-height: 85vh;
   overflow: auto;
   padding-bottom: 5rem;
+`;
+
+const Title = styled.div`
+  font-size: 2em;
+  font-weight: 900;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #d3d3d3;
 `;
 
 const ModifyButton = styled.button`
