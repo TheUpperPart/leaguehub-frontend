@@ -10,6 +10,8 @@ import {
   MdToggleOff,
   MdToggleOn,
   MdAccessTime,
+  MdRefresh,
+  MdSend,
 } from 'react-icons/md';
 
 const ICON: { [key in IconKind]: IconType } = {
@@ -22,6 +24,8 @@ const ICON: { [key in IconKind]: IconType } = {
   toggleOn: MdToggleOn,
   toggleOff: MdToggleOff,
   clock: MdAccessTime,
+  refresh: MdRefresh,
+  sendEmail: MdSend,
 };
 
 interface IconProps {
