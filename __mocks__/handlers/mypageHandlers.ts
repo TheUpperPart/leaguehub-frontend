@@ -16,7 +16,7 @@ const mockMyPage: MockMyPageData = {
   '456': {
     profileImageUrl: '/profileTest.jpg',
     nickName: '석정박',
-    email: 'test123@naver.com',
+    email: '',
     userEmailVerified: false,
   },
 };
@@ -30,8 +30,6 @@ const mypageHandlers = [
     }
 
     const [bearerStr, token] = accessToken?.split(' ');
-
-    console.log(accessToken);
 
     if (token === '123') {
       return res(ctx.json(mockMyPage[token]));
