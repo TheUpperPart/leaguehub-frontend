@@ -26,7 +26,7 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
           <BoardHeader
             hostname={data.hostName}
             leagueTitle={data.leagueTitle}
-            game={data.game}
+            gameCategory={data.gameCategory}
             participateNum={data.currentPlayer}
           />
           <BoardBody channelLink={channelLink} />

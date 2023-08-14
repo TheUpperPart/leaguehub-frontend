@@ -1,7 +1,7 @@
 export interface BoardInfo {
   hostName: string;
   leagueTitle: string;
-  game: string;
+  gameCategory: number;
   permission: number;
   currentPlayer: number;
   maxPlayer: number;

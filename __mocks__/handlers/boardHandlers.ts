@@ -14,7 +14,7 @@ const mockChannelInfo: ChannelInfo = {
   '123': {
     hostName: 'host1',
     leagueTitle: '부경대 총장기',
-    game: 'TFT',
+    gameCategory: 0,
     permission: 0,
     currentPlayer: 50,
     maxPlayer: 999,
@@ -22,7 +22,7 @@ const mockChannelInfo: ChannelInfo = {
   '234': {
     hostName: 'host2',
     leagueTitle: '부산대 총장기',
-    game: 'LOL',
+    gameCategory: 1,
     permission: 1,
     currentPlayer: 77,
     maxPlayer: 999,
@@ -30,7 +30,7 @@ const mockChannelInfo: ChannelInfo = {
   '456': {
     hostName: 'host3',
     leagueTitle: '동의대 총장기',
-    game: 'HS',
+    gameCategory: 2,
     permission: 1,
     currentPlayer: 5,
     maxPlayer: 32,
