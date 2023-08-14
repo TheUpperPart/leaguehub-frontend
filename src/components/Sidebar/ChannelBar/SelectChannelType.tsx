@@ -86,14 +86,14 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   column-gap: 3rem;
-  height: 50rem;
+  height: 20rem;
 `;
 
 const Content2 = styled.div`
   display: flex;
   flex-direction: column;
   column-gap: 3rem;
-  height: 50rem;
+  height: 20rem;
 `;
 
 const BtnContainer = styled.div``;
