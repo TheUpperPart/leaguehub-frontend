@@ -10,7 +10,9 @@ import {
   MdToggleOff,
   MdToggleOn,
   MdAccessTime,
+  MdModeEdit,
 } from 'react-icons/md';
+import { MouseEventHandler } from 'react';
 
 const ICON: { [key in IconKind]: IconType } = {
   lock: MdLock,
@@ -22,11 +24,12 @@ const ICON: { [key in IconKind]: IconType } = {
   toggleOn: MdToggleOn,
   toggleOff: MdToggleOff,
   clock: MdAccessTime,
+  modify: MdModeEdit,
 };
 
 interface IconProps {
   kind: IconKind;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<SVGElement>;
   color?: string;
   size?: string | number;
 }
