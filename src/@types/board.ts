@@ -10,5 +10,5 @@ export interface BoardInfo {
 export interface Channels {
   boardId: string;
   boardTitle: string;
-  boardIndex: string;
+  boardIndex: number;
 }
