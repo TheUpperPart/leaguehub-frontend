@@ -1,5 +1,4 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import styled from '@emotion/styled';
 
@@ -24,18 +23,18 @@ const fetchData = async () => {
 const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
 
-  const [selectedChannelId, setSelectedChannelId] = useState<string | null>(null);
+  const [selectedChannelLink, setSelectedChannelLink] = useState<string | null>(null);
 
   const { data, isSuccess } = useQuery<ChannelCircleProps[]>(['getChannels'], fetchData);
 
   const updateSelectedChannel = (channelId: string) => {
-    setSelectedChannelId(channelId);
+    setSelectedChannelLink(channelId);
   };
 
   useEffect(() => {
     // 새로고침시 첫 번째 채널 보여주도록 설정
     if (isSuccess && router.asPath === '/') {
-      data.length !== 0 && setSelectedChannelId(data[0].channelLink);
+      data.length !== 0 && setSelectedChannelLink(data[0].channelLink);
     }
   }, [data]);
 
@@ -47,7 +46,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           {data && <ChannelBar channels={data} updateSelectedChannel={updateSelectedChannel} />}
         </SidebarWrapper>
         <SidebarWrapper>
-          {selectedChannelId && <BoardBar channelId={selectedChannelId} />}
+          {selectedChannelLink && <BoardBar channelLink={selectedChannelLink} />}
         </SidebarWrapper>
         <Wrapper>
           <Header />

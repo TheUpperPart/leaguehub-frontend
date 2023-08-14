@@ -11,9 +11,9 @@ import { SERVER_URL } from '@config/index';
 import useBoardIdLists from '@hooks/useBoardIdLists';
 import { BoardInfo } from '@type/board';
 
-const fetchData = async (channelId: string) => {
+const fetchData = async (channelLink: string) => {
   const res1 = await axios.get<Omit<BoardInfo, 'channels'>>(
-    SERVER_URL + '/api/channel/' + channelId,
+    SERVER_URL + '/api/channel/' + channelLink,
     {
       headers: {
         Authorization: 'User Token',
@@ -22,7 +22,7 @@ const fetchData = async (channelId: string) => {
   );
 
   const res2 = await axios.get<Pick<BoardInfo, 'channels'>>(
-    SERVER_URL + '/api/channel/' + channelId + '/boards',
+    SERVER_URL + '/api/channel/' + channelLink + '/boards',
     {
       headers: {
         Authorization: 'User Token',
@@ -35,27 +35,27 @@ const fetchData = async (channelId: string) => {
   return res;
 };
 
-const BoardBar = ({ channelId }: { channelId: string }) => {
+const BoardBar = ({ channelLink }: { channelLink: string }) => {
   const router = useRouter();
 
   const { lastVisitedBoardIdLists, handleBoard } = useBoardIdLists();
 
-  const { data, isSuccess } = useQuery(['getBoard', channelId], () => fetchData(channelId), {
+  const { data, isSuccess } = useQuery(['getBoard', channelLink], () => fetchData(channelLink), {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
 
   useEffect(() => {
-    const lastBoardId = lastVisitedBoardIdLists[channelId]?.boardId;
+    const lastBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
 
     if (lastBoardId) {
-      router.push(`/contents/${channelId}/${lastBoardId}`);
+      router.push(`/contents/${channelLink}/${lastBoardId}`);
       return;
     }
 
     if (isSuccess) {
-      router.push(`/contents/${channelId}/${data.channels[0].id}`);
-      handleBoard(channelId, data.channels[0].id);
+      router.push(`/contents/${channelLink}/${data.channels[0].id}`);
+      handleBoard(channelLink, data.channels[0].id);
     }
   }, [data]);
 
@@ -69,11 +69,11 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
             game={data.game}
             participateNum={data.currentPlayer}
           />
-          <BoardBody channelId={channelId} boards={data.channels} />
+          <BoardBody channelLink={channelLink} boards={data.channels} />
         </ContentContainer>
       )}
       <FooterContainer>
-        <BoardFooter channelId={channelId} />
+        <BoardFooter channelLink={channelLink} />
       </FooterContainer>
     </Container>
   );
