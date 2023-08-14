@@ -6,6 +6,7 @@ import channelHandlers from '@mocks/handlers/channelHandlers';
 import profileHandlers from '@mocks/handlers/profileHandlers';
 import statHandlers from '@mocks/handlers/statHandlers';
 import makeGameHandlers from './handlers/makeGameHandlers';
+import mypageHandlers from './handlers/mypageHandlers';
 
 export const server = setupServer(
   ...testHandlers,
@@ -14,4 +15,5 @@ export const server = setupServer(
   ...profileHandlers,
   ...statHandlers,
   ...makeGameHandlers,
+  ...mypageHandlers,
 );

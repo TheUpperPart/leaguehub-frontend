@@ -10,6 +10,8 @@ import {
   MdToggleOff,
   MdToggleOn,
   MdAccessTime,
+  MdRefresh,
+  MdSend,
   MdModeEdit,
 } from 'react-icons/md';
 import { MouseEventHandler } from 'react';
@@ -24,6 +26,8 @@ const ICON: { [key in IconKind]: IconType } = {
   toggleOn: MdToggleOn,
   toggleOff: MdToggleOff,
   clock: MdAccessTime,
+  refresh: MdRefresh,
+  sendEmail: MdSend,
   modify: MdModeEdit,
 };
 

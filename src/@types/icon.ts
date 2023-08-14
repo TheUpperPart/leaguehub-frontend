@@ -8,4 +8,6 @@ export type IconKind =
   | 'toggleOn'
   | 'toggleOff'
   | 'clock'
+  | 'refresh'
+  | 'sendEmail'
   | 'modify';
