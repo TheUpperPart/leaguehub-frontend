@@ -47,4 +47,12 @@ const globalCss = css`
   h5 {
     font-size: 1.3em;
   }
+  ::-webkit-scrollbar {
+    width: 0;
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  scrollbar-width: none;
 `;

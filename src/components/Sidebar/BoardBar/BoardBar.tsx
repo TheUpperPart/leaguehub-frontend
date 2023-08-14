@@ -80,7 +80,7 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
 };
 
 const Container = styled.div`
-  width: 24rem;
+  width: 20rem;
   height: 100vh;
   background-color: #202b37;
   overflow: auto;
