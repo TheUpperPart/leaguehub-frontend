@@ -61,25 +61,24 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
           <FlexWrapper>
             <InputButton>
               {nickname ? (
-                <div
-                  css={css`
-                    font-size: 1.5rem;
-                    display: inline-block;
-                  `}
-                >
-                  {nickname}
-                </div>
+                <>
+                  <div
+                    css={css`
+                      font-size: 1.5rem;
+                      display: inline-block;
+                    `}
+                  >
+                    {nickname}
+                  </div>
+                  <IconWrapper>
+                    <Icon kind='modify' aria-label='modify' onClick={nicknameHandler} />
+                  </IconWrapper>
+                </>
               ) : (
                 <>
                   <Input type='text' placeholder='닉네임' ref={inputRef} />
+                  <Button onClick={nicknameHandler}>확인</Button>
                 </>
-              )}
-              {nickname ? (
-                <IconWrapper>
-                  <Icon kind='modify' aria-label='modify' onClick={nicknameHandler} />
-                </IconWrapper>
-              ) : (
-                <Button onClick={nicknameHandler}>확인</Button>
               )}
             </InputButton>
           </FlexWrapper>
