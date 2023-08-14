@@ -46,8 +46,12 @@ const Layout = ({ children }: PropsWithChildren) => {
     <>
       <GlobalStyle />
       <CommonLayout>
-        {data && <ChannelBar channels={data} updateSelectedChannel={updateSelectedChannel} />}
-        {selectedChannelId && <BoardBar channelId={selectedChannelId} />}
+        <SidebarWrapper>
+          {data && <ChannelBar channels={data} updateSelectedChannel={updateSelectedChannel} />}
+        </SidebarWrapper>
+        <SidebarWrapper>
+          {selectedChannelId && <BoardBar channelId={selectedChannelId} />}
+        </SidebarWrapper>
         <Wrapper>
           <Header />
           <main>{children}</main>
@@ -63,6 +67,10 @@ const CommonLayout = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
+`;
+
+const SidebarWrapper = styled.div`
+  flex: 0 0;
 `;
 
 export default Layout;
