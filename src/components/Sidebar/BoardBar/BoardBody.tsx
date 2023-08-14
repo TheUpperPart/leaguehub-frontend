@@ -1,9 +1,9 @@
-import authAPI from '@apis/authAPI';
-import Icon from '@components/Icon';
-import styled from '@emotion/styled';
-import useBoardIdLists from '@hooks/useBoardIdLists';
-import { useRouter } from 'next/router';
 import { MouseEventHandler, useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+
+import Icon from '@components/Icon';
+import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 
 interface BoardBodyProps {
   channelId: string;
@@ -16,7 +16,7 @@ interface BoardBodyProps {
 const BoardBody = ({ boards, channelId }: BoardBodyProps) => {
   const router = useRouter();
 
-  const { lastVisitedBoardIdLists, handleBoard } = useBoardIdLists();
+  const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
 
   const [selected, setSelected] = useState<string>('');
 
