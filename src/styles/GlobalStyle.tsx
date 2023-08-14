@@ -9,6 +9,7 @@ export default GlobalStyle;
 const globalCss = css`
   html {
     font-size: 62.5%;
+    background-color: #fffef9;
   }
   *,
   *::before,
