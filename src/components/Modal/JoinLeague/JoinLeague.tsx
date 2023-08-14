@@ -9,7 +9,7 @@ import { useState, MouseEventHandler, useEffect, useRef } from 'react';
 
 interface JoinLeagueProps {
   onClose: MouseEventHandler<HTMLElement>;
-  channelId: string;
+  channelLink: string;
 }
 
 const JoinLeague = ({ onClose }: JoinLeagueProps) => {
