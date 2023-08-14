@@ -4,24 +4,24 @@ import { ChannelCircleProps } from '@type/channelCircle';
 
 const getChannels: ChannelCircleProps[] = [
   {
-    channelId: '1',
-    channelName: '부경대 총장기',
-    channelGame: 'TFT',
+    channelLink: '123',
+    title: '부경대 총장기',
+    category: 'TFT',
   },
   {
-    channelId: '2',
-    channelName: '부경대 총장기',
-    channelGame: 'LOL',
+    channelLink: '234',
+    title: '부경대 총장기',
+    category: 'LOL',
   },
   {
-    channelId: '3',
-    channelName: '부경대 총장기',
-    channelGame: 'HS',
+    channelLink: '345',
+    title: '부경대 총장기',
+    category: 'HS',
   },
   {
-    channelId: '4',
-    channelName: '부경대 총장기',
-    channelGame: 'FIFA',
+    channelLink: '456',
+    title: '부경대 총장기',
+    category: 'FIFA',
   },
 ];
 

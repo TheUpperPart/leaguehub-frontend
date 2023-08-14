@@ -1,38 +1,48 @@
 import Icon from '@components/Icon';
+import Modal from '@components/Modal';
 import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ChannelCircleProps } from '@type/channelCircle';
-import React from 'react';
+
+import { useState } from 'react';
+import SelectChannelType from '@components/Sidebar/ChannelBar/SelectChannelType';
 
 interface ChannelBarProps {
-  ChannelCircles: ChannelCircleProps[];
-  ChannelHandler: (channelId: string) => void;
+  channels: ChannelCircleProps[];
+  updateSelectedChannel: (channelId: string) => void;
 }
 
-const ChannelBar = ({ ChannelCircles, ChannelHandler }: ChannelBarProps) => {
+const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
+  const [isModal, setIsModal] = useState<boolean>(false);
+
+  const handleModal = () => {
+    setIsModal((prev) => !prev);
+  };
+
   return (
     <ChannelbarContainer>
-      {ChannelCircles &&
-        ChannelCircles.map(({ channelId, channelName, channelGame }) => (
+      {channels &&
+        channels.map(({ channelLink, title, category }) => (
           <div
-            key={channelId}
-            onClick={() => ChannelHandler(channelId)}
+            key={channelLink}
+            onClick={() => updateSelectedChannel(channelLink)}
             css={css`
               margin: 0 auto;
               margin-bottom: 2.2rem;
             `}
           >
-            <ChannelCircle
-              channelId={channelId}
-              channelName={channelName}
-              channelGame={channelGame}
-            />
+            <ChannelCircle channelLink={channelLink} title={title} category={category} />
           </div>
         ))}
-      <ChannelParticipate>
+      <ChannelParticipate onClick={() => setIsModal(true)}>
         <CenteredIcon kind='plus' color='white' size={24} />
       </ChannelParticipate>
+      {isModal && (
+        <Modal onClose={() => setIsModal(!isModal)}>
+          <SelectChannelType handleModal={handleModal} />
+        </Modal>
+      )}
     </ChannelbarContainer>
   );
 };

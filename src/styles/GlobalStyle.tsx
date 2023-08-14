@@ -31,4 +31,19 @@ const globalCss = css`
   li {
     list-style: none;
   }
+  h1 {
+    font-size: 2.5em;
+  }
+  h2 {
+    font-size: 2.2em;
+  }
+  h3 {
+    font-size: 2em;
+  }
+  h4 {
+    font-size: 1.6em;
+  }
+  h5 {
+    font-size: 1.3em;
+  }
 `;
