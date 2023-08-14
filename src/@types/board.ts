@@ -5,8 +5,10 @@ export interface BoardInfo {
   permission: number;
   currentPlayer: number;
   maxPlayer: number;
-  channels: {
-    id: string;
-    name: string;
-  }[];
+}
+
+export interface Channels {
+  boardId: string;
+  boardTitle: string;
+  boardIndex: string;
 }
