@@ -1,13 +1,13 @@
 import { SERVER_URL } from '@config/index';
 import { rest } from 'msw';
-import { BoardInfo } from '@type/board';
+import { BoardInfo, Channels } from '@type/board';
 
 interface ChannelInfo {
-  [key: string]: Omit<BoardInfo, 'channels'>;
+  [key: string]: BoardInfo;
 }
 
 interface BoardsInfo {
-  [key: string]: Pick<BoardInfo, 'channels'>;
+  [key: string]: Channels[];
 }
 
 const mockChannelInfo: ChannelInfo = {
@@ -38,46 +38,47 @@ const mockChannelInfo: ChannelInfo = {
 };
 
 const boardsInfo: BoardsInfo = {
-  '123': {
-    channels: [
-      {
-        id: 'aaa',
-        name: '공지사항',
-      },
-    ],
-  },
-  '234': {
-    channels: [
-      {
-        id: 'bbb',
-        name: '리그 공지사항',
-      },
-      {
-        id: 'ccc',
-        name: '참여자 규칙',
-      },
-      {
-        id: 'ddd',
-        name: '참여하기',
-      },
-    ],
-  },
-  '456': {
-    channels: [
-      {
-        id: 'eee',
-        name: '리그 공지사항',
-      },
-      {
-        id: 'fff',
-        name: '참여자 규칙',
-      },
-      {
-        id: 'ggg',
-        name: '참여하기',
-      },
-    ],
-  },
+  '123': [
+    {
+      boardId: 'aaa',
+      boardTitle: '공지사항',
+      boardIndex: 0,
+    },
+  ],
+  '234': [
+    {
+      boardId: 'bbb',
+      boardTitle: '리그 공지사항',
+      boardIndex: 0,
+    },
+    {
+      boardId: 'ccc',
+      boardTitle: '참여자 규칙',
+      boardIndex: 1,
+    },
+    {
+      boardId: 'ddd',
+      boardTitle: '참여하기',
+      boardIndex: 2,
+    },
+  ],
+  '456': [
+    {
+      boardId: 'eee',
+      boardTitle: '리그 공지사항',
+      boardIndex: 0,
+    },
+    {
+      boardId: 'fff',
+      boardTitle: '참여자 규칙',
+      boardIndex: 1,
+    },
+    {
+      boardId: 'ggg',
+      boardTitle: '참여하기',
+      boardIndex: 2,
+    },
+  ],
 };
 
 const boardHandlers = [
@@ -109,7 +110,6 @@ const boardHandlers = [
 
   rest.get(SERVER_URL + '/api/channel/:channelLink/:boardId', (req, res, ctx) => {
     const { channelLink, boardId } = req.params;
-    const title = '임시제목';
     const content = `# H1
 ## H2
 ### H3
@@ -117,7 +117,7 @@ const boardHandlers = [
 ##### H5
 , React Markdown!\nThis is **${channelLink} ${boardId}** text rendered in a React component`;
 
-    return res(ctx.json({ title, content }));
+    return res(ctx.json(content));
   }),
 ];
 
