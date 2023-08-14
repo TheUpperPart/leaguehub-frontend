@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useProfile from '@hooks/useProfile';
 import axios from 'axios';
-import { ChangeEvent, useState, MouseEventHandler, useEffect, useRef } from 'react';
+import { useState, MouseEventHandler, useEffect, useRef } from 'react';
 
 interface JoinLeagueProps {
   onClose: MouseEventHandler<HTMLElement>;
@@ -18,14 +18,18 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
   const [tier, setTier] = useState<string | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const { profile } = useProfile();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const userNameRef = useRef<HTMLInputElement>(null);
+  const gameIdRef = useRef<HTMLInputElement>(null);
 
   const submitGameId: MouseEventHandler<HTMLElement> = async () => {
-    if (gameId.length < 2) {
+    const gameIdVal = gameIdRef.current?.value;
+    if (!gameIdVal || gameIdVal.length < 2) {
       return;
     }
-    const userTier: string = (await axios.get(SERVER_URL + '/api/stat?gameid=' + gameId)).data.tier;
+    const userTier: string = (await axios.get(SERVER_URL + '/api/stat?gameid=' + gameIdVal)).data
+      .tier;
     setTier(userTier);
+    setGameId(gameIdVal);
   };
 
   const nicknameHandler: MouseEventHandler<HTMLElement | SVGElement> = () => {
@@ -33,7 +37,7 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
       setNickname(null);
       return;
     }
-    const inputVal = inputRef.current?.value;
+    const inputVal = userNameRef.current?.value;
     if (inputVal) setNickname(inputVal);
   };
 
@@ -76,7 +80,7 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
                 </>
               ) : (
                 <>
-                  <Input type='text' placeholder='닉네임' ref={inputRef} />
+                  <Input type='text' placeholder='닉네임' ref={userNameRef} />
                   <Button onClick={nicknameHandler}>확인</Button>
                 </>
               )}
@@ -87,11 +91,7 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
           <FlexWrapper>게임 아이디</FlexWrapper>
           <FlexWrapper>
             <InputButton>
-              <Input
-                type='text'
-                placeholder='게임 아이디'
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setGameId(e.target.value)}
-              />
+              <Input type='text' placeholder='게임 아이디' ref={gameIdRef} />
               <Button onClick={submitGameId}>입력</Button>
             </InputButton>
           </FlexWrapper>
