@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import styled from '@emotion/styled';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import styled from '@emotion/styled';
 import { useEffect } from 'react';
+import axios from 'axios';
 
-import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
+import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import BoardFooter from '@components/Sidebar/BoardBar/BoardFooter';
 import BoardHeader from '@components/Sidebar/BoardBar/BoardHeader';
+import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
 import { SERVER_URL } from '@config/index';
-import useBoardIdLists from '@hooks/useBoardIdLists';
 import { BoardInfo } from '@type/board';
 
 const fetchData = async (channelId: string) => {
@@ -38,7 +38,7 @@ const fetchData = async (channelId: string) => {
 const BoardBar = ({ channelId }: { channelId: string }) => {
   const router = useRouter();
 
-  const { lastVisitedBoardIdLists, handleBoard } = useBoardIdLists();
+  const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
 
   const { data, isSuccess } = useQuery(['getBoard', channelId], () => fetchData(channelId), {
     staleTime: Infinity,
