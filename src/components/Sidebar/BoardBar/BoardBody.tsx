@@ -54,12 +54,15 @@ const BoardBody = ({ channelLink }: Props) => {
       setSelected(lastVisitBoardId);
       return;
     }
+  }, []);
 
+  useEffect(() => {
     if (isSuccess) {
       router.push(`/contents/${channelLink}/${data[0].boardId}`);
+      setSelected(data[0].boardId);
       handleBoard(channelLink, data[0].boardId);
     }
-  }, [selected, channelLink]);
+  }, [channelLink, isSuccess]);
 
   return (
     <Container>
