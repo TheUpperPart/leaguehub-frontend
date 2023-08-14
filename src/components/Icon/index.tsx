@@ -12,7 +12,9 @@ import {
   MdAccessTime,
   MdRefresh,
   MdSend,
+  MdModeEdit,
 } from 'react-icons/md';
+import { MouseEventHandler } from 'react';
 
 const ICON: { [key in IconKind]: IconType } = {
   lock: MdLock,
@@ -26,11 +28,12 @@ const ICON: { [key in IconKind]: IconType } = {
   clock: MdAccessTime,
   refresh: MdRefresh,
   sendEmail: MdSend,
+  modify: MdModeEdit,
 };
 
 interface IconProps {
   kind: IconKind;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<SVGElement>;
   color?: string;
   size?: string | number;
 }

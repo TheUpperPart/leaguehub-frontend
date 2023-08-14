@@ -35,9 +35,8 @@ const Container = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: #d9d9d9;
+  background-color: #fffef9;
+  border-radius: 2rem;
   text-align: center;
-  padding: 1%;
-  min-width: 60rem;
-  min-height: 60rem;
+  padding: 5%;
 `;

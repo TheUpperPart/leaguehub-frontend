@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import ProfileContext from '@contexts/ProfileContext';
 
-const useLogin = () => {
+const useProfile = () => {
   const context = useContext(ProfileContext);
 
   if (!context) {
@@ -12,4 +12,4 @@ const useLogin = () => {
   return context;
 };
 
-export default useLogin;
+export default useProfile;

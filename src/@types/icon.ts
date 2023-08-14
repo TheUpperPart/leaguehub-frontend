@@ -9,4 +9,5 @@ export type IconKind =
   | 'toggleOff'
   | 'clock'
   | 'refresh'
-  | 'sendEmail';
+  | 'sendEmail'
+  | 'modify';

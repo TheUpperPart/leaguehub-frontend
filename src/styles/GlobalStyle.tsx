@@ -9,6 +9,7 @@ export default GlobalStyle;
 const globalCss = css`
   html {
     font-size: 62.5%;
+    background-color: #fffef9;
   }
   *,
   *::before,
@@ -32,15 +33,26 @@ const globalCss = css`
     list-style: none;
   }
   h1 {
-    font-size: 3em;
+    font-size: 2.5em;
   }
   h2 {
-    font-size: 2.5em;
+    font-size: 2.2em;
   }
   h3 {
     font-size: 2em;
   }
   h4 {
-    font-size: 1.5em;
+    font-size: 1.6em;
   }
+  h5 {
+    font-size: 1.3em;
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  scrollbar-width: none;
 `;

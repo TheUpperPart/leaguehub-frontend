@@ -10,12 +10,12 @@ import { SERVER_URL } from '@config/index';
 import GlobalStyle from 'src/styles/GlobalStyle';
 import { ChannelCircleProps } from '@type/channelCircle';
 import { useRouter } from 'next/router';
+import authAPI from '@apis/authAPI';
 
 const fetchData = async () => {
-  const response = await axios.get(SERVER_URL + '/api/channels', {
-    headers: {
-      Authorization: 'User Token',
-    },
+  const response = await authAPI<ChannelCircleProps[]>({
+    method: 'get',
+    url: SERVER_URL + '/api/channels',
   });
 
   return response.data;
@@ -26,10 +26,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 
   const [selectedChannelId, setSelectedChannelId] = useState<string | null>(null);
 
-  const { data, isSuccess } = useQuery<ChannelCircleProps[]>(['getChannels'], fetchData, {
-    staleTime: Infinity,
-    cacheTime: Infinity,
-  });
+  const { data, isSuccess } = useQuery<ChannelCircleProps[]>(['getChannels'], fetchData);
 
   const updateSelectedChannel = (channelId: string) => {
     setSelectedChannelId(channelId);
@@ -38,7 +35,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     // 새로고침시 첫 번째 채널 보여주도록 설정
     if (isSuccess && router.asPath === '/') {
-      setSelectedChannelId(data[0].channelLink);
+      data.length !== 0 && setSelectedChannelId(data[0].channelLink);
     }
   }, [data]);
 
@@ -46,8 +43,12 @@ const Layout = ({ children }: PropsWithChildren) => {
     <>
       <GlobalStyle />
       <CommonLayout>
-        {data && <ChannelBar channels={data} updateSelectedChannel={updateSelectedChannel} />}
-        {selectedChannelId && <BoardBar channelId={selectedChannelId} />}
+        <SidebarWrapper>
+          {data && <ChannelBar channels={data} updateSelectedChannel={updateSelectedChannel} />}
+        </SidebarWrapper>
+        <SidebarWrapper>
+          {selectedChannelId && <BoardBar channelId={selectedChannelId} />}
+        </SidebarWrapper>
         <Wrapper>
           <Header />
           <main>{children}</main>
@@ -63,6 +64,10 @@ const CommonLayout = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
+`;
+
+const SidebarWrapper = styled.div`
+  flex: 0 0;
 `;
 
 export default Layout;
