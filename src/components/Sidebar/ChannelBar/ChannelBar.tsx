@@ -23,7 +23,7 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
   return (
     <ChannelbarContainer>
       {channels &&
-        channels.map(({ channelLink, title, category }) => (
+        channels.map(({ channelLink, title, category, customChannelIndex }) => (
           <div
             key={channelLink}
             onClick={() => updateSelectedChannel(channelLink)}
@@ -32,7 +32,12 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
               margin-bottom: 2.2rem;
             `}
           >
-            <ChannelCircle channelLink={channelLink} title={title} category={category} />
+            <ChannelCircle
+              channelLink={channelLink}
+              title={title}
+              category={category}
+              customChannelIndex={customChannelIndex}
+            />
           </div>
         ))}
       <ChannelParticipate onClick={() => setIsModal(true)}>

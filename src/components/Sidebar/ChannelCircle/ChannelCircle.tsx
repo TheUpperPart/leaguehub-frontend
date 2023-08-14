@@ -1,13 +1,20 @@
+import { GameEnum } from '@constants/MakeGame';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { ChannelCircleProps } from 'src/@types/channelCircle';
 
-const ChannelCircle = ({ channelLink, title, category, imgSrc }: ChannelCircleProps) => {
+const ChannelCircle = ({
+  channelLink,
+  title,
+  category,
+  imgSrc,
+  customChannelIndex,
+}: ChannelCircleProps) => {
   return (
     <ChannelBtn key={channelLink} url={imgSrc}>
       <ChannelName>{title}</ChannelName>
-      <ChannelGame>{category}</ChannelGame>
+      <ChannelGame>{GameEnum[category]}</ChannelGame>
     </ChannelBtn>
   );
 };

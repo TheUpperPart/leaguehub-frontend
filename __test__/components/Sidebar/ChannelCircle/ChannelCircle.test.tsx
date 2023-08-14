@@ -1,11 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
+import { ChannelCircleProps } from '@type/channelCircle';
 
 describe('채널 테스트', () => {
-  const initalState = {
+  const initalState: ChannelCircleProps = {
     channelLink: 'ab5gx',
     title: '부경대 총장기',
-    category: 'TFT',
+    category: 0,
+    customChannelIndex: 0,
   };
 
   it('채널 이름을 가진 컴포넌트가 있다.', () => {
@@ -17,8 +19,9 @@ describe('채널 테스트', () => {
   const initalState2 = {
     channelLink: 'ab5gx',
     title: '부경대 총장기',
-    category: 'TFT',
+    category: 0,
     imgSrc: '1.jpeg',
+    customChannelIndex: 1,
   };
 
   it('백그라운드 사진이 있다.', () => {
