@@ -1,11 +1,11 @@
-import authAPI from '@apis/authAPI';
-import Icon from '@components/Icon';
-import styled from '@emotion/styled';
-import useBoardIdLists from '@hooks/useBoardIdLists';
-import { useQuery } from '@tanstack/react-query';
-import { Channels } from '@type/board';
-import { useRouter } from 'next/router';
 import { MouseEventHandler, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import styled from '@emotion/styled';
+
+import { Channels } from '@type/board';
+import Icon from '@components/Icon';
+import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 
 interface Props {
   channelLink: string;
@@ -28,7 +28,7 @@ const BoardBody = ({ channelLink }: Props) => {
     fetchData(channelLink),
   );
 
-  const { lastVisitedBoardIdLists, handleBoard } = useBoardIdLists();
+  const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
 
   const onClick: MouseEventHandler<HTMLElement> = (e) => {
     const clickedId = e.currentTarget.dataset.id;

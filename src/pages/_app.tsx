@@ -8,14 +8,13 @@ import ProfileProvider from '@components/providers/ProfileProvider';
 
 import initMockAPI from '@mocks/index';
 
-import ChannelProvider from '@components/providers/ChannelProvider';
-
 import MakeGameProvider from '@components/providers/MakeGameProvider';
+import axios from 'axios';
+import LastVisitedBoardListsProvider from '@components/providers/LastVisitedBoardListsProvider';
 
 if (process.env.NODE_ENV === 'development') {
   initMockAPI();
 }
-
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -24,13 +23,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps.dehydratedState}>
         <ReactQueryDevtools initialIsOpen={false} />
         <ProfileProvider>
-          <ChannelProvider>
+          <LastVisitedBoardListsProvider>
             <MakeGameProvider>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
             </MakeGameProvider>
-          </ChannelProvider>
+          </LastVisitedBoardListsProvider>
         </ProfileProvider>
       </Hydrate>
     </QueryClientProvider>
