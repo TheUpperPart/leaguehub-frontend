@@ -2,6 +2,7 @@ import { MouseEventHandler, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import authAPI from '@apis/authAPI';
 
 import { Channels } from '@type/board';
 import Icon from '@components/Icon';
