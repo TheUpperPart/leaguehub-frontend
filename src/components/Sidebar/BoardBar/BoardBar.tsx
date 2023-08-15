@@ -1,63 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 import styled from '@emotion/styled';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
-import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
 import BoardFooter from '@components/Sidebar/BoardBar/BoardFooter';
 import BoardHeader from '@components/Sidebar/BoardBar/BoardHeader';
-import { SERVER_URL } from '@config/index';
-import useBoardIdLists from '@hooks/useBoardIdLists';
+import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
 import { BoardInfo } from '@type/board';
+import authAPI from '@apis/authAPI';
 
-const fetchData = async (channelId: string) => {
-  const res1 = await axios.get<Omit<BoardInfo, 'channels'>>(
-    SERVER_URL + '/api/channel/' + channelId,
-    {
-      headers: {
-        Authorization: 'User Token',
-      },
-    },
-  );
+const fetchData = async (channelLink: string) => {
+  const res = await authAPI<BoardInfo>({ method: 'get', url: '/api/channel/' + channelLink });
 
-  const res2 = await axios.get<Pick<BoardInfo, 'channels'>>(
-    SERVER_URL + '/api/channel/' + channelId + '/boards',
-    {
-      headers: {
-        Authorization: 'User Token',
-      },
-    },
-  );
-
-  const res: BoardInfo = { ...res1.data, ...res2.data };
-
-  return res;
+  return res.data;
 };
 
-const BoardBar = ({ channelId }: { channelId: string }) => {
-  const router = useRouter();
-
-  const { lastVisitedBoardIdLists, handleBoard } = useBoardIdLists();
-
-  const { data, isSuccess } = useQuery(['getBoard', channelId], () => fetchData(channelId), {
+const BoardBar = ({ channelLink }: { channelLink: string }) => {
+  const { data } = useQuery(['getBoard', channelLink], () => fetchData(channelLink), {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
-
-  useEffect(() => {
-    const lastBoardId = lastVisitedBoardIdLists[channelId]?.boardId;
-
-    if (lastBoardId) {
-      router.push(`/contents/${channelId}/${lastBoardId}`);
-      return;
-    }
-
-    if (isSuccess) {
-      router.push(`/contents/${channelId}/${data.channels[0].id}`);
-      handleBoard(channelId, data.channels[0].id);
-    }
-  }, [data]);
 
   return (
     <Container>
@@ -66,14 +26,14 @@ const BoardBar = ({ channelId }: { channelId: string }) => {
           <BoardHeader
             hostname={data.hostName}
             leagueTitle={data.leagueTitle}
-            game={data.game}
+            gameCategory={data.gameCategory}
             participateNum={data.currentPlayer}
           />
-          <BoardBody channelId={channelId} boards={data.channels} />
+          <BoardBody channelLink={channelLink} />
         </ContentContainer>
       )}
       <FooterContainer>
-        <BoardFooter channelId={channelId} />
+        <BoardFooter channelLink={channelLink} />
       </FooterContainer>
     </Container>
   );
