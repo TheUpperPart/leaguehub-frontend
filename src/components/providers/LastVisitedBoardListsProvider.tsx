@@ -1,4 +1,4 @@
-import ChannelContext from '@contexts/ChannelContext';
+import LastVisitedBoardListsContext from '@contexts/LastVisitedBoardListsContext';
 import { useState } from 'react';
 
 export interface LastVisitedBoardList {
@@ -7,11 +7,11 @@ export interface LastVisitedBoardList {
   };
 }
 
-interface ChannelProviderProps {
+interface Props {
   children: React.ReactNode;
 }
 
-const ChannelProvider = ({ children }: ChannelProviderProps) => {
+const LastVisitedBoardListsProvider = ({ children }: Props) => {
   const [lastVisitedBoardIdLists, setLastVisitedBoardIdLists] = useState<LastVisitedBoardList>({});
 
   const handleBoard = (key: keyof LastVisitedBoardList, boardId: string) => {
@@ -22,10 +22,10 @@ const ChannelProvider = ({ children }: ChannelProviderProps) => {
   };
 
   return (
-    <ChannelContext.Provider value={{ lastVisitedBoardIdLists, handleBoard }}>
+    <LastVisitedBoardListsContext.Provider value={{ lastVisitedBoardIdLists, handleBoard }}>
       {children}
-    </ChannelContext.Provider>
+    </LastVisitedBoardListsContext.Provider>
   );
 };
 
-export default ChannelProvider;
+export default LastVisitedBoardListsProvider;

@@ -1,12 +1,14 @@
 export interface BoardInfo {
   hostName: string;
   leagueTitle: string;
-  game: string;
+  gameCategory: number;
   permission: number;
   currentPlayer: number;
   maxPlayer: number;
-  channels: {
-    id: string;
-    name: string;
-  }[];
+}
+
+export interface Channels {
+  boardId: string;
+  boardTitle: string;
+  boardIndex: number;
 }

@@ -1,46 +1,23 @@
 import Icon from '@components/Icon';
+import { GameEnum } from '@constants/MakeGame';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface BoardHeaderProps {
   hostname: string;
   leagueTitle: string;
-  game: string;
+  gameCategory: number;
   participateNum: number;
 }
 
-type GameFullName = '리그오브레전드' | '롤토체스' | '피파' | '하스스톤' | '??';
-
-const getGameFullName = (game: string): GameFullName => {
-  let gameFullName: GameFullName;
-  switch (game) {
-    case 'LOL':
-      gameFullName = '리그오브레전드';
-      break;
-    case 'TFT':
-      gameFullName = '롤토체스';
-      break;
-    case 'FIFA':
-      gameFullName = '피파';
-      break;
-    case 'HS':
-      gameFullName = '하스스톤';
-      break;
-    default:
-      gameFullName = '??';
-  }
-
-  return gameFullName;
-};
-
-const BoardHeader = ({ hostname, leagueTitle, game, participateNum }: BoardHeaderProps) => {
+const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: BoardHeaderProps) => {
   return (
     <Container>
       <Wrapper>
         <span css={labelStyle}>개최자 </span>
         <span css={hostnameStyle}>{hostname}</span>
         <TitleContainer>{leagueTitle}</TitleContainer>
-        <GameNameWrapper>{getGameFullName(game)}</GameNameWrapper>
+        <GameNameWrapper>{GameEnum[gameCategory]}</GameNameWrapper>
       </Wrapper>
       <ParticipateWrapper>
         <span>참여자(팀)</span>

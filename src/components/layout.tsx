@@ -12,17 +12,16 @@ const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
 
   const { channels } = useChannels();
-
-  const [selectedChannelId, setSelectedChannelId] = useState<string | null>(null);
+  const [selectedChannelLink, setSelectedChannelLink] = useState<string | null>(null);
 
   const updateSelectedChannel = (channelId: string) => {
-    setSelectedChannelId(channelId);
+    setSelectedChannelLink(channelId);
   };
 
   useEffect(() => {
     // 새로고침시 첫 번째 채널 보여주도록 설정
     if (channels && router.asPath === '/') {
-      channels.length !== 0 && setSelectedChannelId(channels[0].channelLink);
+      channels.length !== 0 && setSelectedChannelLink(channels[0].channelLink);
     }
   }, [channels]);
 
@@ -36,7 +35,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           )}
         </SidebarWrapper>
         <SidebarWrapper>
-          {selectedChannelId && <BoardBar channelId={selectedChannelId} />}
+          {selectedChannelLink && <BoardBar channelLink={selectedChannelLink} />}
         </SidebarWrapper>
         <Wrapper>
           <Header />
