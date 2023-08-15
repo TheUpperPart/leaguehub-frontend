@@ -4,17 +4,17 @@ import styled from '@emotion/styled';
 import useMakeGame from '@hooks/useMakeGame';
 
 const SelectGame = () => {
-  const { handleSelectCategory } = useMakeGame();
+  const { handleSelectGameCategory } = useMakeGame();
 
   return (
     <Container>
       <Wrapper>
         <Title>개최하실 게임을 선택해주세요.</Title>
         <GameContainer>
-          <GameBtn onClick={() => handleSelectCategory(GameEnum.TFT)}>TFT</GameBtn>
-          <GameBtn onClick={() => handleSelectCategory(GameEnum.LOL)}>L.O.L</GameBtn>
-          <GameBtn onClick={() => handleSelectCategory(GameEnum.HSS)}>하스스톤</GameBtn>
-          <GameBtn onClick={() => handleSelectCategory(GameEnum.FIFA)}>FIFA</GameBtn>
+          <GameBtn onClick={() => handleSelectGameCategory(GameEnum.TFT)}>TFT</GameBtn>
+          <GameBtn onClick={() => handleSelectGameCategory(GameEnum.LOL)}>L.O.L</GameBtn>
+          <GameBtn onClick={() => handleSelectGameCategory(GameEnum.HSS)}>하스스톤</GameBtn>
+          <GameBtn onClick={() => handleSelectGameCategory(GameEnum.FIFA)}>FIFA</GameBtn>
         </GameContainer>
       </Wrapper>
     </Container>
