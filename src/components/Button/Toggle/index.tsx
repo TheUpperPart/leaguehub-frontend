@@ -30,8 +30,8 @@ const Button = styled.button<Circle>`
   margin: 0;
   padding: 0;
   border: none;
-  width: 10rem;
-  height: 5rem;
+  width: 8rem;
+  height: 3rem;
 
   transition: all 0.3s ease-in-out;
 
@@ -43,10 +43,10 @@ const Button = styled.button<Circle>`
 
 const Circle = styled.div<Circle>`
   position: absolute;
-  width: 3rem;
-  height: 3rem;
-  top: 1rem;
-  left: ${(prop) => (prop.isOn ? '6rem' : '1rem')};
+  width: 2rem;
+  height: 2rem;
+  top: 0.5rem;
+  left: ${(prop) => (prop.isOn ? '5rem' : '1rem')};
 
   transition: all 0.3s ease-in-out;
 
