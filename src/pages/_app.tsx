@@ -1,20 +1,18 @@
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import initMockAPI from '@mocks/index';
-
-import Layout from '@components/layout';
+import LastVisitedBoardListsProvider from '@components/providers/LastVisitedBoardListsProvider';
 import ProfileProvider from '@components/providers/ProfileProvider';
-import ChannelProvider from '@components/providers/ChannelProvider';
 import MakeGameProvider from '@components/providers/MakeGameProvider';
 import ChannelsProvider from '@components/providers/ChannelsProvider';
+import Layout from '@components/layout';
+import initMockAPI from '@mocks/index';
 
 if (process.env.NODE_ENV === 'development') {
   initMockAPI();
 }
-
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -24,13 +22,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <ReactQueryDevtools initialIsOpen={false} />
         <ChannelsProvider>
           <ProfileProvider>
-            <ChannelProvider>
+            <LastVisitedBoardListsProvider>
               <MakeGameProvider>
                 <Layout>
                   <Component {...pageProps} />
                 </Layout>
               </MakeGameProvider>
-            </ChannelProvider>
+            </LastVisitedBoardListsProvider>
           </ProfileProvider>
         </ChannelsProvider>
       </Hydrate>
