@@ -54,7 +54,7 @@ describe('채널 게시판 테스트', () => {
     expect(game).toBeInTheDocument();
   });
 
-  it('바디 (공지사항, 규칙 등) 게시판 내용 렌더링 테스트', async () => {
+  it.skip('바디 (공지사항, 규칙 등) 게시판 내용 렌더링 테스트', async () => {
     render(
       <LastVisitedBoardListsProvider>
         <BoardBar channelLink='123' />

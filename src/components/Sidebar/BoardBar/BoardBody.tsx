@@ -7,15 +7,35 @@ import authAPI from '@apis/authAPI';
 import { Channels } from '@type/board';
 import Icon from '@components/Icon';
 import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
+import { NEWBOARD } from '@constants/MakeBoard';
 
 interface Props {
   channelLink: string;
+}
+
+interface NewBoard {
+  boardId: number;
+  boardTitle: string;
+  boardIndex: number;
 }
 
 const fetchData = async (channelLink: string) => {
   const res = await authAPI<Channels[]>({
     method: 'get',
     url: `/api/channel/${channelLink}/boards`,
+  });
+
+  return res.data;
+};
+
+const postData = async (channelLink: string) => {
+  const res = await authAPI<NewBoard>({
+    method: 'post',
+    url: `/api/channel/${channelLink}/new`,
+    data: {
+      title: NEWBOARD.DEFAULT_TITLE,
+      content: NEWBOARD.DEFAULT_CONTENT,
+    },
   });
 
   return res.data;
@@ -31,7 +51,7 @@ const BoardBody = ({ channelLink }: Props) => {
 
   const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
 
-  const onClick: MouseEventHandler<HTMLElement> = (e) => {
+  const onClickBoard: MouseEventHandler<HTMLElement> = (e) => {
     const clickedId = e.currentTarget.dataset.id;
     if (e.target !== e.currentTarget) {
       return;
@@ -45,6 +65,19 @@ const BoardBody = ({ channelLink }: Props) => {
       handleBoard(channelLink, clickedId);
       router.push(`/contents/${channelLink}/${clickedId}`);
     }
+  };
+
+  const onClickNewBoard: MouseEventHandler<HTMLElement> = async () => {
+    const res = await postData(channelLink);
+    const newBoard: Channels = {
+      boardId: res.boardId.toString(),
+      boardTitle: res.boardTitle,
+      boardIndex: res.boardIndex,
+    };
+    data?.push(newBoard);
+    router.push(`/contents/${channelLink}/${newBoard.boardId}`);
+    setSelected(newBoard.boardId);
+    handleBoard(channelLink, newBoard.boardId);
   };
 
   useEffect(() => {
@@ -72,14 +105,14 @@ const BoardBody = ({ channelLink }: Props) => {
           <Wrapper
             key={board.boardId}
             data-id={board.boardId}
-            onClick={onClick}
+            onClick={onClickBoard}
             isSelected={board.boardId === selected}
           >
             {board.boardTitle}
             <Icon kind='lock' color='#637083' size='1.5rem' />
           </Wrapper>
         ))}
-      <Wrapper isSelected={false}>
+      <Wrapper isSelected={false} onClick={onClickNewBoard}>
         공지 추가하기
         <Icon kind='plus' color='#637083' size='1.6rem' />
       </Wrapper>
