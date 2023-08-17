@@ -75,25 +75,27 @@ const BoardBody = ({ channelLink }: Props) => {
       boardIndex: res.boardIndex,
     };
     data?.push(newBoard);
-    router.push(`/contents/${channelLink}/${newBoard.boardId}`);
-    setSelected(newBoard.boardId);
+    selectBoardId(newBoard.boardId);
     handleBoard(channelLink, newBoard.boardId);
+  };
+
+  const selectBoardId = (boardId: string) => {
+    router.push(`/contents/${channelLink}/${boardId}`);
+    setSelected(boardId);
   };
 
   useEffect(() => {
     const lastVisitBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
 
     if (lastVisitBoardId) {
-      router.push(`/contents/${channelLink}/${lastVisitBoardId}`);
-      setSelected(lastVisitBoardId);
+      selectBoardId(lastVisitBoardId);
       return;
     }
   }, []);
 
   useEffect(() => {
     if (isSuccess) {
-      router.push(`/contents/${channelLink}/${data[0].boardId}`);
-      setSelected(data[0].boardId);
+      selectBoardId(data[0].boardId);
       handleBoard(channelLink, data[0].boardId);
     }
   }, [channelLink, isSuccess]);
