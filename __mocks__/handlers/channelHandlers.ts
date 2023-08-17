@@ -43,6 +43,15 @@ const channelHandlers = [
 
     return res(ctx.json(getChannels[0]));
   }),
+  rest.post(SERVER_URL + '/api/channel/:channelLink/new', (req, res, ctx) => {
+    return res(
+      ctx.json({
+        boardId: 4,
+        boardTitle: '새 공지',
+        boardIndex: 4,
+      }),
+    );
+  }),
 ];
 
 export default channelHandlers;
