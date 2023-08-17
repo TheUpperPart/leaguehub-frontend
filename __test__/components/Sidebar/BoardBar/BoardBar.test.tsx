@@ -9,24 +9,10 @@ jest.mock('@tanstack/react-query', () => ({
     const data = {
       hostName: 'host1',
       leagueTitle: '부경대 총장기',
-      game: 'TFT',
+      gameCategory: 0,
       permission: 0,
       currentPlayer: 50,
       maxPlayer: 999,
-      channels: [
-        {
-          id: 'bbb',
-          name: '공지사항',
-        },
-        {
-          id: 'ccc',
-          name: '참여자 규칙',
-        },
-        {
-          id: 'ddd',
-          name: '참여하기',
-        },
-      ],
     };
     const isLoading = false;
     const error = {};
@@ -46,7 +32,7 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
 
-describe.skip('채널 게시판 테스트', () => {
+describe('채널 게시판 테스트', () => {
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({
       query: {},
@@ -56,12 +42,12 @@ describe.skip('채널 게시판 테스트', () => {
   it('헤더 렌더링 테스트', async () => {
     render(
       <LastVisitedBoardListsProvider>
-        <BoardBar channelId='1' />
+        <BoardBar channelLink='123' />
       </LastVisitedBoardListsProvider>,
     );
     const hostName = await screen.findByText('host1');
     const leagueTitle = await screen.findByText('부경대 총장기');
-    const game = await screen.findByText('롤토체스');
+    const game = await screen.findByText('TFT');
 
     expect(hostName).toBeInTheDocument();
     expect(leagueTitle).toBeInTheDocument();
@@ -71,7 +57,7 @@ describe.skip('채널 게시판 테스트', () => {
   it('바디 (공지사항, 규칙 등) 게시판 내용 렌더링 테스트', async () => {
     render(
       <LastVisitedBoardListsProvider>
-        <BoardBar channelId='1' />
+        <BoardBar channelLink='123' />
       </LastVisitedBoardListsProvider>,
     );
     const leagueNoti = await screen.findByText('공지사항');
@@ -87,7 +73,7 @@ describe.skip('채널 게시판 테스트', () => {
     expect(1).toBe(1);
     // render(
     //   <LastVisitedBoardListsProvider>
-    //     <BoardBar channelId='123' />
+    //     <BoardBar channelLink='123' />
     //   </LastVisitedBoardListsProvider>,
     // );
     // const boardElements = screen.getAllByRole('listitem');
