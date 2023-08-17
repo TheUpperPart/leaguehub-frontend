@@ -1,47 +1,69 @@
 import { keyframes } from '@emotion/react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 
 import SelectGame from '@components/MakeChannel/SelectGame';
 import SelectRule from '@components/MakeChannel/SelectRule';
+import { ChannelCircleProps } from '@type/channelCircle';
 import Button from '@components/Button/index';
 import useMakeGame from '@hooks/useMakeGame';
+import useChannels from '@hooks/useChannels';
 import authAPI from '@apis/authAPI';
-import { useRouter } from 'next/router';
-
-export interface RuleSetting {
-  category: number;
-  matchFormat: number;
-  title: string;
-  participationNum: number;
-  tier: boolean;
-  tierMax: number;
-  tierMin: number;
-  gradeMax: string;
-  channelImageUrl: string;
-  playCount: boolean;
-  playCountMin: number;
-}
 
 const MakeChannel = () => {
   const router = useRouter();
 
-  const { currentStep, handleCurrentStep, resetState } = useMakeGame();
+  const {
+    currentStep,
+    gameCategory,
+    matchFormat,
+    basicInfo,
+    isUseCustomRule,
+    customRule,
+    resetState,
+    isHaveBlankValue,
+  } = useMakeGame();
+
+  const { addChannel } = useChannels();
 
   const fetchMakeGame = async () => {
+    if (isHaveBlankValue()) {
+      alert('빈 값이 있어요. 확인부탁드립니다');
+      return;
+    }
+
     try {
-      const res = await authAPI({
+      const res = await authAPI<ChannelCircleProps>({
         method: 'post',
         url: '/api/channel',
+        data: {
+          gameCategory,
+          matchFormat,
+          title: basicInfo.title,
+          maxPlayer: basicInfo.participationNum,
+          tier: isUseCustomRule.tierMax || isUseCustomRule.tierMin,
+          tierMax: customRule.tierMax,
+          tierMin: customRule.tierMin,
+          playCount: isUseCustomRule.playCount,
+          playCountMin: customRule.playCountMin,
+        },
       });
-
-      if (res.status === 200) {
-        resetState();
-        router.push('/');
-      }
+      resetState();
+      router.push('/');
+      addChannel(res.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (currentStep === 1) {
+      if (!confirm('이전에 작성하시던 정보가 있습니다. 이어서 작성하시겠습니까?')) {
+        resetState();
+      }
+    }
+  }, []);
 
   return (
     <Container>
@@ -50,11 +72,7 @@ const MakeChannel = () => {
         {currentStep === 1 && <SelectRule />}
       </Wrapper>
       <StepBtnContainer>
-        {currentStep === 0 ? (
-          <Button width={25} height={7} borderRadius={1} onClick={handleCurrentStep}>
-            다음
-          </Button>
-        ) : (
+        {currentStep === 1 && (
           <Button width={25} height={7} borderRadius={1} onClick={fetchMakeGame}>
             생성하기
           </Button>

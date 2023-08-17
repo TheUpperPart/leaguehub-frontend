@@ -4,8 +4,8 @@ import { ChangeEvent, createContext } from 'react';
 interface MakeGameState {
   currentStep: number;
   handleCurrentStep: () => void;
-  category: number;
-  handleSelectCategory: (category: number) => void;
+  gameCategory: number;
+  handleSelectGameCategory: (category: number) => void;
   basicInfo: BasicInfo;
   handleBasicInfo: (type: keyof BasicInfo, e: ChangeEvent<HTMLInputElement>) => void;
   matchFormat: number;
@@ -15,6 +15,7 @@ interface MakeGameState {
   customRule: CustomRule;
   handleCustomRule: (type: keyof CustomRule, value: number) => void;
   resetState: () => void;
+  isHaveBlankValue: () => boolean;
 }
 
 const MakeGameContext = createContext<MakeGameState | null>(null);

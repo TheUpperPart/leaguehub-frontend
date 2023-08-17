@@ -17,18 +17,13 @@ const CustomRule = ({ state }: Props) => {
     const tierToNum = Number(e.target.value);
 
     setTier(tierToNum);
-    if (tierToNum === 2400) {
+    if (tierToNum >= 2400) {
       setGrade(0);
     }
   };
 
-  const handleGrade = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    if (isNaN(Number(e.target.value))) {
-      return alert('숫자만 입력하세요!');
-    }
-
+  const handleGrade = (e: ChangeEvent<HTMLSelectElement>) => {
     const gradeToNum = Number(e.target.value);
-
     setGrade(gradeToNum);
   };
 
@@ -38,10 +33,7 @@ const CustomRule = ({ state }: Props) => {
 
   return (
     <Container>
-      <select onChange={handleTier} defaultValue={'none'}>
-        <option disabled value='none'>
-          티어 선택
-        </option>
+      <select onChange={handleTier} defaultValue={'0'}>
         {Object.keys(TFTTier).map((tier) => {
           return (
             <option key={tier} value={TFTTier[tier].defaultValue}>
@@ -51,9 +43,7 @@ const CustomRule = ({ state }: Props) => {
         })}
       </select>
 
-      {tier === 2400 ? (
-        <input placeholder='점수 입력 ex) 100점 이상' value={grade} onChange={handleGrade}></input>
-      ) : (
+      {tier < 2400 && (
         <select onChange={handleGrade}>
           <option value='0'>4 티어</option>
           <option value='100'>3 티어</option>

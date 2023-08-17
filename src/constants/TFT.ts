@@ -31,7 +31,15 @@ export const TFTTier: TFTTiers = {
     defaultValue: 2000,
   },
   Master: {
-    displayName: '마스터 이상',
+    displayName: '마스터',
     defaultValue: 2400,
+  },
+  GrandMaster: {
+    displayName: '그랜드 마스터',
+    defaultValue: 2800,
+  },
+  Challenger: {
+    displayName: '챌린저',
+    defaultValue: 3200,
   },
 };

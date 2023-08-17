@@ -32,6 +32,15 @@ const getChannels: ChannelCircleProps[][] = [
   [],
 ];
 
+const postChannels: ChannelCircleProps[] = [
+  {
+    channelLink: '26734',
+    title: '부경대 추가대회',
+    category: 1,
+    customChannelIndex: 4,
+  },
+];
+
 const channelHandlers = [
   rest.get(SERVER_URL + '/api/channels', (req, res, ctx) => {
     const bearer = req.headers.get('Authorization') || 'no-token';
@@ -42,6 +51,10 @@ const channelHandlers = [
     }
 
     return res(ctx.json(getChannels[0]));
+  }),
+
+  rest.post(SERVER_URL + '/api/channel', (req, res, ctx) => {
+    return res(ctx.json(postChannels[0]));
   }),
 ];
 
