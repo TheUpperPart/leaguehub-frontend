@@ -1,4 +1,6 @@
 import Modal from '@components/Modal';
+import ParticipantUser from '@components/Modal/ParticipantLists/ParticipantUser';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface ParticipantListProps {
@@ -11,6 +13,8 @@ const ParticipantList = ({ leagueTitle, onClose }: ParticipantListProps) => {
     <Modal onClose={onClose}>
       <Container>
         <Title>{leagueTitle}</Title>
+        <Menu>Members</Menu>
+        <ParticipantUser />
       </Container>
     </Modal>
   );
@@ -19,7 +23,18 @@ const ParticipantList = ({ leagueTitle, onClose }: ParticipantListProps) => {
 export default ParticipantList;
 
 const Container = styled.div`
-  color: black;
+  background-color: #202b37;
+  color: white;
+  border-radius: 2rem;
+  margin: 0 auto;
+  width: 60rem;
+  padding: 3rem;
+  text-align: start;
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const Menu = styled.div``;
