@@ -38,5 +38,5 @@ const ModalContent = styled.div`
   background-color: #fffef9;
   border-radius: 2rem;
   text-align: center;
-  padding: 5%;
+  margin: 0 auto;
 `;
