@@ -1,6 +1,7 @@
+import { ChangeEvent, useState } from 'react';
+
 import { TFTInitialValue } from '@constants/MakeGame';
 import MakeGameContext from '@contexts/MakeGameContext';
-import { ChangeEvent, useState } from 'react';
 
 interface MakeGameProps {
   children: React.ReactNode;
@@ -35,15 +36,10 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
   } = TFTInitialValue;
 
   const [currentStep, setCurrentStep] = useState<number>(initCurrentStep);
-
-  const [category, setCategory] = useState<number>(initCategory);
-
+  const [gameCategory, setGameCategory] = useState<number>(initCategory);
   const [matchFormat, setMatchFormat] = useState<number>(initMatchFormat);
-
   const [basicInfo, setBasicInfo] = useState<BasicInfo>(initBasicInfo);
-
   const [isUseCustomRule, setIsUseCustomRule] = useState<IsUseCustomRule>(initIsUseCustomRule);
-
   const [customRule, setCustomRule] = useState<CustomRule>(initCustomRule);
 
   const handleCurrentStep = () => {
@@ -52,8 +48,8 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     }
   };
 
-  const handleSelectCategory = (category: number) => {
-    setCategory(category);
+  const handleSelectGameCategory = (category: number) => {
+    setGameCategory(category);
     handleCurrentStep();
   };
 
@@ -73,24 +69,35 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     if (isNaN(Number(value))) {
       return alert('숫자만 입력하세요!');
     }
-
     setCustomRule({ ...customRule, [type]: value });
   };
 
   const resetState = () => {
     setCurrentStep(initCurrentStep);
-    setCategory(initCategory);
+    setGameCategory(initCategory);
     setMatchFormat(initMatchFormat);
     setBasicInfo(initBasicInfo);
     setIsUseCustomRule(initIsUseCustomRule);
     setCustomRule(initCustomRule);
   };
 
+  const isHaveBlankValue = () => {
+    if (
+      gameCategory < 0 ||
+      matchFormat < 0 ||
+      basicInfo.title.length === 0 ||
+      basicInfo.participationNum <= 0
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const contextValue = {
     currentStep,
     handleCurrentStep,
-    category,
-    handleSelectCategory,
+    gameCategory,
+    handleSelectGameCategory,
     basicInfo,
     handleBasicInfo,
     matchFormat,
@@ -100,6 +107,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     customRule,
     handleCustomRule,
     resetState,
+    isHaveBlankValue,
   };
 
   return <MakeGameContext.Provider value={contextValue}>{children}</MakeGameContext.Provider>;

@@ -24,7 +24,7 @@ interface TFTInitial {
 export const TFTInitialValue: TFTInitial = {
   initCurrentStep: 0,
   initCategory: -1,
-  initMatchFormat: -1,
+  initMatchFormat: 0,
   initBasicInfo: {
     title: '',
     participationNum: 0,

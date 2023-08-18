@@ -44,19 +44,19 @@ const SelectRule = () => {
               value={basicInfo.title}
               onChange={(e) => handleBasicInfo('title', e)}
             />
-
             <RuleInput
               placeholder='참여자 수 ex) 32'
               type='number'
               value={basicInfo.participationNum === 0 ? '' : basicInfo.participationNum}
               onChange={(e) => handleBasicInfo('participationNum', e)}
             />
+            <RuleInfo>*입력한 참여자 수의 75%가 참여해야 대회를 시작할 수 있습니다.</RuleInfo>
           </InputContainer>
         </Rule>
         <Rule>
-          <RuleTitle>3. 커스텀 룰(선택 사항)</RuleTitle>
+          <RuleTitle>3. 커스텀 룰</RuleTitle>
           <CustomContainer>
-            <CustomTitle>최대 티어 제한 여부</CustomTitle>
+            <CustomTitle>최대 티어</CustomTitle>
             <ToggleButton
               isOn={isUseCustomRule.tierMax}
               changeState={() => handleIsUseCustomRule('tierMax')}
@@ -64,7 +64,7 @@ const SelectRule = () => {
             {isUseCustomRule.tierMax && <CustomRule state='tierMax' />}
           </CustomContainer>
           <CustomContainer>
-            <CustomTitle>최소 티어 제한 여부</CustomTitle>
+            <CustomTitle>최소 티어</CustomTitle>
             <ToggleButton
               isOn={isUseCustomRule.tierMin}
               changeState={() => handleIsUseCustomRule('tierMin')}
@@ -72,7 +72,7 @@ const SelectRule = () => {
             {isUseCustomRule.tierMin && <CustomRule state='tierMax' />}
           </CustomContainer>
           <CustomContainer>
-            <CustomTitle>최소 판수 제한 여부</CustomTitle>
+            <CustomTitle>최소 판수</CustomTitle>
             <ToggleButton
               isOn={isUseCustomRule.playCount}
               changeState={() => handleIsUseCustomRule('playCount')}
@@ -119,8 +119,10 @@ const RuleTitle = styled.h2`
 `;
 
 const CustomContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  height: 8rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 10rem 10rem 1fr;
 `;
 
 const InputContainer = styled.div`
@@ -141,6 +143,10 @@ const RuleInput = styled.input`
   border-radius: 1rem;
   font-size: 2rem;
   padding: 1rem;
+`;
+
+const RuleInfo = styled.span`
+  font-size: 1.8rem;
 `;
 
 const RuleBtn = styled(Button)<{ isSelected: boolean }>`
