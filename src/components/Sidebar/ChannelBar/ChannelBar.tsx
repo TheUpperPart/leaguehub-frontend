@@ -61,7 +61,6 @@ const ChannelbarContainer = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-  z-index: 10;
   overflow: auto;
 `;
 
