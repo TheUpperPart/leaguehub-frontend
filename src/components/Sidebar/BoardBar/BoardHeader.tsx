@@ -1,7 +1,9 @@
 import Icon from '@components/Icon';
+import ParticipantList from '@components/Modal/ParticipantLists';
 import { GameEnum } from '@constants/MakeGame';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 interface BoardHeaderProps {
   hostname: string;
@@ -11,15 +13,20 @@ interface BoardHeaderProps {
 }
 
 const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: BoardHeaderProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <Container>
+      {isModalOpen && (
+        <ParticipantList leagueTitle={leagueTitle} onClose={() => setIsModalOpen(false)} />
+      )}
       <Wrapper>
         <span css={labelStyle}>개최자 </span>
         <span css={hostnameStyle}>{hostname}</span>
         <TitleContainer>{leagueTitle}</TitleContainer>
         <GameNameWrapper>{GameEnum[gameCategory]}</GameNameWrapper>
       </Wrapper>
-      <ParticipateWrapper>
+      <ParticipateWrapper onClick={() => setIsModalOpen(true)}>
         <span>참여자(팀)</span>
         <ParticipateBox>
           <Icon kind='team' color='#637083' size='2rem' />
@@ -72,6 +79,10 @@ const GameNameWrapper = styled.div`
 const ParticipateWrapper = styled.div`
   padding: 1rem 0 1rem;
   border-bottom: solid 1px #344051;
+  &: hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
 `;
 
 const ParticipateBox = styled.div`

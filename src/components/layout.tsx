@@ -56,6 +56,10 @@ const Wrapper = styled.div`
 
 const SidebarWrapper = styled.div`
   flex: 0 0;
+  z-index: 1;
+  &: first-child {
+    z-index: 2;
+  }
 `;
 
 export default Layout;

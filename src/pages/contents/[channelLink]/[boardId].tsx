@@ -78,7 +78,6 @@ export default boardContents;
 const Container = styled.div`
   padding: 5rem;
   font-size: 2rem;
-  position: relative;
   max-height: 85vh;
   overflow: auto;
   padding-bottom: 5rem;

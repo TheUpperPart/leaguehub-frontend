@@ -136,6 +136,7 @@ export default JoinLeague;
 
 const Container = styled.div`
   color: black;
+  padding: 5%;
 `;
 
 const Wrapper = styled.div`
