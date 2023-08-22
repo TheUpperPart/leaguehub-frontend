@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (co
   try {
     const res = await axios<Omit<Login, 'success'>>({
       method: 'post',
-      url: SERVER_URL + '/api/app/login/kakao',
+      url: SERVER_URL + '/api/member/oauth/kakao',
       headers: {
         'Kakao-Code': `${context.query.code}`,
       },
