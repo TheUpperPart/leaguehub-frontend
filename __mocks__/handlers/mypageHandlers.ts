@@ -22,7 +22,7 @@ const mockMyPage: MockMyPageData = {
 };
 
 const mypageHandlers = [
-  rest.get(SERVER_URL + '/api/mypage', (req, res, ctx) => {
+  rest.get(SERVER_URL + '/api/member/mypage', (req, res, ctx) => {
     const accessToken = req.headers.get('Authorization');
 
     if (!accessToken) {
