@@ -2,6 +2,7 @@ import authAPI from '@apis/authAPI';
 import ContentModify from '@components/Content/ContentModify';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import useChannels from '@hooks/useChannels';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -17,6 +18,7 @@ const boardContents = () => {
 
   const router = useRouter();
   const { channelLink, boardId } = router.query;
+  const { channelPermission } = useChannels();
 
   const fetchBoardContent = async (channelLink: string, boardId: string) => {
     const res = await authAPI<Content>({
@@ -65,8 +67,12 @@ const boardContents = () => {
           >
             <ReactMarkdown children={contents.content} />
           </div>
-          <ModifyButton>공지 삭제</ModifyButton>
-          <ModifyButton onClick={() => setIsModify(true)}>내용 수정</ModifyButton>
+          {channelPermission === 0 && (
+            <>
+              <ModifyButton>공지 삭제</ModifyButton>
+              <ModifyButton onClick={() => setIsModify(true)}>내용 수정</ModifyButton>
+            </>
+          )}
         </>
       )}
     </Container>
