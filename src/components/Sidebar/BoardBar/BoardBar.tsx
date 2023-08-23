@@ -6,6 +6,8 @@ import BoardHeader from '@components/Sidebar/BoardBar/BoardHeader';
 import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
 import { BoardInfo } from '@type/board';
 import authAPI from '@apis/authAPI';
+import { useEffect } from 'react';
+import useChannels from '@hooks/useChannels';
 
 const fetchData = async (channelLink: string) => {
   const res = await authAPI<BoardInfo>({ method: 'get', url: '/api/channel/' + channelLink });
@@ -18,6 +20,12 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
+
+  const { setChannelPermission } = useChannels();
+
+  useEffect(() => {
+    setChannelPermission(data?.permission);
+  }, [data]);
 
   return (
     <Container>
