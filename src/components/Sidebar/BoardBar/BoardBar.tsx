@@ -30,19 +30,23 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
   return (
     <Container>
       {data && (
-        <ContentContainer>
-          <BoardHeader
-            hostname={data.hostName}
-            leagueTitle={data.leagueTitle}
-            gameCategory={data.gameCategory}
-            participateNum={data.currentPlayer}
-          />
-          <BoardBody channelLink={channelLink} />
-        </ContentContainer>
+        <>
+          <ContentContainer>
+            <BoardHeader
+              hostname={data.hostName}
+              leagueTitle={data.leagueTitle}
+              gameCategory={data.gameCategory}
+              participateNum={data.currentPlayer}
+            />
+            <BoardBody channelLink={channelLink} />
+          </ContentContainer>
+          {data.permission === 2 && (
+            <FooterContainer>
+              <BoardFooter channelLink={channelLink} />
+            </FooterContainer>
+          )}
+        </>
       )}
-      <FooterContainer>
-        <BoardFooter channelLink={channelLink} />
-      </FooterContainer>
     </Container>
   );
 };
