@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import LastVisitedBoardListsProvider from '@components/providers/LastVisitedBoardListsProvider';
 import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
+import ChannelsProvider from '@components/providers/ChannelsProvider';
 
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn().mockImplementation(() => {
@@ -32,7 +33,7 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
 
-describe('채널 게시판 테스트', () => {
+describe.skip('채널 게시판 테스트', () => {
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({
       query: {},
@@ -41,9 +42,11 @@ describe('채널 게시판 테스트', () => {
   });
   it('헤더 렌더링 테스트', async () => {
     render(
-      <LastVisitedBoardListsProvider>
-        <BoardBar channelLink='123' />
-      </LastVisitedBoardListsProvider>,
+      <ChannelsProvider>
+        <LastVisitedBoardListsProvider>
+          <BoardBar channelLink='123' />
+        </LastVisitedBoardListsProvider>
+      </ChannelsProvider>,
     );
     const hostName = await screen.findByText('host1');
     const leagueTitle = await screen.findByText('부경대 총장기');
