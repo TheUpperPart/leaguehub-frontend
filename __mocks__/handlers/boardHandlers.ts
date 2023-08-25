@@ -31,7 +31,7 @@ const mockChannelInfo: ChannelInfo = {
     hostName: 'host3',
     leagueTitle: '동의대 총장기',
     gameCategory: 2,
-    permission: 1,
+    permission: 2,
     currentPlayer: 5,
     maxPlayer: 32,
   },

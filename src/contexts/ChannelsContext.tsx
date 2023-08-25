@@ -4,6 +4,8 @@ import { ChannelCircleProps } from '@type/channelCircle';
 
 interface ChannelsContextProps {
   channels: ChannelCircleProps[] | [];
+  channelPermission: number | undefined;
+  setChannelPermission: React.Dispatch<React.SetStateAction<number | undefined>>;
   addChannel: (channel: ChannelCircleProps) => void;
   removeChannel: (channelLink: string) => void;
 }
