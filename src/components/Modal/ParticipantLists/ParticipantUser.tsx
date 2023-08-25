@@ -16,15 +16,29 @@ export interface Participant {
 const ParticipantUser = () => {
   const [participants, setParticipants] = useState<Participant[]>();
 
-  const { channelPermission } = useChannels();
+  const { currentChannel, channelPermission } = useChannels();
 
   const fetchData = async () => {
-    const res = await authAPI<Participant[]>({ method: 'get', url: '/api/profile/player' });
+    const res = await authAPI<Participant[]>({
+      method: 'get',
+      url: `/api/${currentChannel}/players`,
+    });
     setParticipants(res.data);
   };
 
   const combineText = (text1: string, text2: string) => {
     return text1 + ' (' + text2 + ')';
+  };
+
+  const onClickKickUser = async (participant: Participant) => {
+    if (!confirm(`${participant.nickname}님을 강퇴하시겠습니까?`)) return;
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/${currentChannel}/${participant.pk}/observer`,
+    });
+    if (res.status !== 200) return;
+    const updatedParticipants = participants?.filter((user) => user.pk !== participant.pk);
+    setParticipants(updatedParticipants);
   };
 
   useEffect(() => {
@@ -54,7 +68,9 @@ const ParticipantUser = () => {
             >
               {combineText(participant.gameId, participant.tier)}
             </div>
-            {channelPermission === 0 && <KickUserButton>강퇴</KickUserButton>}
+            {channelPermission === 0 && (
+              <KickUserButton onClick={() => onClickKickUser(participant)}>강퇴</KickUserButton>
+            )}
           </ParticipantInfo>
         </ParticipantWrapper>
       ))}
@@ -100,4 +116,8 @@ const KickUserButton = styled.button`
   font-size: 1.5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
+
+  &: hover {
+    cursor: pointer;
+  }
 `;
