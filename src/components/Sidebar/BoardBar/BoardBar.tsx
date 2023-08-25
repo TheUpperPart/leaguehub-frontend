@@ -21,9 +21,10 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
     cacheTime: Infinity,
   });
 
-  const { setChannelPermission } = useChannels();
+  const { setCurrentChannel, setChannelPermission } = useChannels();
 
   useEffect(() => {
+    setCurrentChannel(channelLink);
     setChannelPermission(data?.permission);
   }, [data]);
 
