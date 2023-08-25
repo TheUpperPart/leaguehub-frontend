@@ -13,7 +13,7 @@ interface ProfileProviderProps {
 const fetchProfile = async () => {
   const res = await authAPI<Profile>({
     method: 'get',
-    url: '/api/profile',
+    url: '/api/member/profile',
   });
   return res.data;
 };
