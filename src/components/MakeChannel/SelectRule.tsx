@@ -69,7 +69,7 @@ const SelectRule = () => {
               isOn={isUseCustomRule.tierMin}
               changeState={() => handleIsUseCustomRule('tierMin')}
             />
-            {isUseCustomRule.tierMin && <CustomRule state='tierMax' />}
+            {isUseCustomRule.tierMin && <CustomRule state='tierMin' />}
           </CustomContainer>
           <CustomContainer>
             <CustomTitle>최소 판수</CustomTitle>
