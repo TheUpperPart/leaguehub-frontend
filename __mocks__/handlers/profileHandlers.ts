@@ -17,7 +17,7 @@ const profileHandlers = [
       return res(ctx.status(401), ctx.json({ message: '허용되지 않은 사용자' }));
     }
   }),
-  rest.get(SERVER_URL + '/api/profile/player', (req, res, ctx) => {
+  rest.get(SERVER_URL + '/api/:channelLink/players', (req, res, ctx) => {
     const participants: Participant[] = [
       {
         pk: 0,
@@ -93,6 +93,9 @@ const profileHandlers = [
       },
     ];
     return res(ctx.status(200), ctx.json(participants));
+  }),
+  rest.post(SERVER_URL + '/api/:channelLink/:participantId/observer', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(''));
   }),
 ];
 
