@@ -12,7 +12,7 @@ const ChannelCircle = ({
   customChannelIndex,
 }: ChannelCircleProps) => {
   return (
-    <ChannelBtn key={channelLink} url={imgSrc}>
+    <ChannelBtn url={imgSrc}>
       <ChannelName>{title}</ChannelName>
       <ChannelGame>{GameEnum[category]}</ChannelGame>
     </ChannelBtn>
@@ -21,7 +21,7 @@ const ChannelCircle = ({
 
 export default ChannelCircle;
 
-const ChannelBtn = styled.button<{ url?: string }>`
+const ChannelBtn = styled.div<{ url?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;

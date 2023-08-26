@@ -40,6 +40,27 @@ const ChannelsProvider = ({ children }: Props) => {
     setChannels(filterChannels);
   };
 
+  const dragAndDropChannels = (sourceIdx: number, destinationIdx: number) => {
+    const updateChannels = [...channels].filter((channel, idx) => idx !== sourceIdx);
+    const sourceChannel = channels[sourceIdx];
+
+    updateChannels.splice(destinationIdx, 0, sourceChannel);
+    updateChannels.map((channel, idx) => (channel.customChannelIndex = idx));
+
+    setChannels(updateChannels);
+
+    updateChannelsOrder(updateChannels);
+  };
+
+  const updateChannelsOrder = async (channels: ChannelCircleProps[]) => {
+    try {
+      const res = await authAPI({ method: 'post', url: '/api/channels/order', data: channels });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (data) {
       setChannels([...data]);
@@ -48,7 +69,7 @@ const ChannelsProvider = ({ children }: Props) => {
 
   return (
     <ChannelsContext.Provider
-      value={{ channels, channelPermission, setChannelPermission, addChannel, removeChannel }}
+      value={{ channels, channelPermission, setChannelPermission, addChannel, removeChannel, dragAndDropChannels }}
     >
       {children}
     </ChannelsContext.Provider>

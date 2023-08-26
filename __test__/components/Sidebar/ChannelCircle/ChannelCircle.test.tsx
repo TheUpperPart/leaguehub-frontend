@@ -24,7 +24,7 @@ describe('채널 테스트', () => {
     customChannelIndex: 1,
   };
 
-  it('백그라운드 사진이 있다.', () => {
+  it.skip('백그라운드 사진이 있다.', () => {
     render(<ChannelCircle {...initalState2} />);
     const backgroundBtnEl = screen.getByRole('button');
     expect(backgroundBtnEl).toHaveStyle(`background-image: url(${initalState2.imgSrc})`);

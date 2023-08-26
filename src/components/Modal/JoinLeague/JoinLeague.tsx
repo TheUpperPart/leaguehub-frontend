@@ -26,8 +26,9 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
     if (!gameIdVal || gameIdVal.length < 2) {
       return;
     }
-    const userTier: string = (await axios.get(SERVER_URL + '/api/stat?gameid=' + gameIdVal)).data
-      .tier;
+    const userTier: string = (
+      await axios.get(SERVER_URL + '/api/participant/stat?gameid=' + gameIdVal)
+    ).data.tier;
     setTier(userTier);
     setGameId(gameIdVal);
   };
@@ -136,6 +137,7 @@ export default JoinLeague;
 
 const Container = styled.div`
   color: black;
+  padding: 5%;
 `;
 
 const Wrapper = styled.div`

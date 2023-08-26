@@ -67,7 +67,9 @@ const SelectChannelType = (props: Props) => {
 
 export default SelectChannelType;
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding: 3rem;
+`;
 
 const ModalTitle = styled.h1`
   font-size: 4rem;

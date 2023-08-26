@@ -34,7 +34,7 @@ const Mypage = (props: Props) => {
     try {
       const res = await authAPI({
         method: 'post',
-        url: '/api/member/verify/email',
+        url: '/api/member/auth/email',
         data: {
           email,
         },
@@ -53,7 +53,7 @@ const Mypage = (props: Props) => {
     try {
       const res = await authAPI<MyPage>({
         method: 'get',
-        url: '/api/mypage',
+        url: '/api/member/mypage',
       });
       setInfo(res.data);
     } catch (error) {
@@ -123,7 +123,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
     const res = await axios<MyPage>({
       method: 'get',
-      url: 'http://localhost:8080' + '/api/mypage',
+      url: SERVER_URL + '/api/member/mypage',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

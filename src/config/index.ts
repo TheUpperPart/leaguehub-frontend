@@ -1,4 +1,4 @@
-let SERVER_URL = 'http://localhost:4000';
+let SERVER_URL = 'http://54.180.1.85:8080';
 
 if (process.env.NODE_ENV === 'development') {
   SERVER_URL = 'http://localhost:8080';
