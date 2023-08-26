@@ -8,6 +8,7 @@ import { Channels } from '@type/board';
 import Icon from '@components/Icon';
 import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import { NEWBOARD } from '@constants/MakeBoard';
+import useChannels from '@hooks/useChannels';
 
 interface Props {
   channelLink: string;
@@ -50,6 +51,7 @@ const BoardBody = ({ channelLink }: Props) => {
   );
 
   const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
+  const { channelPermission } = useChannels();
 
   const onClickBoard: MouseEventHandler<HTMLElement> = (e) => {
     const clickedId = e.currentTarget.dataset.id;
@@ -114,10 +116,13 @@ const BoardBody = ({ channelLink }: Props) => {
             <Icon kind='lock' color='#637083' size='1.5rem' />
           </Wrapper>
         ))}
-      <Wrapper isSelected={false} onClick={onClickNewBoard}>
-        공지 추가하기
-        <Icon kind='plus' color='#637083' size='1.6rem' />
-      </Wrapper>
+      {channelPermission === 0 && (
+        <Wrapper isSelected={false} onClick={onClickNewBoard}>
+          공지 추가하기
+          <Icon kind='plus' color='#637083' size='1.6rem' />
+        </Wrapper>
+      )}
+
       <Boarder></Boarder>
     </Container>
   );
