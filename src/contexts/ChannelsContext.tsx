@@ -10,6 +10,7 @@ interface ChannelsContextProps {
   setChannelPermission: React.Dispatch<React.SetStateAction<number | undefined>>;
   addChannel: (channel: ChannelCircleProps) => void;
   removeChannel: (channelLink: string) => void;
+  dragAndDropChannels: (sourceIdx: number, destinationIdx: number) => void;
 }
 
 const ChannelsContext = createContext<ChannelsContextProps | null>(null);

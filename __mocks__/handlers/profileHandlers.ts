@@ -3,7 +3,7 @@ import { SERVER_URL } from '@config/index';
 import { Participant } from '@components/Modal/ParticipantLists/ParticipantUser';
 
 const profileHandlers = [
-  rest.get(SERVER_URL + '/api/profile', (req, res, ctx) => {
+  rest.get(SERVER_URL + '/api/member/profile', (req, res, ctx) => {
     const accessToken = req.headers.get('Authorization');
 
     if (accessToken?.startsWith('Bearer')) {
