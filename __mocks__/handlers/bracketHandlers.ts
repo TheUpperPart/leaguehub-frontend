@@ -5,7 +5,7 @@ const bracketHandlers = [
   rest.get(SERVER_URL + '/api/match/:channelLink', (req, res, ctx) => {
     const { channelLink } = req.params;
 
-    return res(ctx.json({ roundList: [64, 32, 16, 8] }));
+    return res(ctx.json({ roundList: [1, 2, 3, 4], liveRound: 1 }));
   }),
 ];
 
