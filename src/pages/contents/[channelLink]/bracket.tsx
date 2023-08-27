@@ -1,14 +1,36 @@
 import { GetServerSidePropsContext } from 'next';
-import axios from 'axios';
+import styled from '@emotion/styled';
+import { useState } from 'react';
 import { parse } from 'cookie';
+import axios from 'axios';
 
 import { SERVER_URL } from '@config/index';
+import { BracketHeader } from '@type/bracket';
+import BracketHeaders from '@components/Bracket/BracketHeaders';
 
-const Bracket = (props) => {
+interface Props {
+  data: BracketHeader;
+}
+
+const Bracket = (props: Props) => {
+  const [curRound, setCurRound] = useState<number>(1);
+
+  const handleCurRound = (round: number) => {
+    setCurRound(round);
+  };
+
   return (
-    <div>
-      <h2>Bracket!</h2>
-    </div>
+    <Container>
+      <BracketHeaders
+        roundList={props.data.roundList}
+        liveRound={props.data.liveRound}
+        curRound={curRound}
+        handleCurRound={handleCurRound}
+      />
+      <Content>
+        <h2>Bracket Content</h2>
+      </Content>
+    </Container>
   );
 };
 
@@ -21,7 +43,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   try {
     const accessToken = cookies.accessToken;
 
-    const res = await axios<{ roundList: number[] }>({
+    const res = await axios<BracketHeader>({
       method: 'get',
       url: `${SERVER_URL}/api/match/${channelLink}`,
       headers: {
@@ -29,10 +51,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       },
     });
 
+    const { roundList, liveRound } = res.data;
+
     return {
       props: {
         data: {
-          roundList: res.data.roundList,
+          roundList,
+          liveRound,
         },
       },
     };
@@ -46,3 +71,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 };
+
+const Container = styled.div`
+  margin: 2rem 2rem;
+`;
+
+const Content = styled.div`
+  margin: 2rem 0;
+`;
