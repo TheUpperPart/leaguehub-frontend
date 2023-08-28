@@ -78,7 +78,7 @@ const ChannelsProvider = ({ children }: Props) => {
         setChannelPermission,
         addChannel,
         removeChannel,
-        dragAndDropChannels
+        dragAndDropChannels,
       }}
     >
       {children}
