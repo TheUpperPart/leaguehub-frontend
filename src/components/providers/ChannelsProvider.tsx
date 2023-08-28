@@ -22,6 +22,7 @@ const fetchChannels = async () => {
 const ChannelsProvider = ({ children }: Props) => {
   const isHaveAccessToken = Cookies.get('accessToken');
 
+  const [currentChannel, setCurrentChannel] = useState<string>('');
   const [channelPermission, setChannelPermission] = useState<number>();
   const [channels, setChannels] = useState<ChannelCircleProps[]>([]);
 
@@ -69,7 +70,16 @@ const ChannelsProvider = ({ children }: Props) => {
 
   return (
     <ChannelsContext.Provider
-      value={{ channels, channelPermission, setChannelPermission, addChannel, removeChannel, dragAndDropChannels }}
+      value={{
+        channels,
+        currentChannel,
+        setCurrentChannel,
+        channelPermission,
+        setChannelPermission,
+        addChannel,
+        removeChannel,
+        dragAndDropChannels,
+      }}
     >
       {children}
     </ChannelsContext.Provider>
