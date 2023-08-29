@@ -1,7 +1,9 @@
 import Modal from '@components/Modal';
+import ObserverUser from '@components/Modal/ParticipantLists/ObserverUser';
 import ParticipantUser from '@components/Modal/ParticipantLists/ParticipantUser';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import useChannels from '@hooks/useChannels';
+import { useState } from 'react';
 
 interface ParticipantListProps {
   leagueTitle: string;
@@ -9,12 +11,32 @@ interface ParticipantListProps {
 }
 
 const ParticipantList = ({ leagueTitle, onClose }: ParticipantListProps) => {
+  const [currentMenu, setCurrentMenu] = useState('members');
+
+  const { channelPermission } = useChannels();
+
+  const renderMenuContent = () => {
+    switch (currentMenu) {
+      case 'observers':
+        return <ObserverUser />;
+      default:
+        return <ParticipantUser />;
+    }
+  };
+
   return (
     <Modal onClose={onClose}>
       <Container>
         <Title>{leagueTitle}</Title>
-        <Menu>Members</Menu>
-        <ParticipantUser />
+        <Menu>
+          <MenuList
+            isSelected={currentMenu === 'members'}
+            onClick={() => setCurrentMenu('members')}
+          >
+            대회 참여자
+          </MenuList>
+        </Menu>
+        {renderMenuContent()}
       </Container>
     </Modal>
   );
@@ -37,4 +59,16 @@ const Title = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-const Menu = styled.div``;
+const Menu = styled.ul`
+  display: flex;
+  flex-direction: row;
+`;
+
+const MenuList = styled.li<{ isSelected: boolean }>`
+  margin-right: 1.5rem;
+  &: hover {
+    cursor: pointer;
+  }
+
+  ${({ isSelected }) => isSelected && 'border-bottom: 2px solid white'};
+`;
