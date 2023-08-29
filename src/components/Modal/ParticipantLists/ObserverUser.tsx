@@ -22,6 +22,17 @@ const ObserverUser = () => {
     return text1 + ' (' + text2 + ')';
   };
 
+  const onClickPromotionUser = async (observer: Participant) => {
+    if (!confirm(`${observer.nickname}님을 관리자 권한을 부여하겠습니까?`)) return;
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/${currentChannel}/${observer.pk}/host`,
+    });
+    if (res.status !== 200) return;
+    const updatedObservers = observers?.filter((user) => user.pk !== observer.pk);
+    setObservers(updatedObservers);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -49,7 +60,11 @@ const ObserverUser = () => {
             >
               {combineText(observer.gameId, observer.tier)}
             </div>
-            {channelPermission === 0 && <KickUserButton>관리자 승격</KickUserButton>}
+            {channelPermission === 0 && (
+              <AdvanceUserButton onClick={() => onClickPromotionUser(observer)}>
+                권한부여
+              </AdvanceUserButton>
+            )}
           </ObserverInfo>
         </ObserverWrapper>
       ))}
@@ -87,12 +102,12 @@ const ObserverInfo = styled.div`
   align-items: center;
 `;
 
-const KickUserButton = styled.button`
+const AdvanceUserButton = styled.button`
   border: none;
   background-color: #0067a3;
-  width: 4rem;
-  height: 6rem;
-  font-size: 1.3rem;
+  width: 6rem;
+  height: 4rem;
+  font-size: 1.5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
 
