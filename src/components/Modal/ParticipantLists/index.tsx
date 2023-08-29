@@ -35,6 +35,14 @@ const ParticipantList = ({ leagueTitle, onClose }: ParticipantListProps) => {
           >
             대회 참여자
           </MenuList>
+          {channelPermission === 0 && (
+            <MenuList
+              isSelected={currentMenu === 'observers'}
+              onClick={() => setCurrentMenu('observers')}
+            >
+              관전자
+            </MenuList>
+          )}
         </Menu>
         {renderMenuContent()}
       </Container>
