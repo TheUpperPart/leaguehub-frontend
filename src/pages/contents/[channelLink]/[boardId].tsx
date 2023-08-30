@@ -63,6 +63,7 @@ const boardContents = () => {
             css={css`
               padding-top: 2rem;
               padding-bottom: 1rem;
+              white-space: pre-line;
             `}
           >
             <ReactMarkdown children={contents.content} />
