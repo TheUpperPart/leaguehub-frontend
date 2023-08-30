@@ -41,11 +41,9 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
             />
             <BoardBody channelLink={channelLink} />
           </ContentContainer>
-          {data.permission === 2 && (
-            <FooterContainer>
-              <BoardFooter channelLink={channelLink} />
-            </FooterContainer>
-          )}
+          <FooterContainer>
+            <BoardFooter channelLink={channelLink} />
+          </FooterContainer>
         </>
       )}
     </Container>
