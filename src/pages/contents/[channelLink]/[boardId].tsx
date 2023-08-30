@@ -12,6 +12,18 @@ export interface Content {
   content: string;
 }
 
+const updateData = async (channelLink: string, boardId: string, updatedContent: Content) => {
+  const res = await authAPI({
+    method: 'post',
+    url: `/api/channel/${channelLink}/${boardId}`,
+    data: {
+      title: updatedContent.title,
+      content: updatedContent.content,
+    },
+  });
+  return res;
+};
+
 const boardContents = () => {
   const [contents, setContents] = useState<Content>({ title: '', content: '' });
   const [isModify, setIsModify] = useState(false);
@@ -29,11 +41,17 @@ const boardContents = () => {
     setContents(res.data);
   };
 
-  const handleContentUpdate = ({ title, content }: Content) => {
+  const handleContentUpdate = async ({ title, content }: Content) => {
     const updatedContent: Content = {
       title,
       content,
     };
+    if (!channelLink) return;
+    const res = await updateData(channelLink as string, boardId as string, updatedContent);
+    if (res.status !== 200) {
+      alert('요청실패');
+      return;
+    }
     setContents(updatedContent);
     setIsModify(false);
   };
