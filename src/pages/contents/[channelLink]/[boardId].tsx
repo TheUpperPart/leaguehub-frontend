@@ -20,11 +20,12 @@ const boardContents = () => {
   const { channelLink, boardId } = router.query;
   const { channelPermission } = useChannels();
 
-  const fetchBoardContent = async (channelLink: string, boardId: string) => {
+  const fetchBoardContent = async () => {
     const res = await authAPI<Content>({
       method: 'get',
       url: `/api/channel/${channelLink}/${boardId}`,
     });
+    if (res.status !== 200) return router.push('/');
     setContents(res.data);
   };
 
@@ -43,9 +44,7 @@ const boardContents = () => {
       router.push('/');
       return;
     }
-    const channelLinkString = typeof channelLink === 'string' ? channelLink : channelLink[0];
-    const boardIdString = typeof boardId === 'string' ? boardId : boardId[0];
-    fetchBoardContent(channelLinkString, boardIdString);
+    fetchBoardContent();
   }, [channelLink, boardId]);
 
   return (
