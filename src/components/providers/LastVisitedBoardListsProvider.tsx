@@ -14,10 +14,10 @@ interface Props {
 const LastVisitedBoardListsProvider = ({ children }: Props) => {
   const [lastVisitedBoardIdLists, setLastVisitedBoardIdLists] = useState<LastVisitedBoardList>({});
 
-  const handleBoard = (key: keyof LastVisitedBoardList, boardId: string) => {
+  const handleBoard = (key: keyof LastVisitedBoardList, boardId: string, boardTitle: string) => {
     setLastVisitedBoardIdLists({
       ...lastVisitedBoardIdLists,
-      [key]: { boardId },
+      [key]: { boardId, boardTitle },
     });
   };
 
