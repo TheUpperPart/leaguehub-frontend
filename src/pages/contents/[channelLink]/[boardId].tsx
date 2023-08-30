@@ -3,6 +3,7 @@ import ContentModify from '@components/Content/ContentModify';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
+import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -31,6 +32,7 @@ const boardContents = () => {
   const router = useRouter();
   const { channelLink, boardId } = router.query;
   const { channelPermission } = useChannels();
+  const { handleBoard } = useLastVisitedBoardLists();
 
   const fetchBoardContent = async () => {
     const res = await authAPI<Content>({
@@ -54,6 +56,7 @@ const boardContents = () => {
     }
     setContents(updatedContent);
     setIsModify(false);
+    handleBoard(channelLink as string, boardId as string, title);
   };
 
   useEffect(() => {
