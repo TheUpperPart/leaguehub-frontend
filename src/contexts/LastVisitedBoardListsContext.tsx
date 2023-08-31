@@ -3,7 +3,7 @@ import { createContext } from 'react';
 
 interface LastVisitedBoardListsContexts {
   lastVisitedBoardIdLists: LastVisitedBoardList;
-  handleBoard: (key: keyof LastVisitedBoardList, boardId: string) => void;
+  handleBoard: (key: keyof LastVisitedBoardList, boardId: string, boardTitle: string) => void;
 }
 
 const LastVisitedBoardListsContext = createContext<LastVisitedBoardListsContexts | null>(null);

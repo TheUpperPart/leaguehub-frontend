@@ -55,6 +55,7 @@ const BoardBody = ({ channelLink }: Props) => {
 
   const onClickBoard: MouseEventHandler<HTMLElement> = (e) => {
     const clickedId = e.currentTarget.dataset.id;
+    const clickedBoardTitle = e.currentTarget.dataset.boardTitle;
     if (e.target !== e.currentTarget) {
       return;
     }
@@ -64,7 +65,7 @@ const BoardBody = ({ channelLink }: Props) => {
 
     if (clickedId) {
       setSelected(clickedId);
-      handleBoard(channelLink, clickedId);
+      handleBoard(channelLink, clickedId, clickedBoardTitle as string);
       router.push(`/contents/${channelLink}/${clickedId}`);
     }
   };
@@ -78,7 +79,7 @@ const BoardBody = ({ channelLink }: Props) => {
     };
     data?.push(newBoard);
     selectBoardId(newBoard.boardId);
-    handleBoard(channelLink, newBoard.boardId);
+    handleBoard(channelLink, newBoard.boardId, res.boardTitle);
   };
 
   const selectBoardId = (boardId: string) => {
@@ -93,12 +94,10 @@ const BoardBody = ({ channelLink }: Props) => {
       selectBoardId(lastVisitBoardId);
       return;
     }
-  }, []);
 
-  useEffect(() => {
     if (isSuccess) {
       selectBoardId(data[0].boardId);
-      handleBoard(channelLink, data[0].boardId);
+      handleBoard(channelLink, data[0].boardId, data[0].boardTitle);
     }
   }, [channelLink, isSuccess]);
 
@@ -109,6 +108,7 @@ const BoardBody = ({ channelLink }: Props) => {
           <Wrapper
             key={board.boardId}
             data-id={board.boardId}
+            data-board-title={board.boardTitle}
             onClick={onClickBoard}
             isSelected={board.boardId === selected}
           >
