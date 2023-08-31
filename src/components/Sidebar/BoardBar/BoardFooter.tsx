@@ -8,12 +8,29 @@ interface BoardFooterProps {
   channelLink: string;
   leagueTitle: string;
   maxPlayer: number;
+  updateChannelData: (leagueTitle: string, maxPlayer: number) => void;
 }
 
-const BoardFooter = ({ channelLink, leagueTitle, maxPlayer }: BoardFooterProps) => {
+const BoardFooter = ({
+  channelLink,
+  leagueTitle,
+  maxPlayer,
+  updateChannelData,
+}: BoardFooterProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { channelPermission } = useChannels();
+
+  const onClick: MouseEventHandler<HTMLElement> = (e) => {
+    if (e.target === e.currentTarget) setIsModalOpen(true);
+  };
+
+  const updateChannel = (leagueTitle?: string, maxPlayer?: number) => {
+    if (leagueTitle && maxPlayer) updateChannelData(leagueTitle, maxPlayer);
+
+    setIsModalOpen(false);
+    return;
+  };
 
   const renderModal = () => {
     if (isModalOpen === false) return;
