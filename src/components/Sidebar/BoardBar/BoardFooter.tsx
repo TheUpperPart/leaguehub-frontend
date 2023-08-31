@@ -1,36 +1,64 @@
 import JoinLeague from '@components/Modal/JoinLeague/JoinLeague';
+import ModifyChannel from '@components/Modal/ModifyChannel/ModifyChannel';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
 import { MouseEventHandler, useState } from 'react';
 
-const BoardFooter = ({ channelLink }: { channelLink: string }) => {
+interface BoardFooterProps {
+  channelLink: string;
+  leagueTitle: string;
+  maxPlayer: number;
+}
+
+const BoardFooter = ({ channelLink, leagueTitle, maxPlayer }: BoardFooterProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { channelPermission } = useChannels();
 
-  const onClick: MouseEventHandler<HTMLElement> = (e) => {
-    if (e.target === e.currentTarget) setIsModalOpen(true);
-  };
+  const renderModal = () => {
+    if (isModalOpen === false) return;
 
-  const renderLeagueButton = () => {
     switch (channelPermission) {
       case 0:
-        return <div>리그 수정하기</div>;
+        return (
+          <div>
+            <ModifyChannel
+              channelLink={channelLink}
+              leagueTitle={leagueTitle}
+              maxPlayer={maxPlayer}
+              onClose={updateChannel}
+            />
+          </div>
+        );
       case 1:
-        return <div>리그 나가기</div>;
+        alert('기능 구현중입니다');
+        return <></>;
       case 2:
         return (
-          <div onClick={onClick}>
-            {isModalOpen && (
-              <JoinLeague onClose={() => setIsModalOpen(false)} channelLink={channelLink} />
-            )}
-            리그 참여하기
+          <div>
+            <JoinLeague onClose={() => setIsModalOpen(false)} channelLink={channelLink} />
           </div>
         );
     }
   };
 
-  return <Container>{renderLeagueButton()}</Container>;
+  const renderLeagueButton = () => {
+    switch (channelPermission) {
+      case 0:
+        return <div onClick={onClick}>리그 수정하기</div>;
+      case 1:
+        return <div onClick={onClick}>리그 나가기</div>;
+      case 2:
+        return <div onClick={onClick}>리그 참여하기</div>;
+    }
+  };
+
+  return (
+    <Container>
+      {renderModal()}
+      {renderLeagueButton()}
+    </Container>
+  );
 };
 
 const Container = styled.div`
