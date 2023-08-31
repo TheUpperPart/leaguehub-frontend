@@ -13,11 +13,25 @@ interface ModifyChannelProps {
 
 const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyChannelProps) => {
   const leagueTitleRef = useRef<HTMLInputElement>(null);
-  const maxPlayRef = useRef<HTMLInputElement>(null);
+  const maxPlayerRef = useRef<HTMLInputElement>(null);
 
   const onClickSubmit = async () => {
+    if (!leagueTitleRef.current || !maxPlayerRef.current) return;
+    const updatedLeagueTitle = leagueTitleRef.current.value;
+    const updatedMaxPlayer = parseInt(maxPlayerRef.current.value, 10);
+    if (isNaN(updatedMaxPlayer)) {
+      alert('최대인원수를 숫자로 입력해주세요');
+      return;
+    }
     if (!confirm('리그를 수정하시겠습니까?')) return;
-    const res = await authAPI({ method: 'post', url: `/url/channel/${channelLink}` });
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/channel/${channelLink}`,
+      data: {
+        title: updatedLeagueTitle,
+        maxPlayer: updatedMaxPlayer,
+      },
+    });
     if (res.status !== 200) return;
     alert('정보가 수정되었습니다');
     onClose(leagueTitle, maxPlayer);
@@ -40,7 +54,7 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
               type='text'
               placeholder='리그 제목을 입력해주세요'
               ref={leagueTitleRef}
-              value={leagueTitle}
+              defaultValue={leagueTitle}
             />
           </FlexWrapper>
         </Wrapper>
@@ -50,8 +64,8 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
             <Input
               type='text'
               placeholder='최대 인원을 설정해주세요'
-              ref={maxPlayRef}
-              value={maxPlayer}
+              ref={maxPlayerRef}
+              defaultValue={maxPlayer}
             />
           </FlexWrapper>
         </Wrapper>
