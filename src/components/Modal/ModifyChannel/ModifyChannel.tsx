@@ -16,6 +16,7 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
   const maxPlayerRef = useRef<HTMLInputElement>(null);
 
   const onClickSubmit = async () => {
+    console.log(leagueTitleRef.current?.value, maxPlayerRef.current?.value);
     if (!leagueTitleRef.current || !maxPlayerRef.current) return;
     const updatedLeagueTitle = leagueTitleRef.current.value;
     const updatedMaxPlayer = parseInt(maxPlayerRef.current.value, 10);
@@ -34,7 +35,7 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
     });
     if (res.status !== 200) return;
     alert('정보가 수정되었습니다');
-    onClose(leagueTitle, maxPlayer);
+    onClose(updatedLeagueTitle, updatedMaxPlayer);
   };
 
   return (
