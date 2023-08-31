@@ -1,6 +1,8 @@
 import authAPI from '@apis/authAPI';
 import Modal from '@components/Modal';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useRef } from 'react';
 
 interface ModifyChannelProps {
   channelLink: string;
@@ -10,8 +12,11 @@ interface ModifyChannelProps {
 }
 
 const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyChannelProps) => {
+  const leagueTitleRef = useRef<HTMLInputElement>(null);
+  const maxPlayRef = useRef<HTMLInputElement>(null);
+
   const onClickSubmit = async () => {
-    if (!confirm('채널을 수정하시겠습니까?')) return;
+    if (!confirm('리그를 수정하시겠습니까?')) return;
     const res = await authAPI({ method: 'post', url: `/url/channel/${channelLink}` });
     if (res.status !== 200) return;
     alert('정보가 수정되었습니다');
@@ -21,6 +26,35 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
   return (
     <Modal>
       <Container>
+        <Wrapper
+          css={css`
+            padding-bottom: 3rem;
+          `}
+        >
+          <h1>리그 수정하기</h1>
+        </Wrapper>
+        <Wrapper>
+          <FlexWrapper>리그 제목</FlexWrapper>
+          <FlexWrapper>
+            <Input
+              type='text'
+              placeholder='리그 제목을 입력해주세요'
+              ref={leagueTitleRef}
+              value={leagueTitle}
+            />
+          </FlexWrapper>
+        </Wrapper>
+        <Wrapper>
+          <FlexWrapper>최대 참여자 인원</FlexWrapper>
+          <FlexWrapper>
+            <Input
+              type='text'
+              placeholder='최대 인원을 설정해주세요'
+              ref={maxPlayRef}
+              value={maxPlayer}
+            />
+          </FlexWrapper>
+        </Wrapper>
         <ButtonWrapper>
           <SubmitButton onClick={() => onClose()}>취소</SubmitButton>
           <SubmitButton onClick={onClickSubmit}>수정하기</SubmitButton>
@@ -32,7 +66,26 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
 
 export default ModifyChannel;
 
-const Container = styled.div``;
+const Container = styled.div`
+  color: black;
+  padding: 5%;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  min-height: 7rem;
+`;
+
+const FlexWrapper = styled.div`
+  flex: 1;
+  justify-content: flex-start;
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -43,6 +96,14 @@ const ButtonWrapper = styled.div`
   font-size: 1.7rem;
   font-weight: bold;
   min-height: 7rem;
+`;
+
+const Input = styled.input`
+  width: 80%;
+  height: 4rem;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.6rem;
 `;
 
 const SubmitButton = styled.button`
