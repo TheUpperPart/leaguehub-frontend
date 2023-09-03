@@ -11,9 +11,13 @@ interface Props extends BracketHeader {
 const BracketHeaders = (props: Props) => {
   return (
     <Header>
-      {props.roundList.map((round) => {
+      {props.roundList.map((round, index) => {
         return (
-          <Button isClick={round === props.curRound} onClick={() => props.handleCurRound(round)}>
+          <Button
+            isClick={round === props.curRound}
+            onClick={() => props.handleCurRound(round)}
+            key={index}
+          >
             Round {round}
             {round === props.liveRound && (
               <svg

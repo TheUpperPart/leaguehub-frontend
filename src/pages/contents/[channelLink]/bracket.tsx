@@ -7,6 +7,7 @@ import axios from 'axios';
 import { SERVER_URL } from '@config/index';
 import { BracketHeader } from '@type/bracket';
 import BracketHeaders from '@components/Bracket/BracketHeaders';
+import BracketContents from '@components/Bracket/BracketContents';
 
 interface Props {
   data: BracketHeader;
@@ -28,7 +29,7 @@ const Bracket = (props: Props) => {
         handleCurRound={handleCurRound}
       />
       <Content>
-        <h2>Bracket Content</h2>
+        <BracketContents curRound={curRound} />
       </Content>
     </Container>
   );
