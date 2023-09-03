@@ -21,7 +21,7 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
     cacheTime: Infinity,
   });
 
-  const updateChannelData = async (leagueTitle: string, maxPlayer: number) => {
+  const updateChannelData = (leagueTitle: string, maxPlayer: number) => {
     if (!data) return;
     data.leagueTitle = leagueTitle;
     data.maxPlayer = maxPlayer;
