@@ -1,4 +1,3 @@
-import Modal from '@components/Modal';
 import ObserverUser from '@components/Modal/ParticipantLists/ObserverUser';
 import ParticipantUser from '@components/Modal/ParticipantLists/ParticipantUser';
 import styled from '@emotion/styled';
@@ -7,10 +6,9 @@ import { useState } from 'react';
 
 interface ParticipantListProps {
   leagueTitle: string;
-  onClose: () => void;
 }
 
-const ParticipantList = ({ leagueTitle, onClose }: ParticipantListProps) => {
+const ParticipantList = ({ leagueTitle }: ParticipantListProps) => {
   const [currentMenu, setCurrentMenu] = useState('members');
 
   const { channelPermission } = useChannels();
@@ -25,28 +23,23 @@ const ParticipantList = ({ leagueTitle, onClose }: ParticipantListProps) => {
   };
 
   return (
-    <Modal onClose={onClose}>
-      <Container>
-        <Title>{leagueTitle}</Title>
-        <Menu>
+    <Container>
+      <Title>{leagueTitle}</Title>
+      <Menu>
+        <MenuList isSelected={currentMenu === 'members'} onClick={() => setCurrentMenu('members')}>
+          대회 참여자
+        </MenuList>
+        {channelPermission === 0 && (
           <MenuList
-            isSelected={currentMenu === 'members'}
-            onClick={() => setCurrentMenu('members')}
+            isSelected={currentMenu === 'observers'}
+            onClick={() => setCurrentMenu('observers')}
           >
-            대회 참여자
+            관전자
           </MenuList>
-          {channelPermission === 0 && (
-            <MenuList
-              isSelected={currentMenu === 'observers'}
-              onClick={() => setCurrentMenu('observers')}
-            >
-              관전자
-            </MenuList>
-          )}
-        </Menu>
-        {renderMenuContent()}
-      </Container>
-    </Modal>
+        )}
+      </Menu>
+      {renderMenuContent()}
+    </Container>
   );
 };
 

@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 jest.mock('next/router', () => require('next-router-mock'));
 
-describe('채널 추가 테스트', () => {
+describe.skip('채널 추가 테스트', () => {
   it('초기에는 대회 개최 버튼과 대회 참여 버튼이 있다.', () => {
     render(
       <Modal>

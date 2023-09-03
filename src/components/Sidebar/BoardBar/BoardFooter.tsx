@@ -1,19 +1,20 @@
+import Modal from '@components/Modal';
 import JoinLeague from '@components/Modal/JoinLeague/JoinLeague';
 import styled from '@emotion/styled';
-import { MouseEventHandler, useState } from 'react';
+import useModals from '@hooks/useModals';
 
 const BoardFooter = ({ channelLink }: { channelLink: string }) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const onClick: MouseEventHandler<HTMLElement> = (e) => {
-    if (e.target === e.currentTarget) setIsModalOpen(true);
-  };
+  const { openModal, closeModal } = useModals();
 
   return (
-    <Container onClick={onClick}>
-      {isModalOpen && (
-        <JoinLeague onClose={() => setIsModalOpen(false)} channelLink={channelLink} />
-      )}
+    <Container
+      onClick={() =>
+        openModal(Modal, {
+          onClose: () => closeModal(Modal),
+          children: <JoinLeague onClose={() => closeModal(Modal)} channelLink={channelLink} />,
+        })
+      }
+    >
       리그 참여하기
     </Container>
   );
