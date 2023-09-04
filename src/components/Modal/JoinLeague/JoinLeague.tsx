@@ -1,5 +1,4 @@
 import Icon from '@components/Icon';
-import Modal from '@components/Modal';
 import { SERVER_URL } from '@config/index';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -8,11 +7,11 @@ import axios from 'axios';
 import { useState, MouseEventHandler, useEffect, useRef } from 'react';
 
 interface JoinLeagueProps {
-  onClose: MouseEventHandler<HTMLElement>;
   channelLink: string;
+  onClose: () => void;
 }
 
-const JoinLeague = ({ onClose }: JoinLeagueProps) => {
+const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
   const [nickname, setNickname] = useState<string | null>(null);
   const [gameId, setGameId] = useState<string>('');
   const [tier, setTier] = useState<string | null>(null);

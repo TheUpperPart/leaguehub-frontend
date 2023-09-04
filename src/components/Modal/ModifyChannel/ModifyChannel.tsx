@@ -1,5 +1,4 @@
 import authAPI from '@apis/authAPI';
-import Modal from '@components/Modal';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRef } from 'react';
@@ -39,43 +38,41 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
   };
 
   return (
-    <Modal>
-      <Container>
-        <Wrapper
-          css={css`
-            padding-bottom: 3rem;
-          `}
-        >
-          <h1>리그 수정하기</h1>
-        </Wrapper>
-        <Wrapper>
-          <FlexWrapper>리그 제목</FlexWrapper>
-          <FlexWrapper>
-            <Input
-              type='text'
-              placeholder='리그 제목을 입력해주세요'
-              ref={leagueTitleRef}
-              defaultValue={leagueTitle}
-            />
-          </FlexWrapper>
-        </Wrapper>
-        <Wrapper>
-          <FlexWrapper>최대 참여자 인원</FlexWrapper>
-          <FlexWrapper>
-            <Input
-              type='text'
-              placeholder='최대 인원을 설정해주세요'
-              ref={maxPlayerRef}
-              defaultValue={maxPlayer}
-            />
-          </FlexWrapper>
-        </Wrapper>
-        <ButtonWrapper>
-          <SubmitButton onClick={() => onClose()}>취소</SubmitButton>
-          <SubmitButton onClick={onClickSubmit}>수정하기</SubmitButton>
-        </ButtonWrapper>
-      </Container>
-    </Modal>
+    <Container>
+      <Wrapper
+        css={css`
+          padding-bottom: 3rem;
+        `}
+      >
+        <h1>리그 수정하기</h1>
+      </Wrapper>
+      <Wrapper>
+        <FlexWrapper>리그 제목</FlexWrapper>
+        <FlexWrapper>
+          <Input
+            type='text'
+            placeholder='리그 제목을 입력해주세요'
+            ref={leagueTitleRef}
+            defaultValue={leagueTitle}
+          />
+        </FlexWrapper>
+      </Wrapper>
+      <Wrapper>
+        <FlexWrapper>최대 참여자 인원</FlexWrapper>
+        <FlexWrapper>
+          <Input
+            type='text'
+            placeholder='최대 인원을 설정해주세요'
+            ref={maxPlayerRef}
+            defaultValue={maxPlayer}
+          />
+        </FlexWrapper>
+      </Wrapper>
+      <ButtonWrapper>
+        <SubmitButton onClick={() => onClose()}>취소</SubmitButton>
+        <SubmitButton onClick={onClickSubmit}>수정하기</SubmitButton>
+      </ButtonWrapper>
+    </Container>
   );
 };
 
