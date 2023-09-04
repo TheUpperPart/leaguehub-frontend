@@ -1,8 +1,9 @@
 import Modal from '@components/Modal';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import useModals from '@hooks/useModals';
 import { Content } from '@pages/contents/[channelLink]/[boardId]';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 interface ContentModifyProps {
@@ -18,9 +19,10 @@ interface ContentButtonProps {
 }
 
 const ContentModify = ({ title, content, onUpdateContent }: ContentModifyProps) => {
-  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const { openModal, closeModal } = useModals();
 
   const handleUpdateContent = () => {
     if (textRef.current === null || titleRef.current === null) {
@@ -44,24 +46,33 @@ const ContentModify = ({ title, content, onUpdateContent }: ContentModifyProps) 
 
   return (
     <>
-      {isPreviewModalOpen && titleRef.current && textRef.current && (
-        <Modal onClose={() => setIsPreviewModalOpen(false)}>
-          <div
-            css={css`
-              text-align: start;
-            `}
-          >
-            <PreviewTitle>{titleRef.current.value}</PreviewTitle>
-            <ReactMarkdown children={textRef.current.value} />
-          </div>
-        </Modal>
-      )}
       <TitleField placeholder={'제목을 입력해주세요'} defaultValue={title} ref={titleRef} />
       <InputField placeholder={'텍스트를 입력해주세요'} defaultValue={content} ref={textRef} />
       <ContentButton right='25' backgroundColor='#ff0044'>
         삭제하기
       </ContentButton>
-      <ContentButton right='15' backgroundColor='grey' onClick={() => setIsPreviewModalOpen(true)}>
+      <ContentButton
+        right='15'
+        backgroundColor='grey'
+        onClick={() =>
+          openModal(Modal, {
+            onClose: () => closeModal(Modal),
+            children: (
+              <>
+                <div
+                  css={css`
+                    text-align: start;
+                    white-space: pre-line;
+                  `}
+                >
+                  <PreviewTitle>{titleRef.current ? titleRef.current.value : ''}</PreviewTitle>
+                  <ReactMarkdown children={textRef.current ? textRef.current.value : ''} />
+                </div>
+              </>
+            ),
+          })
+        }
+      >
         미리보기
       </ContentButton>
       <ContentButton right='5' backgroundColor='#0067a3' onClick={handleUpdateContent}>

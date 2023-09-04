@@ -1,9 +1,10 @@
 import Icon from '@components/Icon';
+import Modal from '@components/Modal';
 import ParticipantList from '@components/Modal/ParticipantLists';
 import { GameEnum } from '@constants/MakeGame';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import useModals from '@hooks/useModals';
 
 interface BoardHeaderProps {
   hostname: string;
@@ -13,20 +14,24 @@ interface BoardHeaderProps {
 }
 
 const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: BoardHeaderProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { openModal, closeModal } = useModals();
 
   return (
     <Container>
-      {isModalOpen && (
-        <ParticipantList leagueTitle={leagueTitle} onClose={() => setIsModalOpen(false)} />
-      )}
       <Wrapper>
-        <span css={labelStyle}>개최자 </span>
+        <span css={labelStyle}>개최자</span>
         <span css={hostnameStyle}>{hostname}</span>
         <TitleContainer>{leagueTitle}</TitleContainer>
         <GameNameWrapper>{GameEnum[gameCategory]}</GameNameWrapper>
       </Wrapper>
-      <ParticipateWrapper onClick={() => setIsModalOpen(true)}>
+      <ParticipateWrapper
+        onClick={() =>
+          openModal(Modal, {
+            onClose: () => closeModal(Modal),
+            children: <ParticipantList leagueTitle={leagueTitle} />,
+          })
+        }
+      >
         <span>참여자(팀)</span>
         <ParticipateBox>
           <Icon kind='team' color='#637083' size='2rem' />

@@ -3,6 +3,7 @@ import ContentModify from '@components/Content/ContentModify';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
+import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -12,6 +13,18 @@ export interface Content {
   content: string;
 }
 
+const updateData = async (channelLink: string, boardId: string, updatedContent: Content) => {
+  const res = await authAPI({
+    method: 'post',
+    url: `/api/channel/${channelLink}/${boardId}`,
+    data: {
+      title: updatedContent.title,
+      content: updatedContent.content,
+    },
+  });
+  return res;
+};
+
 const boardContents = () => {
   const [contents, setContents] = useState<Content>({ title: '', content: '' });
   const [isModify, setIsModify] = useState(false);
@@ -19,22 +32,31 @@ const boardContents = () => {
   const router = useRouter();
   const { channelLink, boardId } = router.query;
   const { channelPermission } = useChannels();
+  const { handleBoard } = useLastVisitedBoardLists();
 
-  const fetchBoardContent = async (channelLink: string, boardId: string) => {
+  const fetchBoardContent = async () => {
     const res = await authAPI<Content>({
       method: 'get',
       url: `/api/channel/${channelLink}/${boardId}`,
     });
+    if (res.status !== 200) return router.push('/');
     setContents(res.data);
   };
 
-  const handleContentUpdate = ({ title, content }: Content) => {
+  const handleContentUpdate = async ({ title, content }: Content) => {
     const updatedContent: Content = {
       title,
       content,
     };
+    if (!channelLink) return;
+    const res = await updateData(channelLink as string, boardId as string, updatedContent);
+    if (res.status !== 200) {
+      alert('요청실패');
+      return;
+    }
     setContents(updatedContent);
     setIsModify(false);
+    handleBoard(channelLink as string, boardId as string, title);
   };
 
   useEffect(() => {
@@ -43,9 +65,7 @@ const boardContents = () => {
       router.push('/');
       return;
     }
-    const channelLinkString = typeof channelLink === 'string' ? channelLink : channelLink[0];
-    const boardIdString = typeof boardId === 'string' ? boardId : boardId[0];
-    fetchBoardContent(channelLinkString, boardIdString);
+    fetchBoardContent();
   }, [channelLink, boardId]);
 
   return (
@@ -63,6 +83,7 @@ const boardContents = () => {
             css={css`
               padding-top: 2rem;
               padding-bottom: 1rem;
+              white-space: pre-line;
             `}
           >
             <ReactMarkdown children={contents.content} />

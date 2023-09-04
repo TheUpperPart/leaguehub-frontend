@@ -1,8 +1,9 @@
+import Modal from '@components/Modal';
 import JoinLeague from '@components/Modal/JoinLeague/JoinLeague';
 import ModifyChannel from '@components/Modal/ModifyChannel/ModifyChannel';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
-import { MouseEventHandler, useState } from 'react';
+import useModals from '@hooks/useModals';
 
 interface BoardFooterProps {
   channelLink: string;
@@ -17,65 +18,59 @@ const BoardFooter = ({
   maxPlayer,
   updateChannelData,
 }: BoardFooterProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const { channelPermission } = useChannels();
-
-  const onClick: MouseEventHandler<HTMLElement> = (e) => {
-    if (e.target === e.currentTarget) setIsModalOpen(true);
-  };
+  const { openModal, closeModal } = useModals();
 
   const updateChannel = (leagueTitle?: string, maxPlayer?: number) => {
     if (leagueTitle && maxPlayer) updateChannelData(leagueTitle, maxPlayer);
 
-    setIsModalOpen(false);
+    closeModal(Modal);
     return;
-  };
-
-  const renderModal = () => {
-    if (isModalOpen === false) return;
-
-    switch (channelPermission) {
-      case 0:
-        return (
-          <div>
-            <ModifyChannel
-              channelLink={channelLink}
-              leagueTitle={leagueTitle}
-              maxPlayer={maxPlayer}
-              onClose={updateChannel}
-            />
-          </div>
-        );
-      case 1:
-        alert('기능 구현중입니다');
-        return <></>;
-      case 2:
-        return (
-          <div>
-            <JoinLeague onClose={() => setIsModalOpen(false)} channelLink={channelLink} />
-          </div>
-        );
-    }
   };
 
   const renderLeagueButton = () => {
     switch (channelPermission) {
       case 0:
-        return <div onClick={onClick}>리그 수정하기</div>;
+        return (
+          <div
+            onClick={() =>
+              openModal(Modal, {
+                onClose: () => closeModal(Modal),
+                children: (
+                  <ModifyChannel
+                    channelLink={channelLink}
+                    leagueTitle={leagueTitle}
+                    maxPlayer={maxPlayer}
+                    onClose={updateChannel}
+                  />
+                ),
+              })
+            }
+          >
+            리그 수정하기
+          </div>
+        );
       case 1:
-        return <div onClick={onClick}>리그 나가기</div>;
+        return <div>리그 나가기</div>;
       case 2:
-        return <div onClick={onClick}>리그 참여하기</div>;
+        return (
+          <div
+            onClick={() =>
+              openModal(Modal, {
+                onClose: () => closeModal(Modal),
+                children: (
+                  <JoinLeague channelLink={channelLink} onClose={() => closeModal(Modal)} />
+                ),
+              })
+            }
+          >
+            리그 참여하기
+          </div>
+        );
     }
   };
 
-  return (
-    <Container>
-      {renderModal()}
-      {renderLeagueButton()}
-    </Container>
-  );
+  return <Container>{renderLeagueButton()}</Container>;
 };
 
 const Container = styled.div`

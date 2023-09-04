@@ -9,10 +9,13 @@ import MakeGameProvider from '@components/providers/MakeGameProvider';
 import ChannelsProvider from '@components/providers/ChannelsProvider';
 import Layout from '@components/layout';
 import initMockAPI from '@mocks/index';
+import ModalsProvider from '@components/providers/ModalProvider';
+import ShowModals from '@components/Modal/showModals';
 
 if (process.env.NODE_ENV === 'development') {
   initMockAPI();
 }
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -24,9 +27,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <ProfileProvider>
             <LastVisitedBoardListsProvider>
               <MakeGameProvider>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                <ModalsProvider>
+                  <ShowModals />
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </ModalsProvider>
               </MakeGameProvider>
             </LastVisitedBoardListsProvider>
           </ProfileProvider>

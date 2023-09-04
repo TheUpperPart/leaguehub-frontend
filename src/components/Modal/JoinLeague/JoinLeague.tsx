@@ -52,84 +52,82 @@ const JoinLeague = ({ onClose }: JoinLeagueProps) => {
   }, []);
 
   return (
-    <Modal>
-      <Container>
-        <Wrapper
-          css={css`
-            padding-bottom: 3rem;
-          `}
-        >
-          <h1>참가 신청서</h1>
-        </Wrapper>
-        <Wrapper>
-          <FlexWrapper>이름</FlexWrapper>
-          <FlexWrapper>
-            <InputButton>
-              {nickname ? (
-                <>
-                  <div
-                    css={css`
-                      font-size: 1.5rem;
-                      display: inline-block;
-                    `}
-                  >
-                    {nickname}
-                  </div>
-                  <IconWrapper>
-                    <Icon kind='modify' aria-label='modify' onClick={nicknameHandler} />
-                  </IconWrapper>
-                </>
-              ) : (
-                <>
-                  <Input type='text' placeholder='닉네임' ref={userNameRef} />
-                  <Button onClick={nicknameHandler}>확인</Button>
-                </>
-              )}
-            </InputButton>
-          </FlexWrapper>
-        </Wrapper>
-        <Wrapper>
-          <FlexWrapper>게임 아이디</FlexWrapper>
-          <FlexWrapper>
-            <InputButton>
-              <Input type='text' placeholder='게임 아이디' ref={gameIdRef} />
-              <Button onClick={submitGameId}>입력</Button>
-            </InputButton>
-          </FlexWrapper>
-        </Wrapper>
-        <Wrapper>
-          <FlexWrapper>현재 티어</FlexWrapper>
-          <FlexWrapper>
-            {tier && (
-              <div
-                css={css`
-                  font-size: 1.5rem;
-                  color: blue;
-                `}
-              >
-                {tier}
-              </div>
+    <Container>
+      <Wrapper
+        css={css`
+          padding-bottom: 3rem;
+        `}
+      >
+        <h1>참가 신청서</h1>
+      </Wrapper>
+      <Wrapper>
+        <FlexWrapper>이름</FlexWrapper>
+        <FlexWrapper>
+          <InputButton>
+            {nickname ? (
+              <>
+                <div
+                  css={css`
+                    font-size: 1.5rem;
+                    display: inline-block;
+                  `}
+                >
+                  {nickname}
+                </div>
+                <IconWrapper>
+                  <Icon kind='modify' aria-label='modify' onClick={nicknameHandler} />
+                </IconWrapper>
+              </>
+            ) : (
+              <>
+                <Input type='text' placeholder='닉네임' ref={userNameRef} />
+                <Button onClick={nicknameHandler}>확인</Button>
+              </>
             )}
-          </FlexWrapper>
-        </Wrapper>
-        <CheckboxWrapper>
-          <input type='checkbox' id='confirmJoin' onClick={() => setChecked(!checked)} />
-          <label
-            css={css`
-              display: flex;
-              align-items: center;
-            `}
-            htmlFor='confirmJoin'
-          >
-            신청 하시겠습니까?
-          </label>
-        </CheckboxWrapper>
-        <Wrapper>
-          <SubmitButton onClick={onClose}>취소</SubmitButton>
-          <SubmitButton disabled={submitHandler()}>신청</SubmitButton>
-        </Wrapper>
-      </Container>
-    </Modal>
+          </InputButton>
+        </FlexWrapper>
+      </Wrapper>
+      <Wrapper>
+        <FlexWrapper>게임 아이디</FlexWrapper>
+        <FlexWrapper>
+          <InputButton>
+            <Input type='text' placeholder='게임 아이디' ref={gameIdRef} />
+            <Button onClick={submitGameId}>입력</Button>
+          </InputButton>
+        </FlexWrapper>
+      </Wrapper>
+      <Wrapper>
+        <FlexWrapper>현재 티어</FlexWrapper>
+        <FlexWrapper>
+          {tier && (
+            <div
+              css={css`
+                font-size: 1.5rem;
+                color: blue;
+              `}
+            >
+              {tier}
+            </div>
+          )}
+        </FlexWrapper>
+      </Wrapper>
+      <CheckboxWrapper>
+        <input type='checkbox' id='confirmJoin' onClick={() => setChecked(!checked)} />
+        <label
+          css={css`
+            display: flex;
+            align-items: center;
+          `}
+          htmlFor='confirmJoin'
+        >
+          신청 하시겠습니까?
+        </label>
+      </CheckboxWrapper>
+      <Wrapper>
+        <SubmitButton onClick={onClose}>취소</SubmitButton>
+        <SubmitButton disabled={submitHandler()}>신청</SubmitButton>
+      </Wrapper>
+    </Container>
   );
 };
 

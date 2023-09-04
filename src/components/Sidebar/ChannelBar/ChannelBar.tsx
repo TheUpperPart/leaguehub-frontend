@@ -1,7 +1,6 @@
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { useState } from 'react';
 
 import SelectChannelType from '@components/Sidebar/ChannelBar/SelectChannelType';
 import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
@@ -9,6 +8,7 @@ import { ChannelCircleProps } from '@type/channelCircle';
 import useChannels from '@hooks/useChannels';
 import Modal from '@components/Modal';
 import Icon from '@components/Icon';
+import useModals from '@hooks/useModals';
 
 interface ChannelBarProps {
   channels: ChannelCircleProps[];
@@ -16,13 +16,8 @@ interface ChannelBarProps {
 }
 
 const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
-  const [isModal, setIsModal] = useState<boolean>(false);
-
   const { dragAndDropChannels } = useChannels();
-
-  const handleModal = () => {
-    setIsModal((prev) => !prev);
-  };
+  const { openModal, closeModal } = useModals();
 
   const dragEnd = ({ source, destination }: DropResult) => {
     if (!destination) {
@@ -73,14 +68,16 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
           )}
         </Droppable>
       </DragDropContext>
-      <ChannelParticipate onClick={() => setIsModal(true)}>
+      <ChannelParticipate
+        onClick={() =>
+          openModal(Modal, {
+            onClose: () => closeModal(Modal),
+            children: <SelectChannelType handleModal={() => closeModal(Modal)} />,
+          })
+        }
+      >
         <CenteredIcon kind='plus' color='white' size={24} />
       </ChannelParticipate>
-      {isModal && (
-        <Modal onClose={() => setIsModal(!isModal)}>
-          <SelectChannelType handleModal={handleModal} />
-        </Modal>
-      )}
     </ChannelbarContainer>
   );
 };
