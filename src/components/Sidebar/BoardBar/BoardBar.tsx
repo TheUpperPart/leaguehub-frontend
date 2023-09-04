@@ -21,6 +21,12 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
     cacheTime: Infinity,
   });
 
+  const updateChannelData = (leagueTitle: string, maxPlayer: number) => {
+    if (!data) return;
+    data.leagueTitle = leagueTitle;
+    data.maxPlayer = maxPlayer;
+  };
+
   const { setCurrentChannel, setChannelPermission } = useChannels();
 
   useEffect(() => {
@@ -41,11 +47,14 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
             />
             <BoardBody channelLink={channelLink} />
           </ContentContainer>
-          {data.permission === 2 && (
-            <FooterContainer>
-              <BoardFooter channelLink={channelLink} />
-            </FooterContainer>
-          )}
+          <FooterContainer>
+            <BoardFooter
+              channelLink={channelLink}
+              leagueTitle={data.leagueTitle}
+              maxPlayer={data.maxPlayer}
+              updateChannelData={updateChannelData}
+            />
+          </FooterContainer>
         </>
       )}
     </Container>
