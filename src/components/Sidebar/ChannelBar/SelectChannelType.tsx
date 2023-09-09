@@ -1,5 +1,9 @@
+import authAPI from '@apis/authAPI';
 import Button from '@components/Button';
 import styled from '@emotion/styled';
+import useChannels from '@hooks/useChannels';
+import { ChannelCircleProps } from '@type/channelCircle';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -12,11 +16,45 @@ const SelectChannelType = (props: Props) => {
 
   const router = useRouter();
 
+  const channels = useChannels();
+
   const [curIdx, setCurIdx] = useState<number>(0);
+
+  const [channelInput, setChannelInput] = useState<string>();
 
   const handleRouter = () => {
     handleModal();
     router.push('/make-channel');
+  };
+
+  const fetchEnterNewChannel = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const res = await authAPI<ChannelCircleProps>({
+        method: 'post',
+        url: `/api/${channelInput}/participant/observer`,
+      });
+
+      const newChannel: ChannelCircleProps = {
+        channelLink: res.data.channelLink,
+        title: res.data.title,
+        category: res.data.category,
+        imgSrc: res.data?.imgSrc,
+        customChannelIndex: res.data.customChannelIndex,
+      };
+
+      channels.addChannel(newChannel);
+      handleModal();
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.message);
+      }
+    }
+  };
+
+  const handleChannelInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChannelInput(e.target.value);
   };
 
   return (
@@ -46,8 +84,8 @@ const SelectChannelType = (props: Props) => {
           <ModalSubTitle>대회에 참여하여 우승해보세요!</ModalSubTitle>
           <Content2>
             <FormConatiner>
-              <ChannelForm>
-                <ChannelInput required />
+              <ChannelForm onSubmit={fetchEnterNewChannel}>
+                <ChannelInput required value={channelInput} onChange={handleChannelInput} />
                 <Button width={10} height={4} type='submit'>
                   참여 하기
                 </Button>
@@ -122,5 +160,11 @@ const ChannelInput = styled.input`
   width: 25rem;
   height: 5rem;
   border: none;
+
+  background-color: #f1f0e8;
+
+  border-radius: 1rem;
+
+  color: #61677a;
 `;
 ChannelInput.defaultProps = { placeholder: '참여 코드 입력' };
