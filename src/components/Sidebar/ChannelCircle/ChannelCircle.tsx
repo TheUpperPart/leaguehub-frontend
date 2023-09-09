@@ -7,14 +7,14 @@ import { ChannelCircleProps } from 'src/@types/channelCircle';
 const ChannelCircle = ({
   channelLink,
   title,
-  category,
+  gameCategory,
   imgSrc,
   customChannelIndex,
 }: ChannelCircleProps) => {
   return (
     <ChannelBtn url={imgSrc}>
-      <ChannelName>{title}</ChannelName>
-      <ChannelGame>{GameEnum[category]}</ChannelGame>
+      <ChannelName>{imgSrc ? '' : title.substring(0, 2)}</ChannelName>
+      <ChannelGame>{GameEnum[gameCategory]}</ChannelGame>
     </ChannelBtn>
   );
 };
@@ -43,7 +43,9 @@ const ChannelBtn = styled.div<{ url?: string }>`
     prop.url &&
     css`
       background-image: url(${prop.url});
-      background-size: cover;
+      background-size: 100% 75%;
+      background-position: center top; /* 배경 이미지를 가운데 정렬하고 위에서부터 정렬합니다. */
+      background-repeat: no-repeat; /* 배경 이미지 반복을 비활성화합니다. */
     `}
 
   &:hover {
