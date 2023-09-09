@@ -38,31 +38,38 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
           {(provided, snapshot) => (
             <DropContainer ref={provided.innerRef} {...provided.droppableProps}>
               {channels &&
-                channels.map(({ channelLink, title, category, customChannelIndex }, index) => (
-                  <Draggable draggableId={'channel-' + channelLink} index={index} key={channelLink}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        css={css`
-                          margin: 0 auto;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        `}
-                        onClick={() => updateSelectedChannel(channelLink)}
-                      >
-                        <ChannelCircle
-                          channelLink={channelLink}
-                          title={title}
-                          category={category}
-                          customChannelIndex={customChannelIndex}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                channels.map(
+                  ({ channelLink, title, gameCategory, customChannelIndex, imgSrc }, index) => (
+                    <Draggable
+                      draggableId={'channel-' + channelLink}
+                      index={index}
+                      key={channelLink}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          css={css`
+                            margin: 0 auto;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                          `}
+                          onClick={() => updateSelectedChannel(channelLink)}
+                        >
+                          <ChannelCircle
+                            channelLink={channelLink}
+                            title={title}
+                            gameCategory={gameCategory}
+                            customChannelIndex={customChannelIndex}
+                            imgSrc={imgSrc}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ),
+                )}
               {provided.placeholder}
             </DropContainer>
           )}
