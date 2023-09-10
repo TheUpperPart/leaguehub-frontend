@@ -2,14 +2,18 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import Icon from '@components/Icon';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Image from 'next/image';
 import ProfileContext from '@contexts/ProfileContext';
+import authAPI from '@apis/authAPI';
+import Cookies from 'js-cookie';
 
 const Header = () => {
   const router = useRouter();
 
   const profileContext = useContext(ProfileContext);
+
+  const [clickDropdown, setClickDropdown] = useState<boolean>(false);
 
   // 로그인을 누른 url 저장
   const handleLink = () => {
@@ -18,11 +22,29 @@ const Header = () => {
     }
   };
 
+  const handleDropDown = () => {
+    setClickDropdown((prev) => !prev);
+  };
+
+  const moveToMypage = () => {
+    router.push('/mypage');
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await authAPI({ method: 'post', url: '/api/member/logout' });
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
+
+      router.push('/');
+    } catch (error) {}
+  };
+
   return (
     <Headers>
       <Container>
         {profileContext?.profile ? (
-          <LoginBtn onClick={handleLink}>
+          <LoginBtn onClick={handleDropDown}>
             <ProfileImg
               src={profileContext.profile.profileUrl}
               width={24}
@@ -30,6 +52,10 @@ const Header = () => {
               alt='profile'
             />
             <Text>{profileContext.profile.nickname}</Text>
+            <DropDown click={clickDropdown}>
+              <DropList onClick={moveToMypage}>마이페이지</DropList>
+              <DropList onClick={handleLogout}>로그아웃</DropList>
+            </DropDown>
           </LoginBtn>
         ) : (
           <LoginBtn onClick={handleLink}>
@@ -56,6 +82,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  position: relative;
 `;
 
 const ProfileImg = styled(Image)`
@@ -77,4 +105,32 @@ const LoginBtn = styled.button`
 const Text = styled.div`
   font-size: 1.4rem;
   font-weight: 900;
+`;
+
+const DropDown = styled.ul<{ click: boolean }>`
+  position: absolute;
+
+  display: ${(prop) => (prop.click ? 'block' : 'none')};
+
+  width: 10rem;
+
+  top: 5.5rem;
+  right: 0rem;
+
+  color: black;
+`;
+
+const DropList = styled.li`
+  list-style: none;
+
+  align-items: center;
+  justify-content: center;
+
+  display: flex;
+
+  background-color: #344051;
+  color: white;
+
+  height: 4rem;
+  border: 1px solid black;
 `;
