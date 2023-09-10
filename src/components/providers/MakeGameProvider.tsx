@@ -32,6 +32,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     initBasicInfo,
     initIsUseCustomRule,
     initCustomRule,
+    initChannelImgUrl,
   } = TFTInitialValue;
 
   const [currentStep, setCurrentStep] = useState<number>(initCurrentStep);
@@ -82,7 +83,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     setBasicInfo(initBasicInfo);
     setIsUseCustomRule(initIsUseCustomRule);
     setCustomRule(initCustomRule);
-    setChannelImgUrl('');
+    setChannelImgUrl(initChannelImgUrl);
   };
 
   const isHaveBlankValue = () => {
