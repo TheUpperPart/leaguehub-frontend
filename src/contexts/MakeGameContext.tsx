@@ -16,6 +16,8 @@ interface MakeGameState {
   handleCustomRule: (type: keyof CustomRule, value: number) => void;
   resetState: () => void;
   isHaveBlankValue: () => boolean;
+  channelImgUrl: string;
+  handleImgUrl: (url: string) => void;
 }
 
 const MakeGameContext = createContext<MakeGameState | null>(null);
