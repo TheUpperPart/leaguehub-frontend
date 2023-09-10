@@ -7,8 +7,13 @@ import ToggleButton from '@components/Button/Toggle/index';
 import useMakeGame from '@hooks/useMakeGame';
 import { GameMethod } from '@constants/MakeGame';
 import CustomRule from './CustomRule';
+import { useRef, useState } from 'react';
+import authAPI from '@apis/authAPI';
+import Image from 'next/image';
 
 const SelectRule = () => {
+  const [imageUrl, setImageUrl] = useState<string>();
+
   const {
     matchFormat,
     handleMatchFormat,
@@ -18,7 +23,33 @@ const SelectRule = () => {
     handleIsUseCustomRule,
     customRule,
     handleCustomRule,
+    handleImgUrl,
   } = useMakeGame();
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const fetchUploadChannelImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('uploadImage', e.target.files[0]);
+
+    try {
+      const res = await authAPI<{ imgUrl: string }>({
+        method: 'post',
+        url: `/api/image`,
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setImageUrl(res.data.imgUrl);
+      handleImgUrl(res.data.imgUrl);
+    } catch (error) {}
+  };
 
   return (
     <Container>
@@ -86,6 +117,10 @@ const SelectRule = () => {
               </div>
             )}
           </CustomContainer>
+        </Rule>
+        <Rule>
+          <input type='file' accept='image/*' ref={inputRef} onChange={fetchUploadChannelImage} />
+          {imageUrl && <Image width={50} height={50} src={imageUrl} alt='channelImage' />}
         </Rule>
       </Wrapper>
     </Container>
