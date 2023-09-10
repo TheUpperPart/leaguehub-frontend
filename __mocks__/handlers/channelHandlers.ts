@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import { SERVER_URL } from '@config/index';
 import { ChannelCircleProps } from '@type/channelCircle';
 
-const getChannels: ChannelCircleProps[][] = [
+const getChannels: ChannelCi  rcleProps[][] = [
   [
     {
       channelLink: '123',
@@ -67,6 +67,9 @@ const channelHandlers = [
 
   rest.post(SERVER_URL + '/api/:channelLink/participant/observer', (req, res, ctx) => {
     return res(ctx.json(postChannels[0]));
+  }),
+  rest.post(SERVER_URL + '/api/channel/:channelLink', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
   }),
 ];
 
