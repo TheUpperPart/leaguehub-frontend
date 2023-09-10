@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import { SERVER_URL } from '@config/index';
 import { ChannelCircleProps } from '@type/channelCircle';
 
-const getChannels: ChannelCi  rcleProps[][] = [
+const getChannels: ChannelCircleProps[][] = [
   [
     {
       channelLink: '123',
