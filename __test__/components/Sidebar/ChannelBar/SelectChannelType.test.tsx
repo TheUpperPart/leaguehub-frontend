@@ -11,17 +11,17 @@ jest.mock('next/router', () => require('next-router-mock'));
 describe('채널 추가 테스트', () => {
   const queryClient = new QueryClient();
 
+  const mockFn = jest.fn();
+
   it('초기에는 대회 개최 버튼과 대회 참여 버튼이 있다.', () => {
     render(
       <QueryClientProvider client={queryClient}>
         <ChannelsProvider>
-          <Modal>
-            <SelectChannelType
-              handleModal={() => {
-                return;
-              }}
-            />
-          </Modal>
+          <SelectChannelType
+            handleModal={() => {
+              return;
+            }}
+          />
         </ChannelsProvider>
       </QueryClientProvider>,
     );
@@ -35,13 +35,11 @@ describe('채널 추가 테스트', () => {
     render(
       <QueryClientProvider client={queryClient}>
         <ChannelsProvider>
-          <Modal>
-            <SelectChannelType
-              handleModal={() => {
-                return;
-              }}
-            />
-          </Modal>
+          <SelectChannelType
+            handleModal={() => {
+              return;
+            }}
+          />
         </ChannelsProvider>
       </QueryClientProvider>,
     );
@@ -56,13 +54,11 @@ describe('채널 추가 테스트', () => {
     render(
       <QueryClientProvider client={queryClient}>
         <ChannelsProvider>
-          <Modal>
-            <SelectChannelType
-              handleModal={() => {
-                return;
-              }}
-            />
-          </Modal>
+          <SelectChannelType
+            handleModal={() => {
+              return;
+            }}
+          />
         </ChannelsProvider>
       </QueryClientProvider>,
     );
