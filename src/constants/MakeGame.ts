@@ -19,6 +19,7 @@ interface TFTInitial {
   initBasicInfo: BasicInfo;
   initIsUseCustomRule: IsUseCustomRule;
   initCustomRule: CustomRule;
+  initChannelImgUrl: string;
 }
 
 export const TFTInitialValue: TFTInitial = {
@@ -28,7 +29,6 @@ export const TFTInitialValue: TFTInitial = {
   initBasicInfo: {
     title: '',
     participationNum: 0,
-    channelImageUrl: '',
   },
   initIsUseCustomRule: {
     tierMax: false,
@@ -40,4 +40,5 @@ export const TFTInitialValue: TFTInitial = {
     tierMin: 0,
     playCountMin: 50,
   },
+  initChannelImgUrl: '',
 };

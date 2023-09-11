@@ -10,7 +10,6 @@ interface MakeGameProps {
 export interface BasicInfo {
   title: string;
   participationNum: number;
-  channelImageUrl: string;
 }
 
 export interface IsUseCustomRule {
@@ -33,6 +32,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     initBasicInfo,
     initIsUseCustomRule,
     initCustomRule,
+    initChannelImgUrl,
   } = TFTInitialValue;
 
   const [currentStep, setCurrentStep] = useState<number>(initCurrentStep);
@@ -41,7 +41,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
   const [basicInfo, setBasicInfo] = useState<BasicInfo>(initBasicInfo);
   const [isUseCustomRule, setIsUseCustomRule] = useState<IsUseCustomRule>(initIsUseCustomRule);
   const [customRule, setCustomRule] = useState<CustomRule>(initCustomRule);
-
+  const [channelImgUrl, setChannelImgUrl] = useState<string>('');
   const handleCurrentStep = () => {
     if (currentStep < 3) {
       setCurrentStep((prev) => prev + 1);
@@ -72,6 +72,10 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     setCustomRule({ ...customRule, [type]: value });
   };
 
+  const handleImgUrl = (url: string) => {
+    setChannelImgUrl(url);
+  };
+
   const resetState = () => {
     setCurrentStep(initCurrentStep);
     setGameCategory(initCategory);
@@ -79,6 +83,7 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     setBasicInfo(initBasicInfo);
     setIsUseCustomRule(initIsUseCustomRule);
     setCustomRule(initCustomRule);
+    setChannelImgUrl(initChannelImgUrl);
   };
 
   const isHaveBlankValue = () => {
@@ -108,6 +113,8 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     handleCustomRule,
     resetState,
     isHaveBlankValue,
+    channelImgUrl,
+    handleImgUrl,
   };
 
   return <MakeGameContext.Provider value={contextValue}>{children}</MakeGameContext.Provider>;

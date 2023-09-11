@@ -23,6 +23,7 @@ const MakeChannel = () => {
     customRule,
     resetState,
     isHaveBlankValue,
+    channelImgUrl,
   } = useMakeGame();
 
   const { addChannel } = useChannels();
@@ -47,6 +48,7 @@ const MakeChannel = () => {
           tierMin: customRule.tierMin,
           playCount: isUseCustomRule.playCount,
           playCountMin: customRule.playCountMin,
+          channelImageUrl: channelImgUrl,
         },
       });
       resetState();
