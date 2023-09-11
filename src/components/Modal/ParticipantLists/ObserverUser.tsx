@@ -31,6 +31,7 @@ const ObserverUser = () => {
     if (res.status !== 200) return;
     const updatedObservers = observers?.filter((user) => user.pk !== observer.pk);
     setObservers(updatedObservers);
+    alert('정상적으로 처리되었습니다');
   };
 
   useEffect(() => {

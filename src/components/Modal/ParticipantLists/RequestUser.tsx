@@ -42,6 +42,7 @@ const RequestUser = () => {
     if (res.status !== 200) return;
     const updatedRequestUsers = requestUsers?.filter((user) => user.pk !== requestUser.pk);
     setRequestUsers(updatedRequestUsers);
+    alert('정상적으로 처리되었습니다');
   };
 
   useEffect(() => {

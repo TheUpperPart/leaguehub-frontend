@@ -39,6 +39,7 @@ const ParticipantUser = () => {
     if (res.status !== 200) return;
     const updatedParticipants = participants?.filter((user) => user.pk !== participant.pk);
     setParticipants(updatedParticipants);
+    alert('정상적으로 처리되었습니다');
   };
 
   useEffect(() => {
