@@ -1,3 +1,4 @@
+import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import { SERVER_URL } from '@config/index';
 import { css } from '@emotion/react';
@@ -44,6 +45,21 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
   const submitHandler = (): boolean => {
     if (nickname && checked) return false;
     return true;
+  };
+
+  const onClickSubmit: MouseEventHandler<HTMLElement> = async () => {
+    if (!nickname || !checked) return;
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/${channelLink}/participant`,
+      data: {
+        gameId,
+        nickname,
+      },
+    });
+    if (res.status !== 200) return;
+    alert('정상적으로 리그참여 요청을 전송했어요');
+    onClose();
   };
 
   useEffect(() => {
@@ -124,7 +140,9 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
       </CheckboxWrapper>
       <Wrapper>
         <SubmitButton onClick={onClose}>취소</SubmitButton>
-        <SubmitButton disabled={submitHandler()}>신청</SubmitButton>
+        <SubmitButton disabled={submitHandler()} onClick={onClickSubmit}>
+          신청
+        </SubmitButton>
       </Wrapper>
     </Container>
   );
