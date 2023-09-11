@@ -230,6 +230,12 @@ const profileHandlers = [
     ];
     return res(ctx.status(200), ctx.json(requestUsers));
   }),
+  rest.post(SERVER_URL + '/api/:channelLink/:participantId/player', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
+  rest.post(SERVER_URL + '/api/:channelLink/:participantId/observer', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
 ];
 
 export default profileHandlers;
