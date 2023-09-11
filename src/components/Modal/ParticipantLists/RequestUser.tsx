@@ -6,6 +6,14 @@ import useChannels from '@hooks/useChannels';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+const postData = async (url: string) => {
+  const res = await authAPI({
+    method: 'post',
+    url: url,
+  });
+  return res;
+};
+
 const RequestUser = () => {
   const [requestUsers, setRequestUsers] = useState<Participant[]>();
   const { currentChannel, channelPermission } = useChannels();
@@ -22,15 +30,18 @@ const RequestUser = () => {
     return text1 + ' (' + text2 + ')';
   };
 
-  const onClickPromotionUser = async (observer: Participant) => {
-    if (!confirm(`${observer.nickname}님을 관리자 권한을 부여하겠습니까?`)) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${currentChannel}/${observer.pk}/host`,
-    });
+  const onClick = async (requestUser: Participant, mode: boolean) => {
+    let res;
+    if (mode) {
+      if (!confirm(`${requestUser.nickname}님 대회 참가를 수락하시겠습니까?`)) return;
+      res = await postData(`/api/${currentChannel}/${requestUser.gameId}/player`);
+    } else {
+      if (!confirm(`${requestUser.nickname}님 대회 참가를 거절하시겠습니까?`)) return;
+      res = await postData(`/api/${currentChannel}/${requestUser.gameId}/observer`);
+    }
     if (res.status !== 200) return;
-    const updatedObservers = requestUsers?.filter((user) => user.pk !== observer.pk);
-    setRequestUsers(updatedObservers);
+    const updatedRequestUsers = requestUsers?.filter((user) => user.pk !== requestUser.pk);
+    setRequestUsers(updatedRequestUsers);
   };
 
   useEffect(() => {
@@ -62,10 +73,10 @@ const RequestUser = () => {
             </div>
             {channelPermission === 0 && (
               <>
-                <AdvanceUserButton onClick={() => onClickPromotionUser(requestUser)}>
+                <AdvanceUserButton onClick={() => onClick(requestUser, true)}>
                   승인
                 </AdvanceUserButton>
-                <AdvanceUserButton onClick={() => onClickPromotionUser(requestUser)}>
+                <AdvanceUserButton onClick={() => onClick(requestUser, false)}>
                   거절
                 </AdvanceUserButton>
               </>
