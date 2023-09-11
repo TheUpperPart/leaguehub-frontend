@@ -80,7 +80,7 @@ const RequestUser = () => {
 export default RequestUser;
 
 const RequestUserContainer = styled.ul`
-  max-height: 50vh;
+  height: 50vh;
   overflow: auto;
 `;
 

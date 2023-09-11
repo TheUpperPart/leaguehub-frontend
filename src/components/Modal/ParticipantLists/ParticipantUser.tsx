@@ -81,7 +81,7 @@ const ParticipantUser = () => {
 export default ParticipantUser;
 
 const ParticipantContainer = styled.ul`
-  max-height: 50vh;
+  height: 50vh;
   overflow: auto;
 `;
 

@@ -75,7 +75,7 @@ const ObserverUser = () => {
 export default ObserverUser;
 
 const ObserverContainer = styled.ul`
-  max-height: 50vh;
+  height: 50vh;
   overflow: auto;
 `;
 
