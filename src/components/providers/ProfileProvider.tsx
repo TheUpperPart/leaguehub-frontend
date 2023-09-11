@@ -6,12 +6,17 @@ import { Profile } from '@type/profile';
 import authAPI from '@apis/authAPI';
 import Cookies from 'js-cookie';
 
+interface ProfileAPI {
+  nickName: string;
+  profileImageUrl: string;
+}
+
 interface ProfileProviderProps {
   children: React.ReactNode;
 }
 
 const fetchProfile = async () => {
-  const res = await authAPI<Profile>({
+  const res = await authAPI<ProfileAPI>({
     method: 'get',
     url: '/api/member/profile',
   });
@@ -26,7 +31,7 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
   const [profile, setProfile] = useState<Profile | null>(null);
 
   // 유저의 프로필 가져오기
-  const profileQuery = useQuery<Profile>({
+  const profileQuery = useQuery<ProfileAPI>({
     queryKey: ['getProfile'],
     queryFn: fetchProfile,
     enabled: isHaveAccessToken ? true : false, // 액세스 토큰이 있으면 query 요청
@@ -35,7 +40,10 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
   // 프로필 데이터를 가져왔다면
   useEffect(() => {
     if (profileQuery.data) {
-      setProfile({ ...profileQuery.data });
+      setProfile({
+        nickname: profileQuery.data.nickName,
+        profileUrl: profileQuery.data?.profileImageUrl,
+      });
     }
   }, [profileQuery.data]);
 

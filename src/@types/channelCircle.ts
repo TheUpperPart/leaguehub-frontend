@@ -1,7 +1,7 @@
 export interface ChannelCircleProps {
   channelLink: string;
   title: string;
-  category: number;
+  gameCategory: number;
   imgSrc?: string;
   customChannelIndex: number;
 }
