@@ -71,6 +71,9 @@ const channelHandlers = [
   rest.post(SERVER_URL + '/api/channel/:channelLink', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({}));
   }),
+  rest.post(SERVER_URL + '/api/:channelLink/participant', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
 ];
 
 export default channelHandlers;
