@@ -1,4 +1,5 @@
 import Icon from '@components/Icon';
+import CheckInPage from '@components/RoundCheckIn/CheckInPage';
 import PlayerLists from '@components/RoundCheckIn/PlayerLists';
 import styled from '@emotion/styled';
 
@@ -18,7 +19,10 @@ const RoundCheckIn = () => {
           </CheckInfo>
         </FlexWrapper>
       </ContainerHeader>
-      <PlayerLists />
+      <FlexWrapper>
+        <PlayerLists />
+        <CheckInPage />
+      </FlexWrapper>
     </Container>
   );
 };
@@ -32,7 +36,7 @@ const Container = styled.div`
 const ContainerHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 60%;
+  width: 70%;
   font-size: 2rem;
   margin-bottom: 5rem;
 `;
