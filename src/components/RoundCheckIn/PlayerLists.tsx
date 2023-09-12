@@ -1,4 +1,5 @@
 import authAPI from '@apis/authAPI';
+import Icon from '@components/Icon';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
@@ -38,10 +39,12 @@ const PlayerLists = () => {
       {players.length !== 0 &&
         players.map((player) => (
           <MenuList>
-            <MenuItem>{player.matchRank}</MenuItem>
+            <MenuItem># {player.matchRank}</MenuItem>
             <MenuItem>{player.participantGameId}</MenuItem>
             <MenuItem>{player.playerScore}</MenuItem>
-            <MenuItem>췤(소켓)</MenuItem>
+            <MenuItem>
+              <Icon kind='checked' color='1975FF' />
+            </MenuItem>
           </MenuList>
         ))}
     </Container>
@@ -59,6 +62,16 @@ const Container = styled.div`
 const MenuList = styled.ul`
   display: flex;
   justify-content: space-between;
+  font-size: 1.4rem;
+  border: 1px solid #e4e7ec;
+  border-radius: 0.5rem;
+  padding: 1rem 0 1rem;
+  margin-bottom: 0.5rem;
+
+  &: first-child {
+    color: #97a1af;
+    margin-bottom: 1rem;
+  }
 `;
 
 const MenuItem = styled.li`
