@@ -1,5 +1,6 @@
 import ObserverUser from '@components/Modal/ParticipantLists/ObserverUser';
 import ParticipantUser from '@components/Modal/ParticipantLists/ParticipantUser';
+import RequestUser from '@components/Modal/ParticipantLists/RequestUser';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
 import { useState } from 'react';
@@ -17,6 +18,8 @@ const ParticipantList = ({ leagueTitle }: ParticipantListProps) => {
     switch (currentMenu) {
       case 'observers':
         return <ObserverUser />;
+      case 'requestUsers':
+        return <RequestUser />;
       default:
         return <ParticipantUser />;
     }
@@ -30,12 +33,20 @@ const ParticipantList = ({ leagueTitle }: ParticipantListProps) => {
           대회 참여자
         </MenuList>
         {channelPermission === 0 && (
-          <MenuList
-            isSelected={currentMenu === 'observers'}
-            onClick={() => setCurrentMenu('observers')}
-          >
-            관전자
-          </MenuList>
+          <>
+            <MenuList
+              isSelected={currentMenu === 'requestUsers'}
+              onClick={() => setCurrentMenu('requestUsers')}
+            >
+              참여요청
+            </MenuList>
+            <MenuList
+              isSelected={currentMenu === 'observers'}
+              onClick={() => setCurrentMenu('observers')}
+            >
+              관전자
+            </MenuList>
+          </>
         )}
       </Menu>
       {renderMenuContent()}

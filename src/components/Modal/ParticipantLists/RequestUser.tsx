@@ -6,31 +6,42 @@ import useChannels from '@hooks/useChannels';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const ObserverUser = () => {
-  const [observers, setObservers] = useState<Participant[]>();
+const postData = async (url: string) => {
+  const res = await authAPI({
+    method: 'post',
+    url: url,
+  });
+  return res;
+};
+
+const RequestUser = () => {
+  const [requestUsers, setRequestUsers] = useState<Participant[]>();
   const { currentChannel, channelPermission } = useChannels();
 
   const fetchData = async () => {
     const res = await authAPI<Participant[]>({
       method: 'get',
-      url: `/api/${currentChannel}/observers`,
+      url: `/api/${currentChannel}/player/requests`,
     });
-    setObservers(res.data);
+    setRequestUsers(res.data);
   };
 
   const combineText = (text1: string, text2: string) => {
     return text1 + ' (' + text2 + ')';
   };
 
-  const onClickPromotionUser = async (observer: Participant) => {
-    if (!confirm(`${observer.nickname}님을 관리자 권한을 부여하겠습니까?`)) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${currentChannel}/${observer.pk}/host`,
-    });
+  const onClick = async (requestUser: Participant, mode: boolean) => {
+    let res;
+    if (mode) {
+      if (!confirm(`${requestUser.nickname}님 대회 참가를 수락하시겠습니까?`)) return;
+      res = await postData(`/api/${currentChannel}/${requestUser.gameId}/player`);
+    } else {
+      if (!confirm(`${requestUser.nickname}님 대회 참가를 거절하시겠습니까?`)) return;
+      res = await postData(`/api/${currentChannel}/${requestUser.gameId}/observer`);
+    }
     if (res.status !== 200) return;
-    const updatedObservers = observers?.filter((user) => user.pk !== observer.pk);
-    setObservers(updatedObservers);
+    const updatedRequestUsers = requestUsers?.filter((user) => user.pk !== requestUser.pk);
+    setRequestUsers(updatedRequestUsers);
     alert('정상적으로 처리되었습니다');
   };
 
@@ -39,9 +50,9 @@ const ObserverUser = () => {
   }, []);
 
   return (
-    <ObserverContainer>
-      {observers?.map((observer) => (
-        <ObserverWrapper key={observer.pk}>
+    <RequestUserContainer>
+      {requestUsers?.map((requestUser) => (
+        <ObserverWrapper key={requestUser.pk}>
           <div
             css={css`
               display: flex;
@@ -49,8 +60,8 @@ const ObserverUser = () => {
               font-size: 1.5rem;
             `}
           >
-            <StyledImage src={observer.imgSrc} alt='관전자' width={50} height={50} />
-            {observer.nickname}
+            <StyledImage src={requestUser.imgSrc} alt='관전자' width={50} height={50} />
+            {requestUser.nickname}
           </div>
           <ObserverInfo>
             <div
@@ -59,23 +70,28 @@ const ObserverUser = () => {
                 color: #adb5bd;
               `}
             >
-              {combineText(observer.gameId, observer.tier)}
+              {combineText(requestUser.gameId, requestUser.tier)}
             </div>
             {channelPermission === 0 && (
-              <AdvanceUserButton onClick={() => onClickPromotionUser(observer)}>
-                권한부여
-              </AdvanceUserButton>
+              <>
+                <AdvanceUserButton onClick={() => onClick(requestUser, true)}>
+                  승인
+                </AdvanceUserButton>
+                <AdvanceUserButton onClick={() => onClick(requestUser, false)}>
+                  거절
+                </AdvanceUserButton>
+              </>
             )}
           </ObserverInfo>
         </ObserverWrapper>
       ))}
-    </ObserverContainer>
+    </RequestUserContainer>
   );
 };
 
-export default ObserverUser;
+export default RequestUser;
 
-const ObserverContainer = styled.ul`
+const RequestUserContainer = styled.ul`
   height: 50vh;
   overflow: auto;
 `;
@@ -106,13 +122,21 @@ const ObserverInfo = styled.div`
 const AdvanceUserButton = styled.button`
   border: none;
   background-color: #0067a3;
-  width: 6rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   font-size: 1.5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
 
   &: hover {
     cursor: pointer;
+  }
+
+  &: nth-of-type(1) {
+    background-color: #0067a3;
+  }
+
+  &: nth-of-type(2) {
+    background-color: #ff0044;
   }
 `;
