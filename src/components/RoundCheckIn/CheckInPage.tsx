@@ -34,7 +34,7 @@ const RemainTimeWrapper = styled.div`
   border-radius: 0.5rem;
   background: #202b37;
   color: white;
-  height: 3rem;
+  height: 5rem;
   padding: 1rem;
   font-size: 1.3rem;
   align-items: center;
@@ -54,7 +54,7 @@ const ButtonWrapper = styled.div`
 
 const Button = styled.button`
   width: 48%;
-  height: 3rem;
+  height: 5rem;
   color: white;
   background: #637083;
   border: none;

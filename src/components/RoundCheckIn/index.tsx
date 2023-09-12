@@ -42,7 +42,8 @@ const ContainerHeader = styled.div`
 `;
 
 const RoundInfo = styled.div`
-  padding-top: 1.5rem;
+  padding-top: 3rem;
+  padding-left: 5rem;
 `;
 
 const FlexWrapper = styled.div`
@@ -53,7 +54,7 @@ const CheckInfo = styled.div`
   display: flex;
   background-color: #e4e7ec;
   padding: 1rem;
-  margin: 1rem;
+  margin: 3rem 1rem 1rem 1rem;
   border-radius: 0.5rem;
   font-size: 1.6rem;
   width: 10rem;
