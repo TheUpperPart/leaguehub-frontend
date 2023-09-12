@@ -42,7 +42,7 @@ const PlayerLists = () => {
             <MenuItem>{player.participantGameId}</MenuItem>
             <MenuItem>{player.playerScore}</MenuItem>
             <MenuItem>
-              <Icon kind='checked' color='1975FF' />
+              <Icon kind='checked' color='1975FF' size={24} />
             </MenuItem>
           </MenuList>
         ))}
@@ -60,12 +60,15 @@ const Container = styled.div`
 
 const MenuList = styled.ul`
   display: flex;
+  height: 6rem;
+  align-items: center;
   justify-content: space-between;
   font-size: 1.4rem;
   border: 1px solid #e4e7ec;
   border-radius: 0.5rem;
   padding: 1rem 0 1rem;
   margin-bottom: 0.5rem;
+  background: #fff;
 
   &: first-of-type {
     color: #97a1af;
