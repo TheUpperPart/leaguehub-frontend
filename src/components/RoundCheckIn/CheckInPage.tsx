@@ -30,6 +30,15 @@ const Container = styled.div`
 
 const RemainTimeWrapper = styled.div`
   display: flex;
+  width: 100%;
+  border-radius: 0.5rem;
+  background: #202b37;
+  color: white;
+  height: 3rem;
+  padding: 1rem;
+  font-size: 1.3rem;
+  align-items: center;
+  margin-bottom: 1rem;
 `;
 
 const RemainTimeItem = styled.div`
@@ -40,8 +49,16 @@ const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  margin-bottom: 1rem;
 `;
 
-const Button = styled.button``;
+const Button = styled.button`
+  width: 48%;
+  height: 3rem;
+  color: white;
+  background: #637083;
+  border: none;
+  border-radius: 0.5rem;
+`;
 
 const ChattingWrapper = styled.div``;
