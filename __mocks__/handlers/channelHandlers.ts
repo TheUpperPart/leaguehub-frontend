@@ -7,25 +7,25 @@ const getChannels: ChannelCircleProps[][] = [
     {
       channelLink: '123',
       title: '부경대 총장기',
-      category: 0,
+      gameCategory: 0,
       customChannelIndex: 0,
     },
     {
       channelLink: '234',
       title: '부경대 총장기',
-      category: 1,
+      gameCategory: 1,
       customChannelIndex: 1,
     },
     {
       channelLink: '345',
       title: '부경대 총장기',
-      category: 2,
+      gameCategory: 2,
       customChannelIndex: 2,
     },
     {
       channelLink: '456',
       title: '부경대 총장기',
-      category: 3,
+      gameCategory: 3,
       customChannelIndex: 3,
     },
   ],
@@ -36,7 +36,7 @@ const postChannels: ChannelCircleProps[] = [
   {
     channelLink: '26734',
     title: '부경대 추가대회',
-    category: 1,
+    gameCategory: 1,
     customChannelIndex: 4,
   },
 ];

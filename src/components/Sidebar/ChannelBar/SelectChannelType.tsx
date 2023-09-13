@@ -39,7 +39,7 @@ const SelectChannelType = (props: Props) => {
       const newChannel: ChannelCircleProps = {
         channelLink: res.data.channelLink,
         title: res.data.title,
-        category: res.data.category,
+        gameCategory: res.data.gameCategory,
         imgSrc: res.data?.imgSrc,
         customChannelIndex: res.data.customChannelIndex,
       };
