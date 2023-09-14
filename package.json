@@ -34,7 +34,8 @@
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^8.0.7"
+    "react-markdown": "^8.0.7",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.4",
