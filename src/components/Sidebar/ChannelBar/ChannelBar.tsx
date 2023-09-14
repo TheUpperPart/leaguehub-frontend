@@ -89,8 +89,7 @@ const ChannelbarContainer = styled.div`
   padding: 2rem 0;
   width: 10rem;
 
-  min-height: 100vh;
-  height: 100%;
+  height: 100vh;
 
   background-color: #141c24;
   float: left;
