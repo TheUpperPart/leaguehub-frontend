@@ -13,6 +13,8 @@ import {
   MdRefresh,
   MdSend,
   MdModeEdit,
+  MdSettings,
+  MdCancel,
 } from 'react-icons/md';
 import { MouseEventHandler } from 'react';
 
@@ -29,6 +31,8 @@ const ICON: { [key in IconKind]: IconType } = {
   refresh: MdRefresh,
   sendEmail: MdSend,
   modify: MdModeEdit,
+  setting: MdSettings,
+  cancel: MdCancel,
 };
 
 interface IconProps {
