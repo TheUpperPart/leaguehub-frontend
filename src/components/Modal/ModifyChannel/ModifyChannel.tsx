@@ -1,8 +1,8 @@
-import authAPI from '@apis/authAPI';
-import { css } from '@emotion/react';
+import Icon from '@components/Icon';
+import BasicInfoChannel from '@components/ModifyChannel/BasicInfoChannel';
+import BracketInfoChannel from '@components/ModifyChannel/BracketInfoChannel';
 import styled from '@emotion/styled';
-import { useRef } from 'react';
-
+import { useState } from 'react';
 interface ModifyChannelProps {
   channelLink: string;
   leagueTitle: string;
@@ -10,68 +10,38 @@ interface ModifyChannelProps {
   onClose: (leagueTitle?: string, maxPlayer?: number) => void;
 }
 
-const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyChannelProps) => {
-  const leagueTitleRef = useRef<HTMLInputElement>(null);
-  const maxPlayerRef = useRef<HTMLInputElement>(null);
+type MenuList = 'basicInfo' | 'bracketInfo';
 
-  const onClickSubmit = async () => {
-    console.log(leagueTitleRef.current?.value, maxPlayerRef.current?.value);
-    if (!leagueTitleRef.current || !maxPlayerRef.current) return;
-    const updatedLeagueTitle = leagueTitleRef.current.value;
-    const updatedMaxPlayer = parseInt(maxPlayerRef.current.value, 10);
-    if (isNaN(updatedMaxPlayer)) {
-      alert('최대인원수를 숫자로 입력해주세요');
-      return;
-    }
-    if (!confirm('리그를 수정하시겠습니까?')) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/channel/${channelLink}`,
-      data: {
-        title: updatedLeagueTitle,
-        maxPlayer: updatedMaxPlayer,
-      },
-    });
-    if (res.status !== 200) return;
-    alert('정보가 수정되었습니다');
-    onClose(updatedLeagueTitle, updatedMaxPlayer);
+const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyChannelProps) => {
+  const [selectedMenu, setSelectedMenu] = useState<MenuList>('basicInfo');
+
+  const handleSelectedMenu = (menu: MenuList) => {
+    setSelectedMenu(menu);
   };
 
   return (
     <Container>
-      <Wrapper
-        css={css`
-          padding-bottom: 3rem;
-        `}
-      >
-        <h1>리그 수정하기</h1>
-      </Wrapper>
-      <Wrapper>
-        <FlexWrapper>리그 제목</FlexWrapper>
-        <FlexWrapper>
-          <Input
-            type='text'
-            placeholder='리그 제목을 입력해주세요'
-            ref={leagueTitleRef}
-            defaultValue={leagueTitle}
+      <Sidebar>
+        <SidebarContent onClick={() => handleSelectedMenu('basicInfo')}>
+          대회 기본 정보 수정
+        </SidebarContent>
+        <SidebarContent onClick={() => handleSelectedMenu('bracketInfo')}>
+          대진표 수정
+        </SidebarContent>
+      </Sidebar>
+      <MainContent>
+        {selectedMenu === 'basicInfo' && (
+          <BasicInfoChannel
+            channelLink={channelLink}
+            leagueTitle={leagueTitle}
+            maxPlayer={maxPlayer}
           />
-        </FlexWrapper>
-      </Wrapper>
-      <Wrapper>
-        <FlexWrapper>최대 참여자 인원</FlexWrapper>
-        <FlexWrapper>
-          <Input
-            type='text'
-            placeholder='최대 인원을 설정해주세요'
-            ref={maxPlayerRef}
-            defaultValue={maxPlayer}
-          />
-        </FlexWrapper>
-      </Wrapper>
-      <ButtonWrapper>
-        <SubmitButton onClick={() => onClose()}>취소</SubmitButton>
-        <SubmitButton onClick={onClickSubmit}>수정하기</SubmitButton>
-      </ButtonWrapper>
+        )}
+        {selectedMenu === 'bracketInfo' && <BracketInfoChannel />}
+      </MainContent>
+      <CloseButtonContainer>
+        <Icon kind='cancel' size={40} onClick={() => onClose()} />
+      </CloseButtonContainer>
     </Container>
   );
 };
@@ -79,58 +49,42 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
 export default ModifyChannel;
 
 const Container = styled.div`
-  color: black;
-  padding: 5%;
-`;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
 
-const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  min-height: 7rem;
 `;
 
-const FlexWrapper = styled.div`
-  flex: 1;
-  justify-content: flex-start;
+const Sidebar = styled.div`
+  width: 30rem;
+  background-color: #141c24;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  font-size: 1.7rem;
-  font-weight: bold;
-  min-height: 7rem;
-`;
-
-const Input = styled.input`
+const SidebarContent = styled.div`
   width: 80%;
-  height: 4rem;
-  border: none;
-  border-radius: 0.6rem;
-  padding: 0.6rem;
+  height: 5rem;
+  margin: 0 auto;
+  color: white;
+
+  font-size: 2rem;
+  font-weight: 900;
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
 `;
 
-const SubmitButton = styled.button`
-  width: 10rem;
-  height: 6rem;
-  background-color: #344051;
-  border: none;
-  border-radius: 0.5rem;
-  color: white;
-  margin: 0 6rem 0 6rem;
-  &:hover {
-    cursor: pointer;
-  }
-  &:disabled {
-    background-color: #d3d3d3;
-    cursor: not-allowed;
-  }
+const MainContent = styled.div`
+  width: calc(100vw - 30rem);
+
+  background-color: #202b37;
+`;
+
+const CloseButtonContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
 `;
