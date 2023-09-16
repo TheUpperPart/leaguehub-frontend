@@ -95,6 +95,7 @@ const ChannelbarContainer = styled.div`
 
   padding: 2rem 0;
   width: 10rem;
+
   height: 100vh;
 
   background-color: #141c24;

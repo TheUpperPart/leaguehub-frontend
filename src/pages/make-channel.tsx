@@ -99,7 +99,7 @@ export const fadeIn = keyframes`
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - 5.5rem);
+  height: calc(100vh - 5.5rem);
   position: relative;
 `;
 

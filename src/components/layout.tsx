@@ -39,7 +39,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         </SidebarWrapper>
         <Wrapper>
           <Header />
-          <main>{children}</main>
+          <Main>{children}</Main>
         </Wrapper>
       </CommonLayout>
     </>
@@ -52,10 +52,27 @@ const CommonLayout = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 100vh;
 `;
 
 const SidebarWrapper = styled.div`
   flex: 0 0;
+`;
+
+const Main = styled.main`
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #202b37;
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #344051;
+    border-radius: 1rem;
+  }
 `;
 
 export default Layout;
