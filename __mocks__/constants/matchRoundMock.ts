@@ -1,11 +1,11 @@
 import { BracketContents } from '@type/bracket';
 
 interface mockRoundData {
-  [key: string]: BracketContents;
+  [key: number]: BracketContents;
 }
 
 export const matchRoundMock: mockRoundData = {
-  '1': {
+  1: {
     myGameId: 'NO_DATA',
     matchInfoDtoList: [
       {
@@ -439,7 +439,7 @@ export const matchRoundMock: mockRoundData = {
       },
     ],
   },
-  '2': {
+  2: {
     myGameId: 'NO_DATA',
     matchInfoDtoList: [
       {
@@ -658,7 +658,7 @@ export const matchRoundMock: mockRoundData = {
       },
     ],
   },
-  '3': {
+  3: {
     myGameId: 'NO_DATA',
     matchInfoDtoList: [
       {
@@ -773,7 +773,7 @@ export const matchRoundMock: mockRoundData = {
       },
     ],
   },
-  '4': {
+  4: {
     myGameId: 'NO_DATA',
     matchInfoDtoList: [
       {

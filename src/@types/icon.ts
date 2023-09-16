@@ -10,4 +10,6 @@ export type IconKind =
   | 'clock'
   | 'refresh'
   | 'sendEmail'
-  | 'modify';
+  | 'modify'
+  | 'setting'
+  | 'cancel';

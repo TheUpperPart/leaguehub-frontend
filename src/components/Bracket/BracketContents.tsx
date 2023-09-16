@@ -39,29 +39,33 @@ const BracketContents = (props: Props) => {
           return (
             <MatchContainer>
               <MatchHeader>
-                <MatchHeaderRound>R{match.matchRoundCount}</MatchHeaderRound>
+                <MatchHeaderRound>M{match.matchRoundCount}</MatchHeaderRound>
                 <MatchHeaderName>{match.matchName}</MatchHeaderName>
                 <MatchHeaderMore>자세히</MatchHeaderMore>
               </MatchHeader>
               <MatchContent>
-                {match.matchPlayerInfoList.map((user) => {
-                  return (
-                    <UserContainer myself={user.gameId === data.myGameId}>
-                      <UserImgContainer>
-                        {user.profileSrc ? (
-                          <UserImg src={user.profileSrc} alt='profile' width={30} height={30} />
-                        ) : (
-                          <UserNameImg>
-                            <UserNameImgText>{user.gameId.substring(0, 2)}</UserNameImgText>
-                          </UserNameImg>
-                        )}
-                      </UserImgContainer>
+                {match.matchPlayerInfoList.length === 0 ? (
+                  <MatchNoGame>아직 대진표가 생성되지 않았어요 :(</MatchNoGame>
+                ) : (
+                  match.matchPlayerInfoList.map((user) => {
+                    return (
+                      <UserContainer myself={user.gameId === data.myGameId}>
+                        <UserImgContainer>
+                          {user.profileSrc ? (
+                            <UserImg src={user.profileSrc} alt='profile' width={30} height={30} />
+                          ) : (
+                            <UserNameImg>
+                              <UserNameImgText>{user.gameId.substring(0, 2)}</UserNameImgText>
+                            </UserNameImg>
+                          )}
+                        </UserImgContainer>
 
-                      <UserName>{user.gameId}</UserName>
-                      <UserScore>{user.score}</UserScore>
-                    </UserContainer>
-                  );
-                })}
+                        <UserName>{user.gameId}</UserName>
+                        <UserScore>{user.score}</UserScore>
+                      </UserContainer>
+                    );
+                  })
+                )}
               </MatchContent>
             </MatchContainer>
           );
@@ -78,6 +82,8 @@ const Container = styled.div``;
 const Header = styled.div``;
 
 const Content = styled.div`
+  position: relative;
+
   display: grid;
 
   max-width: 100rem;
@@ -168,6 +174,19 @@ const MatchContent = styled.div`
   row-gap: 0.5rem;
 
   flex-direction: column;
+`;
+
+const MatchNoGame = styled.div`
+  height: 35rem;
+  width: 21rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #b4b4b3;
+  opacity: 0.6;
+
+  font-size: 1.8 rem;
+  color: black;
 `;
 
 const UserContainer = styled.div<{ myself: boolean }>`
