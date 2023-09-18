@@ -65,6 +65,15 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
     };
   }, []);
 
+  const participantCheckin = () => {
+    if (!client || !matchPlayers) return;
+
+    client.publish({
+      destination: `/app/match/${matchId}/checkIn`,
+      body: JSON.stringify({ matchPlayerId: matchPlayers.requestMatchPlayerId }),
+    });
+  };
+
   return (
     <Container>
       <ContainerHeader>
@@ -85,7 +94,7 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
           checkInUsers={checkInUser}
           players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
         />
-        <CheckInPage />
+        <CheckInPage ParticipantCheckin={() => participantCheckin()} />
       </FlexWrapper>
     </Container>
   );
