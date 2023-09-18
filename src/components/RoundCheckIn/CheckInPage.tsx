@@ -63,6 +63,10 @@ const Button = styled.button`
   background: #637083;
   border: none;
   border-radius: 0.5rem;
+
+  &: hover {
+    cursor: pointer;
+  }
 `;
 
 const ChattingWrapper = styled.div``;
