@@ -1,32 +1,13 @@
-import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
+import { MatchPlayerScoreInfos } from '@components/RoundCheckIn';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
-interface MatchPlayerScoreInfos {
-  matchPlayerId: number;
-  participantId: number;
-  matchRank: number;
-  participantImageUrl: string;
-  participantGameId: string;
-  playerScore: number;
+interface PlayerListsProps {
+  players: MatchPlayerScoreInfos[];
+  checkInUsers: number[];
 }
 
-const PlayerLists = () => {
-  const [players, setPlayers] = useState<MatchPlayerScoreInfos[]>([]);
-
-  const fetchData = async (matchId: string) => {
-    const res = await authAPI({ method: 'get', url: `/api/match/${matchId}/player/info` });
-    if (res.status !== 200) return;
-    setPlayers(res.data.matchPlayerScoreInfos);
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      fetchData('matchId');
-    }, 1000);
-  }, []);
-
+const PlayerLists = ({ players, checkInUsers }: PlayerListsProps) => {
   return (
     <Container>
       <MenuList>
@@ -42,7 +23,11 @@ const PlayerLists = () => {
             <MenuItem>{player.participantGameId}</MenuItem>
             <MenuItem>{player.playerScore}</MenuItem>
             <MenuItem>
-              <Icon kind='checked' color='1975FF' size={24} />
+              {checkInUsers.includes(player.matchPlayerId) ? (
+                <Icon kind='checked' color='1975FF' size={24} />
+              ) : (
+                <Icon kind='notChecked' color='1975FF' size={24} />
+              )}
             </MenuItem>
           </MenuList>
         ))}
