@@ -18,7 +18,7 @@ const PlayerLists = ({ players, checkInUsers }: PlayerListsProps) => {
       </MenuList>
       {players.length !== 0 &&
         players.map((player) => (
-          <MenuList>
+          <MenuList key={player.matchPlayerId}>
             <MenuItem># {player.matchRank}</MenuItem>
             <MenuItem>{player.participantGameId}</MenuItem>
             <MenuItem>{player.playerScore}</MenuItem>
