@@ -73,7 +73,6 @@ const players = {
 
 const matchHandler = [
   rest.get(SERVER_URL + '/api/match/:matchId/player/info', (req, res, ctx) => {
-    console.log('qwe');
     return res(ctx.status(200), ctx.json(players));
   }),
 ];

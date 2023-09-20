@@ -27,7 +27,7 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
   const [matchPlayers, setMatchPlayers] = useState<GetMatchPlayerScoreInfos>();
   const [checkInUser, setCheckInUser] = useState<number[]>([]);
 
-  const fetchData = async (matchId: string) => {
+  const fetchData = async () => {
     const res = await authAPI<GetMatchPlayerScoreInfos>({
       method: 'get',
       url: `/api/match/${matchId}/player/info`,
@@ -43,7 +43,7 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
   };
 
   useEffect(() => {
-    fetchData('matchId');
+    fetchData();
 
     const tmpClient = connectToStomp();
     tmpClient.activate();
