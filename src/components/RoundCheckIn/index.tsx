@@ -43,9 +43,7 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      fetchData('matchId');
-    }, 1000);
+    fetchData('matchId');
 
     const tmpClient = connectToStomp();
     tmpClient.activate();
