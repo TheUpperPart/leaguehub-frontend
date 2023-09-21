@@ -2,7 +2,11 @@ import Icon from '@components/Icon';
 import CallAdminChat from '@components/RoundCheckIn/CallAdminChat';
 import styled from '@emotion/styled';
 
-const CheckInPage = () => {
+interface CheckInPageProps {
+  ParticipantCheckin: () => void;
+}
+
+const CheckInPage = ({ ParticipantCheckin }: CheckInPageProps) => {
   return (
     <Container>
       <RemainTimeWrapper>
@@ -11,7 +15,7 @@ const CheckInPage = () => {
         <RemainTimeItem>04:59</RemainTimeItem>
       </RemainTimeWrapper>
       <ButtonWrapper>
-        <Button>준비</Button>
+        <Button onClick={() => ParticipantCheckin()}>준비</Button>
         <Button>기권</Button>
       </ButtonWrapper>
       <ChattingWrapper>
@@ -59,6 +63,10 @@ const Button = styled.button`
   background: #637083;
   border: none;
   border-radius: 0.5rem;
+
+  &: hover {
+    cursor: pointer;
+  }
 `;
 
 const ChattingWrapper = styled.div``;

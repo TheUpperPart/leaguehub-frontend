@@ -2,8 +2,76 @@ import Icon from '@components/Icon';
 import CheckInPage from '@components/RoundCheckIn/CheckInPage';
 import PlayerLists from '@components/RoundCheckIn/PlayerLists';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { connectToStomp } from '@config/stomp';
+import { Client, StompSubscription } from '@stomp/stompjs';
+import authAPI from '@apis/authAPI';
 
-const RoundCheckIn = () => {
+export interface MatchPlayerScoreInfos {
+  matchPlayerId: number;
+  participantId: number;
+  matchRank: number;
+  participantImageUrl: string;
+  participantGameId: string;
+  playerScore: number;
+  playerStatus: string;
+}
+
+interface GetMatchPlayerScoreInfos {
+  requestMatchPlayerId: number;
+  matchPlayerScoreInfos: MatchPlayerScoreInfos[];
+}
+
+const RoundCheckIn = ({ matchId }: { matchId: string }) => {
+  const [client, setClient] = useState<Client>();
+  const [matchPlayers, setMatchPlayers] = useState<GetMatchPlayerScoreInfos>();
+  const [checkInUser, setCheckInUser] = useState<number[]>([]);
+
+  const fetchData = async () => {
+    const res = await authAPI<GetMatchPlayerScoreInfos>({
+      method: 'get',
+      url: `/api/match/${matchId}/player/info`,
+    });
+    if (res.status !== 200) return;
+
+    setMatchPlayers(res.data);
+    const readyUser = res.data.matchPlayerScoreInfos
+      .filter((info) => info.playerStatus === 'READY')
+      .map((info) => info.matchPlayerId);
+
+    setCheckInUser(readyUser);
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    const tmpClient = connectToStomp();
+    tmpClient.activate();
+
+    let subscription: StompSubscription;
+    tmpClient.onConnect = () => {
+      setClient(tmpClient);
+      subscription = tmpClient.subscribe(`/match/${matchId}`, (data) => {
+        setCheckInUser((prevUsers) => [...prevUsers, Number(JSON.parse(data.body).matchPlayerId)]);
+      });
+    };
+
+    return () => {
+      if (!client) return;
+      if (subscription) subscription.unsubscribe();
+      client.deactivate();
+    };
+  }, []);
+
+  const participantCheckin = () => {
+    if (!client || !matchPlayers) return;
+
+    client.publish({
+      destination: `/app/match/${matchId}/checkIn`,
+      body: JSON.stringify({ matchPlayerId: matchPlayers.requestMatchPlayerId }),
+    });
+  };
+
   return (
     <Container>
       <ContainerHeader>
@@ -20,8 +88,11 @@ const RoundCheckIn = () => {
         </FlexWrapper>
       </ContainerHeader>
       <FlexWrapper>
-        <PlayerLists />
-        <CheckInPage />
+        <PlayerLists
+          checkInUsers={checkInUser}
+          players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
+        />
+        <CheckInPage ParticipantCheckin={() => participantCheckin()} />
       </FlexWrapper>
     </Container>
   );
