@@ -52,7 +52,7 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
     tmpClient.onConnect = () => {
       setClient(tmpClient);
       subscription = tmpClient.subscribe(`/match/${matchId}`, (data) => {
-        setCheckInUser((prevUsers) => [...prevUsers, Number(data.body)]);
+        setCheckInUser((prevUsers) => [...prevUsers, Number(JSON.parse(data.body).matchPlayerId)]);
       });
     };
 
