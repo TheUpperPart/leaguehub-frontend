@@ -1,3 +1,4 @@
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -87,6 +88,13 @@ const BoardBody = ({ channelLink }: Props) => {
     setSelected(boardId);
   };
 
+  const dragEnd = ({ source, destination }: DropResult) => {
+    if (!destination) return;
+    if (source.index === destination.index) return;
+
+    console.log(source, destination);
+  };
+
   useEffect(() => {
     const lastVisitBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
 
@@ -102,29 +110,52 @@ const BoardBody = ({ channelLink }: Props) => {
   }, [channelLink, isSuccess]);
 
   return (
-    <Container>
-      {isSuccess &&
-        data.map((board) => (
-          <Wrapper
-            key={board.boardId}
-            data-id={board.boardId}
-            data-board-title={board.boardTitle}
-            onClick={onClickBoard}
-            isSelected={board.boardId === selected}
-          >
-            {board.boardTitle}
-            <Icon kind='lock' color='#637083' size='1.5rem' />
-          </Wrapper>
-        ))}
+    <DragDropContext onDragEnd={dragEnd}>
+      <Droppable droppableId='boards'>
+        {(provided) => (
+          <Container ref={provided.innerRef} {...provided.droppableProps}>
+            {isSuccess &&
+              data.map((board, index) =>
+                channelPermission === 0 ? (
+                  <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
+                    {(provided) => (
+                      <Wrapper
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        data-id={board.boardId}
+                        data-board-title={board.boardTitle}
+                        onClick={onClickBoard}
+                        isSelected={board.boardId === selected}
+                      >
+                        {board.boardTitle}
+                        <Icon kind='lock' color='#637083' size='1.5rem' />
+                      </Wrapper>
+                    )}
+                  </Draggable>
+                ) : (
+                  <Wrapper
+                    key={board.boardId}
+                    data-id={board.boardId}
+                    data-board-title={board.boardTitle}
+                    onClick={onClickBoard}
+                    isSelected={selected === board.boardId.toString()}
+                  >
+                    {board.boardTitle}
+                  </Wrapper>
+                ),
+              )}
+          </Container>
+        )}
+      </Droppable>
       {channelPermission === 0 && (
         <Wrapper isSelected={false} onClick={onClickNewBoard}>
           공지 추가하기
           <Icon kind='plus' color='#637083' size='1.6rem' />
         </Wrapper>
       )}
-
       <Boarder></Boarder>
-    </Container>
+    </DragDropContext>
   );
 };
 
@@ -144,6 +175,7 @@ const Wrapper = styled.li<{ isSelected: boolean }>`
   &:hover {
     background-color: #39587e;
   }
+  color: white;
 
   ${({ isSelected }) => isSelected && `background-color: #39587E`};
 `;
