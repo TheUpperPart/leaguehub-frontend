@@ -45,6 +45,7 @@ const postData = async (channelLink: string) => {
 
 const BoardBody = ({ channelLink }: Props) => {
   const [selected, setSelected] = useState<string>('');
+  const [boards, setBoards] = useState<Channels[]>();
   const router = useRouter();
 
   const { data, isSuccess } = useQuery(['getBoardLists', channelLink], () =>
@@ -72,13 +73,14 @@ const BoardBody = ({ channelLink }: Props) => {
   };
 
   const onClickNewBoard: MouseEventHandler<HTMLElement> = async () => {
+    if (boards === undefined) return;
     const res = await postData(channelLink);
     const newBoard: Channels = {
       boardId: res.boardId.toString(),
       boardTitle: res.boardTitle,
       boardIndex: res.boardIndex,
     };
-    data?.push(newBoard);
+    setBoards([...boards, newBoard]);
     selectBoardId(newBoard.boardId);
     handleBoard(channelLink, newBoard.boardId, res.boardTitle);
   };
@@ -89,14 +91,19 @@ const BoardBody = ({ channelLink }: Props) => {
   };
 
   const dragEnd = ({ source, destination }: DropResult) => {
-    if (!destination) return;
+    if (!destination || !boards) return;
     if (source.index === destination.index) return;
 
-    console.log(source, destination);
+    const newBoards = [...boards];
+    const [removed] = newBoards.splice(source.index, 1);
+    newBoards.splice(destination.index, 0, removed);
+
+    setBoards(newBoards);
   };
 
   useEffect(() => {
     const lastVisitBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
+    if (isSuccess) setBoards(data);
 
     if (lastVisitBoardId) {
       selectBoardId(lastVisitBoardId);
@@ -110,52 +117,54 @@ const BoardBody = ({ channelLink }: Props) => {
   }, [channelLink, isSuccess]);
 
   return (
-    <DragDropContext onDragEnd={dragEnd}>
-      <Droppable droppableId='boards'>
-        {(provided) => (
-          <Container ref={provided.innerRef} {...provided.droppableProps}>
-            {isSuccess &&
-              data.map((board, index) =>
-                channelPermission === 0 ? (
-                  <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
-                    {(provided) => (
-                      <Wrapper
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        data-id={board.boardId}
-                        data-board-title={board.boardTitle}
-                        onClick={onClickBoard}
-                        isSelected={board.boardId === selected}
-                      >
-                        {board.boardTitle}
-                        <Icon kind='lock' color='#637083' size='1.5rem' />
-                      </Wrapper>
-                    )}
-                  </Draggable>
-                ) : (
-                  <Wrapper
-                    key={board.boardId}
-                    data-id={board.boardId}
-                    data-board-title={board.boardTitle}
-                    onClick={onClickBoard}
-                    isSelected={selected === board.boardId.toString()}
-                  >
-                    {board.boardTitle}
-                  </Wrapper>
-                ),
+    <Container>
+      <DragDropContext onDragEnd={dragEnd}>
+        <Droppable droppableId='boards'>
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {boards &&
+                boards.map((board, index) =>
+                  channelPermission === 0 ? (
+                    <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
+                      {(provided) => (
+                        <Wrapper
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          data-id={board.boardId}
+                          data-board-title={board.boardTitle}
+                          onClick={onClickBoard}
+                          isSelected={board.boardId === selected}
+                        >
+                          {board.boardTitle}
+                          <Icon kind='lock' color='#637083' size='1.5rem' />
+                        </Wrapper>
+                      )}
+                    </Draggable>
+                  ) : (
+                    <Wrapper
+                      key={board.boardId}
+                      data-id={board.boardId}
+                      data-board-title={board.boardTitle}
+                      onClick={onClickBoard}
+                      isSelected={selected === board.boardId.toString()}
+                    >
+                      {board.boardTitle}
+                    </Wrapper>
+                  ),
+                )}
+              {channelPermission === 0 && (
+                <Wrapper isSelected={false} onClick={onClickNewBoard}>
+                  공지 추가하기
+                  <Icon kind='plus' color='#637083' size='1.6rem' />
+                </Wrapper>
               )}
-          </Container>
-        )}
-      </Droppable>
-      {channelPermission === 0 && (
-        <Wrapper isSelected={false} onClick={onClickNewBoard}>
-          공지 추가하기
-          <Icon kind='plus' color='#637083' size='1.6rem' />
-        </Wrapper>
-      )}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <Boarder></Boarder>
-    </DragDropContext>
+    </Container>
   );
 };
 
