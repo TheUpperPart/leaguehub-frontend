@@ -85,6 +85,18 @@ const BoardBody = ({ channelLink }: Props) => {
     handleBoard(channelLink, newBoard.boardId, res.boardTitle);
   };
 
+  const postCustomBoard = async (customedBoards: Channels[]) => {
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/channel/${channelLink}/order`,
+      data: {
+        channelBoardLoadDtoList: boards,
+      },
+    });
+
+    if (res.status === 200) setBoards(customedBoards);
+  };
+
   const selectBoardId = (boardId: string) => {
     router.push(`/contents/${channelLink}/${boardId}`);
     setSelected(boardId);
@@ -97,8 +109,10 @@ const BoardBody = ({ channelLink }: Props) => {
     const newBoards = [...boards];
     const [removed] = newBoards.splice(source.index, 1);
     newBoards.splice(destination.index, 0, removed);
-
-    setBoards(newBoards);
+    for (let i = 0; i < newBoards.length; i++) {
+      newBoards[i].boardIndex = i;
+    }
+    postCustomBoard(newBoards);
   };
 
   useEffect(() => {
