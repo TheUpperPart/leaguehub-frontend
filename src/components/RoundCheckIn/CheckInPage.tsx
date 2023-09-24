@@ -1,12 +1,17 @@
 import Icon from '@components/Icon';
+import { MatchPlayerScoreInfos } from '@components/RoundCheckIn';
 import CallAdminChat from '@components/RoundCheckIn/CallAdminChat';
 import styled from '@emotion/styled';
+import { Client } from '@stomp/stompjs';
 
 interface CheckInPageProps {
   ParticipantCheckin: () => void;
+  client: Client | undefined;
+  matchId: string;
+  players: MatchPlayerScoreInfos[];
 }
 
-const CheckInPage = ({ ParticipantCheckin }: CheckInPageProps) => {
+const CheckInPage = ({ ParticipantCheckin, client, matchId, players }: CheckInPageProps) => {
   return (
     <Container>
       <RemainTimeWrapper>
@@ -19,7 +24,7 @@ const CheckInPage = ({ ParticipantCheckin }: CheckInPageProps) => {
         <Button>기권</Button>
       </ButtonWrapper>
       <ChattingWrapper>
-        <CallAdminChat />
+        <CallAdminChat client={client} matchId={matchId} players={players} />
       </ChattingWrapper>
     </Container>
   );

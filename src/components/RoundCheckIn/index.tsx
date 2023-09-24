@@ -92,7 +92,12 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
           checkInUsers={checkInUser}
           players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
         />
-        <CheckInPage ParticipantCheckin={() => participantCheckin()} />
+        <CheckInPage
+          ParticipantCheckin={() => participantCheckin()}
+          client={client}
+          matchId={matchId}
+          players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
+        />
       </FlexWrapper>
     </Container>
   );

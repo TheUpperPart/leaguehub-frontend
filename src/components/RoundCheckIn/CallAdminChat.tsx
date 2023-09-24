@@ -1,7 +1,24 @@
+import { MatchPlayerScoreInfos } from '@components/RoundCheckIn';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Client } from '@stomp/stompjs';
+import { useEffect, useState } from 'react';
 
-const CallAdminChat = () => {
+interface CallAdminChatProps {
+  client: Client | undefined;
+  matchId: string;
+  players: MatchPlayerScoreInfos[];
+}
+
+interface Chat {
+  channelId: number;
+  content: string;
+  matchId: number;
+  participantId: number;
+  type: string;
+}
+
+const CallAdminChat = ({ client, matchId, players }: CallAdminChatProps) => {
   return (
     <Container>
       <Header>
@@ -48,6 +65,7 @@ const CallAdminButton = styled.button`
 
 const ChattingWrapper = styled.div`
   height: 30rem;
+  overflow: scroll;
 `;
 
 const InputChat = styled.input`
