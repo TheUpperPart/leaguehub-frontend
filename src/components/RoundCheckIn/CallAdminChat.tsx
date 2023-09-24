@@ -19,6 +19,18 @@ interface Chat {
 }
 
 const CallAdminChat = ({ client, matchId, players }: CallAdminChatProps) => {
+  const [chats, setChats] = useState<Chat[]>([]);
+
+  useEffect(() => {
+    if (!client) return;
+    const subscription = client.subscribe(`/match/${matchId}/chat`, (data) => {
+      setChats([...chats, JSON.parse(data.body)]);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [client]);
   return (
     <Container>
       <Header>
