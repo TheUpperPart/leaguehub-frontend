@@ -44,6 +44,16 @@ const boardsInfo: BoardsInfo = {
       boardTitle: '공지사항',
       boardIndex: 0,
     },
+    {
+      boardId: 'bbb',
+      boardTitle: '게임 룰',
+      boardIndex: 1,
+    },
+    {
+      boardId: 'ccc',
+      boardTitle: '커뮤니티',
+      boardIndex: 2,
+    },
   ],
   '234': [
     {
