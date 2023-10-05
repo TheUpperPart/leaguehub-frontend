@@ -9,6 +9,7 @@ import useChannels from '@hooks/useChannels';
 import Modal from '@components/Modal';
 import Icon from '@components/Icon';
 import useModals from '@hooks/useModals';
+import useMakeGame from '@hooks/useMakeGame';
 
 interface ChannelBarProps {
   channels: ChannelCircleProps[];
@@ -18,6 +19,8 @@ interface ChannelBarProps {
 const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
   const { dragAndDropChannels } = useChannels();
   const { openModal, closeModal } = useModals();
+
+  const { resetState } = useMakeGame();
 
   const dragEnd = ({ source, destination }: DropResult) => {
     if (!destination) {
@@ -78,7 +81,10 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
       <ChannelParticipate
         onClick={() =>
           openModal(Modal, {
-            onClose: () => closeModal(Modal),
+            onClose: () => {
+              closeModal(Modal);
+              resetState();
+            },
             children: <SelectChannelType handleModal={() => closeModal(Modal)} />,
           })
         }
