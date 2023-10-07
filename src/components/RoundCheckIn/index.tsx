@@ -6,33 +6,58 @@ import { useEffect, useState } from 'react';
 import { connectToStomp } from '@config/stomp';
 import { Client, StompSubscription } from '@stomp/stompjs';
 import authAPI from '@apis/authAPI';
+import { useRouter } from 'next/router';
 
 export interface MatchPlayerScoreInfos {
   matchPlayerId: number;
   participantId: number;
-  matchRank: number;
-  participantImageUrl: string;
-  participantGameId: string;
-  playerScore: number;
+  gameId: string;
+  gameTier: string;
   playerStatus: string;
+  score: number;
+  matchRank: number;
+  profileSrc: string;
+  matchPlayerResultStatus: string;
 }
 
-interface GetMatchPlayerScoreInfos {
+export interface MatchMessages {
+  channelId: number;
+  content: string;
+  matchId: number;
+  participantId: number;
+  timestamp: string;
+  type: string;
+}
+
+export interface GetMatchPlayerScoreInfos {
   requestMatchPlayerId: number;
+  currentMatchRound: number;
+  totalMatchRound: number;
   matchPlayerScoreInfos: MatchPlayerScoreInfos[];
+  matchMessage: MatchMessages[];
 }
 
-const RoundCheckIn = ({ matchId }: { matchId: string }) => {
+interface RoundCheckInProps {
+  channelLink: string;
+  matchId: string;
+}
+
+const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
   const [client, setClient] = useState<Client>();
   const [matchPlayers, setMatchPlayers] = useState<GetMatchPlayerScoreInfos>();
   const [checkInUser, setCheckInUser] = useState<number[]>([]);
 
+  const router = useRouter();
+
   const fetchData = async () => {
     const res = await authAPI<GetMatchPlayerScoreInfos>({
       method: 'get',
-      url: `/api/match/${matchId}/player/info`,
+      url: `/api/channel/${channelLink}/match/${matchId}/player/info`,
     });
-    if (res.status !== 200) return;
+    if (res.status !== 200 || res.data.requestMatchPlayerId === 0) {
+      router.back();
+      return;
+    }
 
     setMatchPlayers(res.data);
     const readyUser = res.data.matchPlayerScoreInfos
@@ -75,20 +100,24 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
   return (
     <Container>
       <ContainerHeader>
-        <RoundInfo>2 of 3</RoundInfo>
+        <RoundInfo>
+          {matchPlayers ? matchPlayers.currentMatchRound : 0} of{' '}
+          {matchPlayers ? matchPlayers.totalMatchRound : 0}
+        </RoundInfo>
         <FlexWrapper>
           <CheckInfo>
             <Icon kind='team' />
-            <div>8</div>
+            <div>{matchPlayers ? matchPlayers.matchPlayerScoreInfos.length : 0}</div>
           </CheckInfo>
           <CheckInfo>
             <Icon kind='checked' color='1975FF' />
-            <div>5</div>
+            <div>{checkInUser.length}</div>
           </CheckInfo>
         </FlexWrapper>
       </ContainerHeader>
       <FlexWrapper>
         <PlayerLists
+          requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
           checkInUsers={checkInUser}
           players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
         />
@@ -97,6 +126,8 @@ const RoundCheckIn = ({ matchId }: { matchId: string }) => {
           client={client}
           matchId={matchId}
           players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
+          matchMessage={matchPlayers ? matchPlayers.matchMessage : []}
+          requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
         />
       </FlexWrapper>
     </Container>
