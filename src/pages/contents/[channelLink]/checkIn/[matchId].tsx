@@ -3,15 +3,15 @@ import { useRouter } from 'next/router';
 
 const CheckIn = () => {
   const router = useRouter();
-  const { matchId } = router.query;
+  const { matchId, channelLink } = router.query;
 
-  if (!matchId) {
+  if (!matchId || !channelLink) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
-      <RoundCheckIn matchId={matchId as string} />
+      <RoundCheckIn channelLink={channelLink as string} matchId={matchId as string} />
     </>
   );
 };
