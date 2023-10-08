@@ -133,6 +133,8 @@ const BoardBody = ({ channelLink }: Props) => {
       return;
     }
 
+    if (!boards) return;
+
     if (isSuccess) {
       const tmpBoards = data.channelBoardLoadDtdList;
       selectBoardId(tmpBoards[0].boardId);
