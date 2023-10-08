@@ -7,7 +7,11 @@ interface ChannelInfo {
 }
 
 interface BoardsInfo {
-  [key: string]: Channels[];
+  [key: string]: {
+    myMatchRound: number;
+    myMatchId: number;
+    channelBoardLoadDtdList: Channels[];
+  };
 }
 
 const mockChannelInfo: ChannelInfo = {
@@ -38,47 +42,69 @@ const mockChannelInfo: ChannelInfo = {
 };
 
 const boardsInfo: BoardsInfo = {
-  '123': [
-    {
-      boardId: 'aaa',
-      boardTitle: '공지사항',
-      boardIndex: 0,
-    },
-  ],
-  '234': [
-    {
-      boardId: 'bbb',
-      boardTitle: '리그 공지사항',
-      boardIndex: 0,
-    },
-    {
-      boardId: 'ccc',
-      boardTitle: '참여자 규칙',
-      boardIndex: 1,
-    },
-    {
-      boardId: 'ddd',
-      boardTitle: '참여하기',
-      boardIndex: 2,
-    },
-  ],
-  '456': [
-    {
-      boardId: 'eee',
-      boardTitle: '리그 공지사항',
-      boardIndex: 0,
-    },
-    {
-      boardId: 'fff',
-      boardTitle: '참여자 규칙',
-      boardIndex: 1,
-    },
-    {
-      boardId: 'ggg',
-      boardTitle: '참여하기',
-      boardIndex: 2,
-    },
-  ],
+  '123': {
+    myMatchRound: 0,
+    myMatchId: 0,
+    channelBoardLoadDtdList: [
+      {
+        boardId: 'aaa',
+        boardTitle: '공지사항',
+        boardIndex: 0,
+      },
+      {
+        boardId: 'bbb',
+        boardTitle: '게임 룰',
+        boardIndex: 1,
+      },
+      {
+        boardId: 'ccc',
+        boardTitle: '커뮤니티',
+        boardIndex: 2,
+      },
+    ],
+  },
+  '234': {
+    myMatchRound: 1,
+    myMatchId: 1,
+    channelBoardLoadDtdList: [
+      {
+        boardId: 'bbb',
+        boardTitle: '리그 공지사항',
+        boardIndex: 0,
+      },
+      {
+        boardId: 'ccc',
+        boardTitle: '참여자 규칙',
+        boardIndex: 1,
+      },
+      {
+        boardId: 'ddd',
+        boardTitle: '참여하기',
+        boardIndex: 2,
+      },
+    ],
+  },
+  '456': {
+    myMatchRound: 2,
+    myMatchId: 2,
+    channelBoardLoadDtdList: [
+      {
+        boardId: 'eee',
+        boardTitle: '리그 공지사항',
+        boardIndex: 0,
+      },
+      {
+        boardId: 'fff',
+        boardTitle: '참여자 규칙',
+        boardIndex: 1,
+      },
+      {
+        boardId: 'ggg',
+        boardTitle: '참여하기',
+        boardIndex: 2,
+      },
+    ],
+  },
 };
 
 const boardHandlers = [

@@ -34,10 +34,10 @@ const RequestUser = () => {
     let res;
     if (mode) {
       if (!confirm(`${requestUser.nickname}님 대회 참가를 수락하시겠습니까?`)) return;
-      res = await postData(`/api/${currentChannel}/${requestUser.gameId}/player`);
+      res = await postData(`/api/${currentChannel}/${requestUser.pk}/player`);
     } else {
       if (!confirm(`${requestUser.nickname}님 대회 참가를 거절하시겠습니까?`)) return;
-      res = await postData(`/api/${currentChannel}/${requestUser.gameId}/observer`);
+      res = await postData(`/api/${currentChannel}/${requestUser.pk}/observer`);
     }
     if (res.status !== 200) return;
     const updatedRequestUsers = requestUsers?.filter((user) => user.pk !== requestUser.pk);
