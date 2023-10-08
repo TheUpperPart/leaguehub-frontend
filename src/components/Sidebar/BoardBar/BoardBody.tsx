@@ -34,6 +34,8 @@ const fetchData = async (channelLink: string) => {
     url: `/api/channel/${channelLink}/boards`,
   });
 
+  console.log(res.data);
+
   return res.data;
 };
 
@@ -132,9 +134,9 @@ const BoardBody = ({ channelLink }: Props) => {
     }
 
     if (isSuccess) {
-      const boards = data.channelBoardLoadDtdList;
-      selectBoardId(boards[0].boardId);
-      handleBoard(channelLink, boards[0].boardId, boards[0].boardTitle);
+      const tmpBoards = data.channelBoardLoadDtdList;
+      selectBoardId(tmpBoards[0].boardId);
+      handleBoard(channelLink, tmpBoards[0].boardId, tmpBoards[0].boardTitle);
     }
   }, [channelLink, isSuccess]);
 
