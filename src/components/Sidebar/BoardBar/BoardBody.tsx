@@ -54,7 +54,7 @@ const postData = async (channelLink: string) => {
 
 const BoardBody = ({ channelLink }: Props) => {
   const [selected, setSelected] = useState<string>('');
-  const [boards, setBoards] = useState<Channels[]>();
+  const [boards, setBoards] = useState<Channels[]>([]);
   const router = useRouter();
 
   const { data, isSuccess } = useQuery(['getBoardLists', channelLink], () =>
@@ -89,7 +89,7 @@ const BoardBody = ({ channelLink }: Props) => {
       boardTitle: res.boardTitle,
       boardIndex: res.boardIndex,
     };
-    setBoards([...boards, newBoard]);
+    setBoards((prevBoards) => [...prevBoards, newBoard]);
     selectBoardId(newBoard.boardId);
     handleBoard(channelLink, newBoard.boardId, res.boardTitle);
   };
@@ -126,21 +126,19 @@ const BoardBody = ({ channelLink }: Props) => {
 
   useEffect(() => {
     const lastVisitBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
-    if (isSuccess) setBoards(data.channelBoardLoadDtdList);
+    if (data) setBoards(data.channelBoardLoadDtdList);
 
     if (lastVisitBoardId) {
       selectBoardId(lastVisitBoardId);
       return;
     }
 
-    if (!boards) return;
-
-    if (isSuccess) {
+    if (data) {
       const tmpBoards = data.channelBoardLoadDtdList;
       selectBoardId(tmpBoards[0].boardId);
       handleBoard(channelLink, tmpBoards[0].boardId, tmpBoards[0].boardTitle);
     }
-  }, [channelLink, isSuccess]);
+  }, [channelLink, data]);
 
   return (
     <Container>
