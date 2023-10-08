@@ -33,7 +33,7 @@ export interface GetMatchPlayerScoreInfos {
   requestMatchPlayerId: number;
   currentMatchRound: number;
   totalMatchRound: number;
-  matchPlayerScoreInfos: MatchPlayerScoreInfos[];
+  matchPlayerInfos: MatchPlayerScoreInfos[];
   matchMessage: MatchMessages[];
 }
 
@@ -60,7 +60,7 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
     }
 
     setMatchPlayers(res.data);
-    const readyUser = res.data.matchPlayerScoreInfos
+    const readyUser = res.data.matchPlayerInfos
       .filter((info) => info.playerStatus === 'READY')
       .map((info) => info.matchPlayerId);
 
@@ -107,7 +107,7 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
         <FlexWrapper>
           <CheckInfo>
             <Icon kind='team' />
-            <div>{matchPlayers ? matchPlayers.matchPlayerScoreInfos.length : 0}</div>
+            <div>{matchPlayers ? matchPlayers.matchPlayerInfos.length : 0}</div>
           </CheckInfo>
           <CheckInfo>
             <Icon kind='checked' color='1975FF' />
@@ -119,13 +119,13 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
         <PlayerLists
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
           checkInUsers={checkInUser}
-          players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
+          players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
         />
         <CheckInPage
           ParticipantCheckin={() => participantCheckin()}
           client={client}
           matchId={matchId}
-          players={matchPlayers ? matchPlayers.matchPlayerScoreInfos : []}
+          players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
           matchMessage={matchPlayers ? matchPlayers.matchMessage : []}
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
         />

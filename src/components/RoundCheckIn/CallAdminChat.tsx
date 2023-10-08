@@ -81,7 +81,7 @@ const CallAdminChat = ({
   }, [client]);
 
   useEffect(() => {
-    if (matchMessage.length === 0) return;
+    if (!matchMessage || matchMessage.length === 0) return;
     setChats(matchMessage);
   }, [matchMessage]);
 
