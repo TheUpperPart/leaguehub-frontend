@@ -4,7 +4,6 @@ import { SERVER_URL } from '@config/index';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useProfile from '@hooks/useProfile';
-import axios from 'axios';
 import { useState, MouseEventHandler, useEffect, useRef } from 'react';
 
 interface JoinLeagueProps {
@@ -27,7 +26,7 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
       return;
     }
     const userTier: string = (
-      await axios.get(SERVER_URL + '/api/participant/stat?gameid=' + gameIdVal)
+      await authAPI.get(SERVER_URL + '/api/participant/stat?gameid=' + gameIdVal)
     ).data.tier;
     setTier(userTier);
     setGameId(gameIdVal);
