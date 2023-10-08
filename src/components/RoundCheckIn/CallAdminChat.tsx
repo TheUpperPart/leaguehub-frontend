@@ -57,14 +57,15 @@ const CallAdminChat = ({
     setInputMessage('');
   };
 
-  const findUserIMG = (playerMatchId: number): string => {
-    const user = players.find((player) => player.matchPlayerId === playerMatchId);
+  const findUserIMG = (playerParticipantId: number): string => {
+    const user = players.find((player) => player.participantId === playerParticipantId);
+
     if (!user) return '';
     return user.profileSrc;
   };
 
-  const findUserName = (playerMatchId: number): string => {
-    const user = players.find((player) => player.matchPlayerId === playerMatchId);
+  const findUserName = (playerParticipantId: number): string => {
+    const user = players.find((player) => player.participantId === playerParticipantId);
     if (!user) return '';
     return user.gameId;
   };
@@ -72,7 +73,7 @@ const CallAdminChat = ({
   useEffect(() => {
     if (!client) return;
     const subscription = client.subscribe(`/match/${matchId}/chat`, (data) => {
-      setChats([...chats, JSON.parse(data.body)]);
+      setChats((prevChat) => [...prevChat, JSON.parse(data.body)]);
     });
 
     return () => {
@@ -98,14 +99,14 @@ const CallAdminChat = ({
               <ChattingContent>
                 <ImageWrapper>
                   <Image
-                    src={findUserIMG(message.matchId)}
+                    src={findUserIMG(message.participantId)}
                     alt='프로필사진'
                     width={45}
                     height={45}
                   />
                 </ImageWrapper>
                 <ContentWrapper>
-                  <ContentName>{findUserName(message.matchId)}</ContentName>
+                  <ContentName>{findUserName(message.participantId)}</ContentName>
                   <ContentText>{message.content}</ContentText>
                 </ContentWrapper>
               </ChattingContent>
@@ -120,6 +121,7 @@ const CallAdminChat = ({
         <InputChat
           type='text'
           placeholder='메세지를 입력해주세요'
+          value={inputMessage}
           onChange={handleInputMessage}
           onKeyUp={handleKeyPress}
         />
