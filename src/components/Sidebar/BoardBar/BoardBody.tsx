@@ -10,6 +10,7 @@ import Icon from '@components/Icon';
 import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import { NEWBOARD } from '@constants/MakeBoard';
 import useChannels from '@hooks/useChannels';
+import { css } from '@emotion/react';
 
 interface Props {
   channelLink: string;
@@ -21,8 +22,14 @@ interface NewBoard {
   boardIndex: number;
 }
 
+interface BoardsInfo {
+  myMatchRound: number;
+  myMatchId: number;
+  channelBoardLoadDtdList: Channels[];
+}
+
 const fetchData = async (channelLink: string) => {
-  const res = await authAPI<Channels[]>({
+  const res = await authAPI<BoardsInfo>({
     method: 'get',
     url: `/api/channel/${channelLink}/boards`,
   });
@@ -117,7 +124,7 @@ const BoardBody = ({ channelLink }: Props) => {
 
   useEffect(() => {
     const lastVisitBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
-    if (isSuccess) setBoards(data);
+    if (isSuccess) setBoards(data.channelBoardLoadDtdList);
 
     if (lastVisitBoardId) {
       selectBoardId(lastVisitBoardId);
@@ -125,8 +132,9 @@ const BoardBody = ({ channelLink }: Props) => {
     }
 
     if (isSuccess) {
-      selectBoardId(data[0].boardId);
-      handleBoard(channelLink, data[0].boardId, data[0].boardTitle);
+      const boards = data.channelBoardLoadDtdList;
+      selectBoardId(boards[0].boardId);
+      handleBoard(channelLink, boards[0].boardId, boards[0].boardTitle);
     }
   }, [channelLink, isSuccess]);
 
@@ -136,37 +144,64 @@ const BoardBody = ({ channelLink }: Props) => {
         <Droppable droppableId='boards'>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {boards &&
-                boards.map((board, index) =>
-                  channelPermission === 0 ? (
-                    <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
-                      {(provided) => (
-                        <Wrapper
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          data-id={board.boardId}
-                          data-board-title={board.boardTitle}
-                          onClick={onClickBoard}
-                          isSelected={board.boardId === selected}
-                        >
-                          {board.boardTitle}
-                          <Icon kind='lock' color='#637083' size='1.5rem' />
-                        </Wrapper>
-                      )}
-                    </Draggable>
-                  ) : (
-                    <Wrapper
-                      key={board.boardId}
-                      data-id={board.boardId}
-                      data-board-title={board.boardTitle}
-                      onClick={onClickBoard}
-                      isSelected={selected === board.boardId.toString()}
-                    >
-                      {board.boardTitle}
-                    </Wrapper>
-                  ),
-                )}
+              {isSuccess && data.myMatchRound !== 0 && (
+                <div>
+                  <Title>현재 라운드</Title>
+                  <Wrapper
+                    onClick={() => {
+                      setSelected('bracket');
+                      router.push(`/contents/${channelLink}/checkIn/${data.myMatchId}`);
+                    }}
+                    isSelected={selected === 'bracket'}
+                  >
+                    <CurrentRound>
+                      <div>라운드 {data.myMatchRound}</div>
+                      <div
+                        css={css`
+                          display: flex;
+                          align-items: center;
+                        `}
+                      >
+                        <RedCircle />
+                      </div>
+                    </CurrentRound>
+                  </Wrapper>
+                </div>
+              )}
+              <div>
+                <Title>공지사항</Title>
+                {boards &&
+                  boards.map((board, index) =>
+                    channelPermission === 0 ? (
+                      <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
+                        {(provided) => (
+                          <Wrapper
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            data-id={board.boardId}
+                            data-board-title={board.boardTitle}
+                            onClick={onClickBoard}
+                            isSelected={board.boardId === selected}
+                          >
+                            {board.boardTitle}
+                            <Icon kind='lock' color='#637083' size='1.5rem' />
+                          </Wrapper>
+                        )}
+                      </Draggable>
+                    ) : (
+                      <Wrapper
+                        key={board.boardId}
+                        data-id={board.boardId}
+                        data-board-title={board.boardTitle}
+                        onClick={onClickBoard}
+                        isSelected={selected === board.boardId.toString()}
+                      >
+                        {board.boardTitle}
+                      </Wrapper>
+                    ),
+                  )}
+              </div>
               {channelPermission === 0 && (
                 <Wrapper isSelected={false} onClick={onClickNewBoard}>
                   공지 추가하기
@@ -203,7 +238,26 @@ const Wrapper = styled.li<{ isSelected: boolean }>`
   ${({ isSelected }) => isSelected && `background-color: #39587E`};
 `;
 
+const CurrentRound = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const RedCircle = styled.div`
+  width: 0.6rem;
+  height: 0.6rem;
+  background: red;
+  border-radius: 50%;
+`;
+
 const Boarder = styled.div`
   margin: 1.4rem;
   border-bottom: solid 1px #344051;
+`;
+
+const Title = styled.div`
+  font-size: 1.4rem;
+  color: #adb5bd;
+  padding: 0.8rem 0 0.8rem 0.8rem;
 `;

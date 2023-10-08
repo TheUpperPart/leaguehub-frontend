@@ -5,12 +5,17 @@ import styled from '@emotion/styled';
 interface PlayerListsProps {
   players: MatchPlayerScoreInfos[];
   checkInUsers: number[];
+  requestUser: number;
 }
 
-const PlayerLists = ({ players, checkInUsers }: PlayerListsProps) => {
+interface CheckMine {
+  isMine: boolean;
+}
+
+const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) => {
   return (
     <Container>
-      <MenuList>
+      <MenuList isMine={false}>
         <MenuItem>순위</MenuItem>
         <MenuItem>게임ID</MenuItem>
         <MenuItem>점수</MenuItem>
@@ -18,10 +23,10 @@ const PlayerLists = ({ players, checkInUsers }: PlayerListsProps) => {
       </MenuList>
       {players.length !== 0 &&
         players.map((player) => (
-          <MenuList key={player.matchPlayerId}>
+          <MenuList key={player.matchPlayerId} isMine={player.matchPlayerId === requestUser}>
             <MenuItem># {player.matchRank}</MenuItem>
-            <MenuItem>{player.participantGameId}</MenuItem>
-            <MenuItem>{player.playerScore}</MenuItem>
+            <MenuItem>{player.gameId}</MenuItem>
+            <MenuItem>{player.score}</MenuItem>
             <MenuItem>
               {checkInUsers.includes(player.matchPlayerId) ? (
                 <Icon kind='checked' color='1975FF' size={24} />
@@ -43,7 +48,7 @@ const Container = styled.div`
   width: 70%;
 `;
 
-const MenuList = styled.ul`
+const MenuList = styled.ul<CheckMine>`
   display: flex;
   height: 6rem;
   align-items: center;
@@ -53,7 +58,7 @@ const MenuList = styled.ul`
   border-radius: 0.5rem;
   padding: 1rem 0 1rem;
   margin-bottom: 0.5rem;
-  background: #fff;
+  background: ${(prop) => (prop.isMine ? '#DCFF7B' : '#fff')};
 
   &: first-of-type {
     color: #97a1af;
