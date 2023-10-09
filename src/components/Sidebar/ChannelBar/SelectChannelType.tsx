@@ -1,5 +1,9 @@
 import authAPI from '@apis/authAPI';
 import Button from '@components/Button';
+import SelectGame from '@components/MakeChannel/SelectGame';
+import SelectRule from '@components/MakeChannel/SelectRule';
+import { MakeChannelStep } from '@constants/MakeGame';
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
 import { ChannelCircleProps } from '@type/channelCircle';
@@ -14,17 +18,14 @@ interface Props {
 const SelectChannelType = (props: Props) => {
   const { handleModal } = props;
 
-  const router = useRouter();
-
   const channels = useChannels();
 
-  const [curIdx, setCurIdx] = useState<number>(0);
+  const [currentModalStep, setCurrentModalStep] = useState<number>(MakeChannelStep['MakeOrJoin']);
 
   const [channelInput, setChannelInput] = useState<string>();
 
-  const handleRouter = () => {
-    handleModal();
-    router.push('/make-channel');
+  const handleCurrentModalStep = (step: keyof typeof MakeChannelStep) => {
+    setCurrentModalStep(MakeChannelStep[step]);
   };
 
   const fetchEnterNewChannel = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,40 +60,49 @@ const SelectChannelType = (props: Props) => {
 
   return (
     <Container>
-      {curIdx === 0 ? (
+      {currentModalStep === MakeChannelStep.MakeOrJoin && (
         <>
-          <ModalTitle>대회 개최하기</ModalTitle>
-          <ModalSubTitle>대회를 만들고 시작해보세요!</ModalSubTitle>
+          <ModalTitle>채널 추가하기</ModalTitle>
+          <ModalSubTitle>채널을 추가하고 시작해보세요!</ModalSubTitle>
           <Content>
             <BtnContainer>
-              <BtnTitle>대회 개최하기</BtnTitle>
-              <Button width={20} height={10} onClick={handleRouter}>
+              <BtnTitle>대회를 만들고 싶다면?</BtnTitle>
+              <Button width={20} height={10} onClick={() => handleCurrentModalStep('SelectGame')}>
                 대회 개최
               </Button>
             </BtnContainer>
             <BtnContainer>
-              <BtnTitle>대회 참여하기</BtnTitle>
-              <Button width={20} height={10} onClick={() => setCurIdx(1)}>
-                대회 참여
+              <BtnTitle>채널에 참여하고싶다면?</BtnTitle>
+              <Button width={20} height={10} onClick={() => handleCurrentModalStep('JoinGame')}>
+                채널 참여
               </Button>
             </BtnContainer>
           </Content>
         </>
-      ) : (
+      )}
+      {currentModalStep === MakeChannelStep.SelectGame && (
+        <SelectGame handleCurrentModalStep={handleCurrentModalStep} />
+      )}
+
+      {currentModalStep === MakeChannelStep.SettingRule && (
+        <SelectRule handleCurrentModalStep={handleCurrentModalStep} />
+      )}
+
+      {currentModalStep === MakeChannelStep.JoinGame && (
         <>
-          <ModalTitle>대회 참여하기</ModalTitle>
-          <ModalSubTitle>대회에 참여하여 우승해보세요!</ModalSubTitle>
+          <ModalTitle>채널 참여하기</ModalTitle>
+          <ModalSubTitle>채널에 참여하여 대회를 확인해보세요!</ModalSubTitle>
           <Content2>
             <FormConatiner>
               <ChannelForm onSubmit={fetchEnterNewChannel}>
                 <ChannelInput required value={channelInput} onChange={handleChannelInput} />
                 <Button width={10} height={4} type='submit'>
-                  참여 하기
+                  채널 참여
                 </Button>
               </ChannelForm>
             </FormConatiner>
             <BtnContainer>
-              <Button width={20} height={5} onClick={() => setCurIdx(0)}>
+              <Button width={20} height={5} onClick={() => handleCurrentModalStep('MakeOrJoin')}>
                 뒤로 가기
               </Button>
             </BtnContainer>
@@ -106,7 +116,24 @@ const SelectChannelType = (props: Props) => {
 export default SelectChannelType;
 
 const Container = styled.div`
+  width: 50rem;
+  max-height: 80rem;
   padding: 3rem;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ::-webkit-scrollbar {
+    width: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #202b37;
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #344051;
+    border-radius: 1rem;
+  }
 `;
 
 const ModalTitle = styled.h1`
@@ -168,3 +195,14 @@ const ChannelInput = styled.input`
   color: #61677a;
 `;
 ChannelInput.defaultProps = { placeholder: '참여 코드 입력' };
+
+export const fadeIn = keyframes`
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;

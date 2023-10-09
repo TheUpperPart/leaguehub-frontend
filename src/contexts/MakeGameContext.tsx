@@ -2,8 +2,6 @@ import { BasicInfo, CustomRule, IsUseCustomRule } from '@components/providers/Ma
 import { ChangeEvent, createContext } from 'react';
 
 interface MakeGameState {
-  currentStep: number;
-  handleCurrentStep: () => void;
   gameCategory: number;
   handleSelectGameCategory: (category: number) => void;
   basicInfo: BasicInfo;

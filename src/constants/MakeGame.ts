@@ -1,5 +1,12 @@
 import { BasicInfo, CustomRule, IsUseCustomRule } from '@components/providers/MakeGameProvider';
 
+export enum MakeChannelStep {
+  'MakeOrJoin',
+  'SelectGame',
+  'SettingRule',
+  'JoinGame',
+}
+
 export enum GameEnum {
   'TFT',
   'LOL',
@@ -13,7 +20,6 @@ export enum GameMethod {
 }
 
 interface TFTInitial {
-  initCurrentStep: number;
   initCategory: number;
   initMatchFormat: number;
   initBasicInfo: BasicInfo;
@@ -23,7 +29,6 @@ interface TFTInitial {
 }
 
 export const TFTInitialValue: TFTInitial = {
-  initCurrentStep: 0,
   initCategory: -1,
   initMatchFormat: 0,
   initBasicInfo: {

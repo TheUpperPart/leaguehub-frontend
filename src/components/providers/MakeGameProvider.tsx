@@ -26,7 +26,6 @@ export interface CustomRule {
 
 const MakeGameProvider = ({ children }: MakeGameProps) => {
   const {
-    initCurrentStep,
     initCategory,
     initMatchFormat,
     initBasicInfo,
@@ -35,22 +34,15 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
     initChannelImgUrl,
   } = TFTInitialValue;
 
-  const [currentStep, setCurrentStep] = useState<number>(initCurrentStep);
   const [gameCategory, setGameCategory] = useState<number>(initCategory);
   const [matchFormat, setMatchFormat] = useState<number>(initMatchFormat);
   const [basicInfo, setBasicInfo] = useState<BasicInfo>(initBasicInfo);
   const [isUseCustomRule, setIsUseCustomRule] = useState<IsUseCustomRule>(initIsUseCustomRule);
   const [customRule, setCustomRule] = useState<CustomRule>(initCustomRule);
   const [channelImgUrl, setChannelImgUrl] = useState<string>('');
-  const handleCurrentStep = () => {
-    if (currentStep < 3) {
-      setCurrentStep((prev) => prev + 1);
-    }
-  };
 
   const handleSelectGameCategory = (category: number) => {
     setGameCategory(category);
-    handleCurrentStep();
   };
 
   const handleMatchFormat = (type: number) => {
@@ -77,7 +69,6 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
   };
 
   const resetState = () => {
-    setCurrentStep(initCurrentStep);
     setGameCategory(initCategory);
     setMatchFormat(initMatchFormat);
     setBasicInfo(initBasicInfo);
@@ -99,8 +90,6 @@ const MakeGameProvider = ({ children }: MakeGameProps) => {
   };
 
   const contextValue = {
-    currentStep,
-    handleCurrentStep,
     gameCategory,
     handleSelectGameCategory,
     basicInfo,
