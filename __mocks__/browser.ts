@@ -9,6 +9,7 @@ import makeGameHandlers from './handlers/makeGameHandlers';
 import mypageHandlers from './handlers/mypageHandlers';
 import bracketHandlers from './handlers/bracketHandlers';
 import matchHandler from '@mocks/handlers/matchHandlers';
+import adminHandlers from './handlers/adminHandlers';
 
 export const worker = setupWorker(
   ...testHandlers,
@@ -20,4 +21,5 @@ export const worker = setupWorker(
   ...mypageHandlers,
   ...bracketHandlers,
   ...matchHandler,
+  ...adminHandlers,
 );
