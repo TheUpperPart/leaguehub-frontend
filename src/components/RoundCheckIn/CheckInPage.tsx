@@ -73,7 +73,7 @@ const CheckInPage = ({
       <ButtonWrapper>
         {players.length !== 0 && players.length === checkInUser.length ? (
           <>
-            <RankingSelect value={rank} onChange={handleRankingChange}>
+            <RankingSelect value={rank} onChange={handleRankingChange} disabled={isSendingRanking}>
               <option value=''>경기 후 게임 결과를 입력해주세요</option>
               {players.map((player, idx) => (
                 <option value={idx + 1}>{idx + 1}등</option>
@@ -157,7 +157,7 @@ const ChattingWrapper = styled.div``;
 
 const RankingSelect = styled.select`
   height: 5rem;
-  width: 70%;
+  width: ${(props) => (props.disabled ? '100%' : '70%')};
 `;
 
 const RankingSubmitButton = styled.button`
@@ -167,6 +167,7 @@ const RankingSubmitButton = styled.button`
   background: #637083;
   border: none;
   border-radius: 0.5rem;
+  display: ${(props) => (props.disabled ? 'none' : 'block')};
 
   &: hover {
     cursor: pointer;
