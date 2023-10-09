@@ -6,7 +6,7 @@ const players: GetMatchPlayerScoreInfos = {
   requestMatchPlayerId: 3,
   currentMatchRound: 1,
   totalMatchRound: 3,
-  matchPlayerScoreInfos: [
+  matchPlayerInfos: [
     {
       matchPlayerId: 1,
       participantId: 1,
