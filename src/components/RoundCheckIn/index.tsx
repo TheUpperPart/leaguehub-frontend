@@ -77,7 +77,9 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
     tmpClient.onConnect = () => {
       setClient(tmpClient);
       subscription = tmpClient.subscribe(`/match/${matchId}`, (data) => {
-        setCheckInUser((prevUsers) => [...prevUsers, Number(JSON.parse(data.body).matchPlayerId)]);
+        const readyUserPlayerId = Number(JSON.parse(data.body).matchPlayerId);
+        if (checkInUser.includes(readyUserPlayerId)) return;
+        setCheckInUser((prevUsers) => [...prevUsers, readyUserPlayerId]);
       });
     };
 
@@ -128,6 +130,8 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
           players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
           matchMessage={matchPlayers ? matchPlayers.matchMessage : []}
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
+          checkInUser={checkInUser}
+          currentMatchRound={matchPlayers ? matchPlayers.currentMatchRound : -1}
         />
       </FlexWrapper>
     </Container>
