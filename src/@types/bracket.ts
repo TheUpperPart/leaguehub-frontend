@@ -12,12 +12,12 @@ interface PlayerInfo {
 }
 interface MatchInfo {
   matchName: string;
-  matchLink: string;
   matchStatus: string;
   matchRound: number;
-  matchRoundCount: number;
-  matchRoundMaxCount: number;
+  matchCurrentSet: number;
+  matchSetCurrent: number;
   matchPlayerInfoList: PlayerInfo[];
+  matchId: number;
 }
 
 export interface BracketContents {
