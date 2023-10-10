@@ -11,7 +11,7 @@ interface CallAdminChatProps {
   client: Client | undefined;
   matchId: string;
   players: MatchPlayerScoreInfos[];
-  matchMessage: MatchMessages[];
+  matchMessages: MatchMessages[];
   requestUser: number;
 }
 
@@ -19,7 +19,7 @@ const CallAdminChat = ({
   client,
   matchId,
   players,
-  matchMessage,
+  matchMessages,
   requestUser,
 }: CallAdminChatProps) => {
   const [chats, setChats] = useState<MatchMessages[]>([]);
@@ -89,9 +89,9 @@ const CallAdminChat = ({
   }, [client]);
 
   useEffect(() => {
-    if (!matchMessage || matchMessage.length === 0) return;
-    setChats(matchMessage);
-  }, [matchMessage]);
+    if (!matchMessages || matchMessages.length === 0) return;
+    setChats(matchMessages);
+  }, [matchMessages]);
 
   return (
     <Container>

@@ -105,7 +105,7 @@ const players: GetMatchPlayerScoreInfos = {
       matchPlayerResultStatus: '진행중',
     },
   ],
-  matchMessage: [
+  matchMessages: [
     {
       channelId: 123,
       content: '안녕하세요',

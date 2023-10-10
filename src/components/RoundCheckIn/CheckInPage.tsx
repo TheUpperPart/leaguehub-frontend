@@ -10,7 +10,7 @@ interface CheckInPageProps {
   client: Client | undefined;
   matchId: string;
   players: MatchPlayerScoreInfos[];
-  matchMessage: MatchMessages[];
+  matchMessages: MatchMessages[];
   requestUser: number;
   checkInUser: number[];
   currentMatchRound: number;
@@ -21,7 +21,7 @@ const CheckInPage = ({
   client,
   matchId,
   players,
-  matchMessage,
+  matchMessages,
   requestUser,
   checkInUser,
   currentMatchRound,
@@ -105,7 +105,7 @@ const CheckInPage = ({
           client={client}
           matchId={matchId}
           players={players}
-          matchMessage={matchMessage}
+          matchMessages={matchMessages}
           requestUser={requestUser}
         />
       </ChattingWrapper>
