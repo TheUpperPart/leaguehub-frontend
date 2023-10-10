@@ -25,7 +25,7 @@ interface NewBoard {
 interface BoardsInfo {
   myMatchRound: number;
   myMatchId: number;
-  channelBoardLoadDtdList: Channels[];
+  channelBoardLoadDtoList: Channels[];
 }
 
 const fetchData = async (channelLink: string) => {
@@ -33,8 +33,6 @@ const fetchData = async (channelLink: string) => {
     method: 'get',
     url: `/api/channel/${channelLink}/boards`,
   });
-
-  console.log(res.data);
 
   return res.data;
 };
@@ -126,19 +124,21 @@ const BoardBody = ({ channelLink }: Props) => {
 
   useEffect(() => {
     const lastVisitBoardId = lastVisitedBoardIdLists[channelLink]?.boardId;
-    if (data) setBoards(data.channelBoardLoadDtdList);
+    if (isSuccess) {
+      setBoards(data.channelBoardLoadDtoList);
+    }
 
     if (lastVisitBoardId) {
       selectBoardId(lastVisitBoardId);
       return;
     }
 
-    if (data) {
-      const tmpBoards = data.channelBoardLoadDtdList;
+    if (isSuccess) {
+      const tmpBoards = data.channelBoardLoadDtoList;
       selectBoardId(tmpBoards[0].boardId);
       handleBoard(channelLink, tmpBoards[0].boardId, tmpBoards[0].boardTitle);
     }
-  }, [channelLink, data]);
+  }, [channelLink, isSuccess]);
 
   return (
     <Container>
@@ -171,7 +171,27 @@ const BoardBody = ({ channelLink }: Props) => {
                 </div>
               )}
               <div>
-                <Title>공지사항</Title>
+                <Title>보드 목록</Title>
+                {channelPermission === 0 && (
+                  <Wrapper
+                    isSelected={selected === 'admin'}
+                    data-id='admin'
+                    data-board-title='관리자'
+                    onClick={onClickBoard}
+                  >
+                    대회 관리
+                    <Icon kind='lock' color='#637083' size='1.5rem' />
+                  </Wrapper>
+                )}
+                <Wrapper
+                  isSelected={selected === 'bracket'}
+                  data-id='bracket'
+                  data-board-title='대진표'
+                  onClick={onClickBoard}
+                >
+                  대진표
+                  <Icon kind='lock' color='#637083' size='1.5rem' />
+                </Wrapper>
                 {boards &&
                   boards.map((board, index) =>
                     channelPermission === 0 ? (

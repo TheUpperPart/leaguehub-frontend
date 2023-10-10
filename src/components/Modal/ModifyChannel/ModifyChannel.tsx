@@ -1,23 +1,33 @@
+import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import BasicInfoChannel from '@components/ModifyChannel/BasicInfoChannel';
 import BracketInfoChannel from '@components/ModifyChannel/BracketInfoChannel';
 import styled from '@emotion/styled';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+
 interface ModifyChannelProps {
   channelLink: string;
-  leagueTitle: string;
-  maxPlayer: number;
-  onClose: (leagueTitle?: string, maxPlayer?: number) => void;
+  onClose: () => void;
 }
 
 type MenuList = 'basicInfo' | 'bracketInfo';
 
-const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyChannelProps) => {
+const fetchChannelInfo = async (channelLink: string) => {
+  const res = await authAPI({ method: 'get', url: `/api/channel/${channelLink}` });
+  return res.data;
+};
+
+const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
   const [selectedMenu, setSelectedMenu] = useState<MenuList>('basicInfo');
 
   const handleSelectedMenu = (menu: MenuList) => {
     setSelectedMenu(menu);
   };
+
+  const { data, isSuccess, isError, isLoading } = useQuery(['channelInfo', channelLink], () => {
+    return fetchChannelInfo(channelLink);
+  });
 
   return (
     <Container>
@@ -25,6 +35,7 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
         <SidebarContent onClick={() => handleSelectedMenu('basicInfo')}>
           대회 기본 정보 수정
         </SidebarContent>
+
         <SidebarContent onClick={() => handleSelectedMenu('bracketInfo')}>
           대진표 수정
         </SidebarContent>
@@ -33,8 +44,8 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
         {selectedMenu === 'basicInfo' && (
           <BasicInfoChannel
             channelLink={channelLink}
-            leagueTitle={leagueTitle}
-            maxPlayer={maxPlayer}
+            leagueTitle={data?.leagueTitle}
+            maxPlayer={data?.maxPlayer}
           />
         )}
         {selectedMenu === 'bracketInfo' && <BracketInfoChannel />}
@@ -49,11 +60,12 @@ const ModifyChannel = ({ channelLink, leagueTitle, maxPlayer, onClose }: ModifyC
 export default ModifyChannel;
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 80rem;
+  height: 60rem;
   background-color: white;
 
   display: flex;
+  position: relative;
 `;
 
 const Sidebar = styled.div`
