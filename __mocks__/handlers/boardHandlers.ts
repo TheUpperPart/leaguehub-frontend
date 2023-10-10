@@ -10,7 +10,7 @@ interface BoardsInfo {
   [key: string]: {
     myMatchRound: number;
     myMatchId: number;
-    channelBoardLoadDtdList: Channels[];
+    channelBoardLoadDtoList: Channels[];
   };
 }
 
@@ -45,7 +45,7 @@ const boardsInfo: BoardsInfo = {
   '123': {
     myMatchRound: 0,
     myMatchId: 0,
-    channelBoardLoadDtdList: [
+    channelBoardLoadDtoList: [
       {
         boardId: 'aaa',
         boardTitle: '공지사항',
@@ -66,7 +66,7 @@ const boardsInfo: BoardsInfo = {
   '234': {
     myMatchRound: 1,
     myMatchId: 1,
-    channelBoardLoadDtdList: [
+    channelBoardLoadDtoList: [
       {
         boardId: 'bbb',
         boardTitle: '리그 공지사항',
@@ -87,7 +87,7 @@ const boardsInfo: BoardsInfo = {
   '456': {
     myMatchRound: 2,
     myMatchId: 2,
-    channelBoardLoadDtdList: [
+    channelBoardLoadDtoList: [
       {
         boardId: 'eee',
         boardTitle: '리그 공지사항',
