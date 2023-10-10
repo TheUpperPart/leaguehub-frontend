@@ -57,9 +57,12 @@ const CheckInPage = ({
   };
 
   useEffect(() => {
-    if (ready) return;
     const findUser = checkInUser.find((user) => requestUser === user);
-    if (findUser === undefined) return;
+    if (findUser === undefined) {
+      setReady(false);
+      return;
+    }
+
     setReady(true);
   }, [checkInUser]);
 
@@ -71,12 +74,14 @@ const CheckInPage = ({
         <RemainTimeItem></RemainTimeItem>
       </RemainTimeWrapper>
       <ButtonWrapper>
-        {players.length !== 0 && players.length === checkInUser.length ? (
+        {players.length !== 0 && players.length <= checkInUser.length ? (
           <>
             <RankingSelect value={rank} onChange={handleRankingChange} disabled={isSendingRanking}>
               <option value=''>경기 후 게임 결과를 입력해주세요</option>
               {players.map((player, idx) => (
-                <option value={idx + 1}>{idx + 1}등</option>
+                <option key={idx} value={idx + 1}>
+                  {idx + 1}등
+                </option>
               ))}
             </RankingSelect>
             <RankingSubmitButton disabled={isSendingRanking} onClick={onClickRankingButton}>
