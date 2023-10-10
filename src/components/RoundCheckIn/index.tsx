@@ -76,7 +76,6 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
     tmpClient.activate();
 
     let checkInSubscription: StompSubscription;
-    let nextRoundSubscription: StompSubscription;
 
     tmpClient.onConnect = () => {
       setClient(tmpClient);
@@ -85,36 +84,44 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
         if (checkInUser.includes(readyUserPlayerId)) return;
         setCheckInUser((prevUsers) => [...prevUsers, readyUserPlayerId]);
       });
-
-      if (!matchPlayers) return;
-      nextRoundSubscription = tmpClient.subscribe(
-        `/match/${matchId}/${matchPlayers.matchCurrentSet}`,
-        (data) => {
-          alert('다음 라운드가 진행됩니다');
-          const responseData = JSON.parse(data.body);
-          if (!matchPlayers) return;
-          setMatchPlayers((prevMatchPlayer) => {
-            if (!prevMatchPlayer) return;
-            return {
-              ...prevMatchPlayer,
-              matchRound: responseData.matchRound,
-              matchCurrentSet: responseData.matchCurrentSet,
-              matchSetCount: responseData.matchSetCount,
-              matchPlayerInfos: responseData.matchPlayerInfoList,
-            };
-          });
-          setCheckInUser([]);
-        },
-      );
     };
 
     return () => {
       if (!client) return;
       if (checkInSubscription) checkInSubscription.unsubscribe();
-      if (nextRoundSubscription) nextRoundSubscription.unsubscribe();
+
       client.deactivate();
     };
   }, []);
+
+  useEffect(() => {
+    if (!matchPlayers || !client) return;
+
+    const nextRoundSubscription = client.subscribe(
+      `/match/${matchId}/${matchPlayers.matchCurrentSet}`,
+      (data) => {
+        alert('다음 라운드가 진행됩니다');
+        const responseData = JSON.parse(data.body);
+        if (!matchPlayers) return;
+        setMatchPlayers((prevMatchPlayer) => {
+          if (!prevMatchPlayer) return;
+          return {
+            ...prevMatchPlayer,
+            matchRound: responseData.matchRound,
+            matchCurrentSet: responseData.matchCurrentSet,
+            matchSetCount: responseData.matchSetCount,
+            matchPlayerInfos: responseData.matchPlayerInfoList,
+          };
+        });
+        setCheckInUser([]);
+      },
+    );
+
+    return () => {
+      if (!client) return;
+      if (nextRoundSubscription) nextRoundSubscription.unsubscribe();
+    };
+  }, [matchPlayers, client]);
 
   const participantCheckin = () => {
     if (!client || !matchPlayers) return;
