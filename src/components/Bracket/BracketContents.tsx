@@ -31,6 +31,10 @@ const BracketContents = (props: Props) => {
     },
   );
 
+  const moveToCheckIn = (matchId: number) => {
+    router.push(`/contents/${router.query.channelLink as string}/checkIn/${matchId}`);
+  };
+
   return (
     <Container>
       <Header></Header>
@@ -39,9 +43,11 @@ const BracketContents = (props: Props) => {
           return (
             <MatchContainer>
               <MatchHeader>
-                <MatchHeaderRound>M{match.matchRoundCount}</MatchHeaderRound>
+                <MatchHeaderRound>M{match.matchCurrentSet}</MatchHeaderRound>
                 <MatchHeaderName>{match.matchName}</MatchHeaderName>
-                <MatchHeaderMore>자세히</MatchHeaderMore>
+                <MatchHeaderMore onClick={() => moveToCheckIn(match.matchId)}>
+                  자세히
+                </MatchHeaderMore>
               </MatchHeader>
               <MatchContent>
                 {match.matchPlayerInfoList.length === 0 ? (
@@ -161,6 +167,8 @@ const MatchHeaderMore = styled.div`
   color: #ffffff;
   font-weight: 7000;
   font-size: 1.2rem;
+
+  cursor: pointer;
 `;
 
 const MatchContent = styled.div`
