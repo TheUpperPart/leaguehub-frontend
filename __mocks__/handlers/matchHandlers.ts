@@ -4,9 +4,10 @@ import { rest } from 'msw';
 
 const players: GetMatchPlayerScoreInfos = {
   requestMatchPlayerId: 3,
-  currentMatchRound: 1,
-  totalMatchRound: 3,
-  matchPlayerScoreInfos: [
+  matchRound: 1,
+  matchCurrentSet: 1,
+  matchSetCount: 3,
+  matchPlayerInfos: [
     {
       matchPlayerId: 1,
       participantId: 1,

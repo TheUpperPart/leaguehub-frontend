@@ -44,7 +44,7 @@ const CallAdminChat = ({
     )?.participantId;
 
     const newMessage = {
-      channelId: channelLink,
+      channelLink,
       content: inputMessage,
       matchId,
       participantId: requestUserParticipantId,
@@ -68,6 +68,12 @@ const CallAdminChat = ({
     const user = players.find((player) => player.participantId === playerParticipantId);
     if (!user) return '';
     return user.gameId;
+  };
+
+  const findRequestUser = (playerParticipantId: number): number => {
+    const user = players.find((player) => player.participantId === playerParticipantId);
+    if (!user) return -1;
+    return user.matchPlayerId;
   };
 
   useEffect(() => {
@@ -97,18 +103,26 @@ const CallAdminChat = ({
           chats.map((message, idx) => (
             <ChattingInfo key={idx}>
               <ChattingContent>
-                <ImageWrapper>
-                  <Image
-                    src={findUserIMG(message.participantId)}
-                    alt='프로필사진'
-                    width={45}
-                    height={45}
-                  />
-                </ImageWrapper>
-                <ContentWrapper>
-                  <ContentName>{findUserName(message.participantId)}</ContentName>
-                  <ContentText>{message.content}</ContentText>
-                </ContentWrapper>
+                {requestUser === findRequestUser(message.participantId) ? (
+                  <MyChattingContent>
+                    <MyContentText>{message.content}</MyContentText>
+                  </MyChattingContent>
+                ) : (
+                  <>
+                    <ImageWrapper>
+                      <Image
+                        src={findUserIMG(message.participantId)}
+                        alt='프로필사진'
+                        width={45}
+                        height={45}
+                      />
+                    </ImageWrapper>
+                    <ContentWrapper>
+                      <ContentName>{findUserName(message.participantId)}</ContentName>
+                      <ContentText>{message.content}</ContentText>
+                    </ContentWrapper>
+                  </>
+                )}
               </ChattingContent>
             </ChattingInfo>
           ))}
@@ -169,6 +183,7 @@ const ImageWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-left: 0.5rem;
+  max-width: 70%;
 `;
 
 const ContentName = styled.div`
@@ -184,6 +199,17 @@ const ContentText = styled.div`
   font-size: 1.3rem;
 `;
 
+const MyContentText = styled.div`
+  padding: 0.5rem;
+  border: 1px solid black;
+  background: yellow;
+  border-radius: 1rem 0 1rem 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  margin-right: 1rem;
+`;
+
 const ChattingInfo = styled.div`
   min-height: 5rem;
   display: flex;
@@ -193,6 +219,13 @@ const ChattingInfo = styled.div`
 
 const ChattingContent = styled.div`
   display: flex;
+  width: 100%;
+`;
+
+const MyChattingContent = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const InputChat = styled.input`
