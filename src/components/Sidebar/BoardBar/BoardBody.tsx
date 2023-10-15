@@ -162,10 +162,10 @@ const BoardBody = ({ channelLink }: Props) => {
                   <Title>현재 라운드</Title>
                   <Wrapper
                     onClick={() => {
-                      setSelected('bracket');
+                      setSelected('CurrentRound');
                       router.push(`/contents/${channelLink}/checkIn/${data.myMatchId}`);
                     }}
-                    isSelected={selected === 'bracket'}
+                    isSelected={selected === 'CurrentRound'}
                   >
                     <CurrentRound>
                       <div>라운드 {data.myMatchRound}</div>
