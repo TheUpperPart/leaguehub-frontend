@@ -140,6 +140,17 @@ const BoardBody = ({ channelLink }: Props) => {
     }
   }, [channelLink, isSuccess]);
 
+  useEffect(() => {
+    setBoards((prevBoards) => {
+      return prevBoards.map((board) => {
+        if (board.boardId === selected) {
+          return { ...board, boardTitle: lastVisitedBoardIdLists[channelLink].boardTitle };
+        }
+        return board;
+      });
+    });
+  }, [lastVisitedBoardIdLists[channelLink]?.boardTitle]);
+
   return (
     <Container>
       <DragDropContext onDragEnd={dragEnd}>
