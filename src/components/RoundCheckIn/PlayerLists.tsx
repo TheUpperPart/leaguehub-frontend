@@ -1,6 +1,10 @@
+import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import { MatchPlayerScoreInfos } from '@components/RoundCheckIn';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import { MouseEventHandler } from 'react';
 
 interface PlayerListsProps {
   players: MatchPlayerScoreInfos[];
@@ -13,9 +17,30 @@ interface CheckMine {
 }
 
 const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) => {
+  const router = useRouter();
+  const { channelLink } = router.query;
+
+  const onClickDisqualification = async (player: MatchPlayerScoreInfos) => {
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/${channelLink}/${player.participantId}/disqualification`,
+    });
+
+    if (res.status === 200) {
+      alert(`${player.gameId}님을 실격처리하였습니다`);
+      return;
+    }
+    alert('서버에 에러가 발생했습니다. 나중에 다시 시도해주세요');
+  };
+
   return (
     <Container>
       <MenuList isMine={false}>
+        <div
+          css={css`
+            width: 7rem;
+          `}
+        ></div>
         <MenuItem>순위</MenuItem>
         <MenuItem>게임ID</MenuItem>
         <MenuItem>점수</MenuItem>
@@ -24,6 +49,11 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
       {players.length !== 0 &&
         players.map((player) => (
           <MenuList key={player.matchPlayerId} isMine={player.matchPlayerId === requestUser}>
+            {requestUser === -1 && (
+              <DisqualificationButton onClick={() => onClickDisqualification(player)}>
+                실격처리
+              </DisqualificationButton>
+            )}
             <MenuItem># {player.matchRank}</MenuItem>
             <MenuItem>{player.gameId}</MenuItem>
             <MenuItem>{player.score}</MenuItem>
@@ -72,4 +102,13 @@ const MenuItem = styled.li`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+`;
+
+const DisqualificationButton = styled.button`
+  height: 80%;
+  margin-left: 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #ff6e6e;
+  width: 5rem;
 `;
