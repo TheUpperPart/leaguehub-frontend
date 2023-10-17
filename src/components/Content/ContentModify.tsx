@@ -63,6 +63,7 @@ const ContentModify = ({ title, content, onUpdateContent }: ContentModifyProps) 
                   css={css`
                     text-align: start;
                     white-space: pre-line;
+                    padding: 3rem;
                   `}
                 >
                   <PreviewTitle>{titleRef.current ? titleRef.current.value : ''}</PreviewTitle>
