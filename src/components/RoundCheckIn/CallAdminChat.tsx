@@ -5,12 +5,13 @@ import Image from 'next/image';
 import { Client } from '@stomp/stompjs';
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
+import { BASE_PROFILE_IMG } from '@config/index';
 
 interface CallAdminChatProps {
   client: Client | undefined;
   matchId: string;
   players: MatchPlayerScoreInfos[];
-  matchMessage: MatchMessages[];
+  matchMessages: MatchMessages[];
   requestUser: number;
 }
 
@@ -18,7 +19,7 @@ const CallAdminChat = ({
   client,
   matchId,
   players,
-  matchMessage,
+  matchMessages,
   requestUser,
 }: CallAdminChatProps) => {
   const [chats, setChats] = useState<MatchMessages[]>([]);
@@ -60,13 +61,13 @@ const CallAdminChat = ({
   const findUserIMG = (playerParticipantId: number): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
 
-    if (!user) return '';
+    if (!user) return BASE_PROFILE_IMG;
     return user.profileSrc;
   };
 
   const findUserName = (playerParticipantId: number): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
-    if (!user) return '';
+    if (!user) return '관리자';
     return user.gameId;
   };
 
@@ -88,9 +89,9 @@ const CallAdminChat = ({
   }, [client]);
 
   useEffect(() => {
-    if (!matchMessage || matchMessage.length === 0) return;
-    setChats(matchMessage);
-  }, [matchMessage]);
+    if (!matchMessages || matchMessages.length === 0) return;
+    setChats(matchMessages);
+  }, [matchMessages]);
 
   return (
     <Container>
