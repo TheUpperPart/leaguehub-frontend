@@ -15,6 +15,7 @@ import {
   MdModeEdit,
   MdSettings,
   MdCancel,
+  MdOutlineShortcut,
 } from 'react-icons/md';
 import { MouseEventHandler } from 'react';
 
@@ -33,6 +34,7 @@ const ICON: { [key in IconKind]: IconType } = {
   modify: MdModeEdit,
   setting: MdSettings,
   cancel: MdCancel,
+  shortcut: MdOutlineShortcut,
 };
 
 interface IconProps {
