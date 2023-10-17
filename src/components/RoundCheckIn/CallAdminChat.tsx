@@ -57,6 +57,27 @@ const CallAdminChat = ({
     setInputMessage('');
   };
 
+  const callAdmin = () => {
+    if (!client) {
+      return;
+    }
+
+    if (!window.confirm('관리자를 호출하시겠어요?\n호출한 이후에는 취소할 수 없습니다.')) {
+      console.log('cancel');
+      return;
+    }
+
+    const requestUserParticipantId = players.find(
+      (player) => player.matchPlayerId === requestUser,
+    )?.participantId;
+
+    client.publish({
+      destination: `/app/match/${
+        router.query.channelLink as string
+      }/${requestUserParticipantId}/${matchId}/call-admin`,
+    });
+  };
+
   const findUserIMG = (playerParticipantId: number): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
 
@@ -96,7 +117,7 @@ const CallAdminChat = ({
     <Container>
       <Header>
         <div>Chat</div>
-        <CallAdminButton>Call Admin</CallAdminButton>
+        <CallAdminButton onClick={callAdmin}>Call Admin</CallAdminButton>
       </Header>
       <ChattingWrapper>
         {chats.length !== 0 &&
@@ -170,6 +191,8 @@ const CallAdminButton = styled.button`
   width: 9rem;
   border: none;
   border-radius: 0.3rem;
+
+  cursor: pointer;
 `;
 
 const ChattingWrapper = styled.div`
