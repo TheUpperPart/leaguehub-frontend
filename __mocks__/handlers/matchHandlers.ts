@@ -25,7 +25,7 @@ const players: GetMatchPlayerScoreInfos = {
       participantId: 2,
       gameId: '철수',
       gameTier: '브론즈 1',
-      playerStatus: 'WAITING',
+      playerStatus: 'DISQUALIFICATION',
       score: 9,
       matchRank: 2,
       profileSrc:
@@ -85,7 +85,7 @@ const players: GetMatchPlayerScoreInfos = {
       participantId: 7,
       gameId: '수지',
       gameTier: '브론즈 1',
-      playerStatus: 'WAITING',
+      playerStatus: 'DISQUALIFICATION',
       score: 3,
       matchRank: 7,
       profileSrc:
