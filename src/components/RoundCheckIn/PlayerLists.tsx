@@ -53,7 +53,7 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
             isMine={player.matchPlayerId === requestUser}
             isDisqualification={player.playerStatus === 'DISQUALIFICATION'}
           >
-            {requestUser === -1 && (
+            {requestUser === -1 && player.playerStatus !== 'DISQUALIFICATION' && (
               <DisqualificationButton onClick={() => onClickDisqualification(player)}>
                 실격처리
               </DisqualificationButton>
