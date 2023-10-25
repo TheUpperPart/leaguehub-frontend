@@ -36,7 +36,7 @@ export interface GetMatchPlayerScoreInfos {
   matchCurrentSet: number;
   matchSetCount: number;
   matchPlayerInfos: MatchPlayerScoreInfos[];
-  matchMessage: MatchMessages[];
+  matchMessages: MatchMessages[];
 }
 
 interface RoundCheckInProps {
@@ -176,7 +176,7 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
           client={client}
           matchId={matchId}
           players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
-          matchMessage={matchPlayers ? matchPlayers.matchMessage : []}
+          matchMessages={matchPlayers ? matchPlayers.matchMessages : []}
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
           checkInUser={checkInUser}
           currentMatchRound={matchPlayers ? matchPlayers.matchCurrentSet : -1}

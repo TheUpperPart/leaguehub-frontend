@@ -13,4 +13,5 @@ export type IconKind =
   | 'sendEmail'
   | 'modify'
   | 'setting'
-  | 'cancel';
+  | 'cancel'
+  | 'shortcut';
