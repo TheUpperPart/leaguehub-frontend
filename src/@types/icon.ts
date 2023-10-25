@@ -4,6 +4,7 @@ export type IconKind =
   | 'my'
   | 'checked'
   | 'notChecked'
+  | 'disqualification'
   | 'plus'
   | 'toggleOn'
   | 'toggleOff'

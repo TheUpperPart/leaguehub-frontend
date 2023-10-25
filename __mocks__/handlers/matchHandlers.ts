@@ -25,7 +25,7 @@ const players: GetMatchPlayerScoreInfos = {
       participantId: 2,
       gameId: '철수',
       gameTier: '브론즈 1',
-      playerStatus: 'WAITING',
+      playerStatus: 'DISQUALIFICATION',
       score: 9,
       matchRank: 2,
       profileSrc:
@@ -37,7 +37,7 @@ const players: GetMatchPlayerScoreInfos = {
       participantId: 3,
       gameId: '유리',
       gameTier: '브론즈 1',
-      playerStatus: 'READY',
+      playerStatus: 'WAITING',
       score: 8,
       matchRank: 3,
       profileSrc:
@@ -85,7 +85,7 @@ const players: GetMatchPlayerScoreInfos = {
       participantId: 7,
       gameId: '수지',
       gameTier: '브론즈 1',
-      playerStatus: 'WAITING',
+      playerStatus: 'DISQUALIFICATION',
       score: 3,
       matchRank: 7,
       profileSrc:
@@ -161,6 +161,9 @@ const players: GetMatchPlayerScoreInfos = {
 const matchHandler = [
   rest.get(SERVER_URL + '/api/channel/:channelId/match/:matchId/player/info', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(players));
+  }),
+  rest.post(SERVER_URL + '/api/:channelLink/disqualification', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
   }),
 ];
 

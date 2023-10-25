@@ -15,6 +15,7 @@ import {
   MdModeEdit,
   MdSettings,
   MdCancel,
+  MdIndeterminateCheckBox,
   MdOutlineShortcut,
 } from 'react-icons/md';
 import { MouseEventHandler } from 'react';
@@ -34,6 +35,7 @@ const ICON: { [key in IconKind]: IconType } = {
   modify: MdModeEdit,
   setting: MdSettings,
   cancel: MdCancel,
+  disqualification: MdIndeterminateCheckBox,
   shortcut: MdOutlineShortcut,
 };
 
