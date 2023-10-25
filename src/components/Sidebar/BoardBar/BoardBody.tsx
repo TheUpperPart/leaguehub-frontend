@@ -254,11 +254,13 @@ const Wrapper = styled.li<{ isSelected: boolean }>`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: #39587e;
+    background: linear-gradient(90deg, rgba(211, 250, 255, 0.3) 0%, rgba(211, 250, 255, 0) 128.25%);
   }
   color: white;
 
-  ${({ isSelected }) => isSelected && `background-color: #39587E`};
+  ${({ isSelected }) =>
+    isSelected &&
+    `background: linear-gradient(90deg, rgba(211, 250, 255, 0.30) 0%, rgba(211, 250, 255, 0.00) 128.25%)`};
 `;
 
 const CurrentRound = styled.div`
