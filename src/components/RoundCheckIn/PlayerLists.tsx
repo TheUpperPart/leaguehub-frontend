@@ -33,6 +33,13 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
     alert('서버에 에러가 발생했습니다. 나중에 다시 시도해주세요');
   };
 
+  const isAvailableDisqualification = (player: MatchPlayerScoreInfos): boolean => {
+    console.log(requestUser, player.playerStatus);
+    if (requestUser === -1 && player.playerStatus === 'DISQUALIFICATION') return true;
+
+    return false;
+  };
+
   return (
     <Container>
       <MenuList isMine={false} isDisqualification={false}>
@@ -53,10 +60,16 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
             isMine={player.matchPlayerId === requestUser}
             isDisqualification={player.playerStatus === 'DISQUALIFICATION'}
           >
-            {requestUser === -1 && player.playerStatus !== 'DISQUALIFICATION' && (
+            {isAvailableDisqualification(player) ? (
               <DisqualificationButton onClick={() => onClickDisqualification(player)}>
                 실격처리
               </DisqualificationButton>
+            ) : (
+              <div
+                css={css`
+                  width: 7rem;
+                `}
+              ></div>
             )}
             <MenuItem># {player.matchRank}</MenuItem>
             <MenuItem>{player.gameId}</MenuItem>
