@@ -97,7 +97,7 @@ const BoardBody = ({ channelLink }: Props) => {
       method: 'post',
       url: `/api/channel/${channelLink}/order`,
       data: {
-        channelBoardLoadDtoList: boards,
+        channelBoardLoadDtoList: customedBoards,
       },
     });
 
@@ -117,7 +117,7 @@ const BoardBody = ({ channelLink }: Props) => {
     const [removed] = newBoards.splice(source.index, 1);
     newBoards.splice(destination.index, 0, removed);
     for (let i = 0; i < newBoards.length; i++) {
-      newBoards[i].boardIndex = i;
+      newBoards[i].boardIndex = i + 1;
     }
     postCustomBoard(newBoards);
   };
@@ -171,7 +171,7 @@ const BoardBody = ({ channelLink }: Props) => {
                 </div>
               )}
               <div>
-                <Title>보드 목록</Title>
+                <Title>대회 관리</Title>
                 {channelPermission === 0 && (
                   <Wrapper
                     isSelected={selected === 'admin'}
@@ -192,10 +192,11 @@ const BoardBody = ({ channelLink }: Props) => {
                   대진표
                   <Icon kind='lock' color='#637083' size='1.5rem' />
                 </Wrapper>
+                <Title>공지사항</Title>
                 {boards &&
                   boards.map((board, index) =>
                     channelPermission === 0 ? (
-                      <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
+                      <Draggable key={board.boardId} draggableId={index.toString()} index={index}>
                         {(provided) => (
                           <Wrapper
                             ref={provided.innerRef}
@@ -204,7 +205,7 @@ const BoardBody = ({ channelLink }: Props) => {
                             data-id={board.boardId}
                             data-board-title={board.boardTitle}
                             onClick={onClickBoard}
-                            isSelected={board.boardId === selected}
+                            isSelected={board.boardId.toString() === selected}
                           >
                             {board.boardTitle}
                             <Icon kind='lock' color='#637083' size='1.5rem' />
