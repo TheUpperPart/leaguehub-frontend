@@ -83,13 +83,13 @@ const BoardBody = ({ channelLink }: Props) => {
     if (boards === undefined) return;
     const res = await postData(channelLink);
     const newBoard: Channels = {
-      boardId: res.boardId.toString(),
+      boardId: res.boardId,
       boardTitle: res.boardTitle,
       boardIndex: res.boardIndex,
     };
     setBoards((prevBoards) => [...prevBoards, newBoard]);
-    selectBoardId(newBoard.boardId);
-    handleBoard(channelLink, newBoard.boardId, res.boardTitle);
+    selectBoardId(newBoard.boardId.toString());
+    handleBoard(channelLink, newBoard.boardId.toString(), res.boardTitle);
   };
 
   const postCustomBoard = async (customedBoards: Channels[]) => {
@@ -116,6 +116,7 @@ const BoardBody = ({ channelLink }: Props) => {
     const newBoards = [...boards];
     const [removed] = newBoards.splice(source.index, 1);
     newBoards.splice(destination.index, 0, removed);
+    console.log(newBoards);
     for (let i = 0; i < newBoards.length; i++) {
       newBoards[i].boardIndex = i + 1;
     }
@@ -135,10 +136,16 @@ const BoardBody = ({ channelLink }: Props) => {
 
     if (isSuccess) {
       const tmpBoards = data.channelBoardLoadDtoList;
-      selectBoardId(tmpBoards[0].boardId);
-      handleBoard(channelLink, tmpBoards[0].boardId, tmpBoards[0].boardTitle);
+      selectBoardId(tmpBoards[0].boardId.toString());
+      handleBoard(channelLink, tmpBoards[0].boardId.toString(), tmpBoards[0].boardTitle);
     }
   }, [channelLink, isSuccess]);
+
+  useEffect(() => {
+    if (!boards.length || !data?.channelBoardLoadDtoList) return;
+    if (JSON.stringify(boards) === JSON.stringify(data.channelBoardLoadDtoList)) return;
+    setBoards(data.channelBoardLoadDtoList);
+  }, [data?.channelBoardLoadDtoList]);
 
   return (
     <Container>
@@ -196,7 +203,11 @@ const BoardBody = ({ channelLink }: Props) => {
                 {boards &&
                   boards.map((board, index) =>
                     channelPermission === 0 ? (
-                      <Draggable key={board.boardId} draggableId={index.toString()} index={index}>
+                      <Draggable
+                        key={board.boardId}
+                        draggableId={board.boardId.toString()}
+                        index={index}
+                      >
                         {(provided) => (
                           <Wrapper
                             ref={provided.innerRef}

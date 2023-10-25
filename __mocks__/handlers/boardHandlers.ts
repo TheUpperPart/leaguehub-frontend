@@ -10,7 +10,7 @@ interface BoardsInfo {
   [key: string]: {
     myMatchRound: number;
     myMatchId: number;
-    channelBoardLoadDtdList: Channels[];
+    channelBoardLoadDtoList: Channels[];
   };
 }
 
@@ -45,19 +45,19 @@ const boardsInfo: BoardsInfo = {
   '123': {
     myMatchRound: 0,
     myMatchId: 0,
-    channelBoardLoadDtdList: [
+    channelBoardLoadDtoList: [
       {
-        boardId: 'aaa',
+        boardId: 111,
         boardTitle: '공지사항',
         boardIndex: 0,
       },
       {
-        boardId: 'bbb',
+        boardId: 222,
         boardTitle: '게임 룰',
         boardIndex: 1,
       },
       {
-        boardId: 'ccc',
+        boardId: 333,
         boardTitle: '커뮤니티',
         boardIndex: 2,
       },
@@ -66,19 +66,19 @@ const boardsInfo: BoardsInfo = {
   '234': {
     myMatchRound: 1,
     myMatchId: 1,
-    channelBoardLoadDtdList: [
+    channelBoardLoadDtoList: [
       {
-        boardId: 'bbb',
+        boardId: 222,
         boardTitle: '리그 공지사항',
         boardIndex: 0,
       },
       {
-        boardId: 'ccc',
+        boardId: 333,
         boardTitle: '참여자 규칙',
         boardIndex: 1,
       },
       {
-        boardId: 'ddd',
+        boardId: 444,
         boardTitle: '참여하기',
         boardIndex: 2,
       },
@@ -87,19 +87,19 @@ const boardsInfo: BoardsInfo = {
   '456': {
     myMatchRound: 2,
     myMatchId: 2,
-    channelBoardLoadDtdList: [
+    channelBoardLoadDtoList: [
       {
-        boardId: 'eee',
+        boardId: 333,
         boardTitle: '리그 공지사항',
         boardIndex: 0,
       },
       {
-        boardId: 'fff',
+        boardId: 444,
         boardTitle: '참여자 규칙',
         boardIndex: 1,
       },
       {
-        boardId: 'ggg',
+        boardId: 555,
         boardTitle: '참여하기',
         boardIndex: 2,
       },

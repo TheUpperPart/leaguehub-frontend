@@ -8,7 +8,7 @@ export interface BoardInfo {
 }
 
 export interface Channels {
-  boardId: string;
+  boardId: number;
   boardTitle: string;
   boardIndex: number;
 }
