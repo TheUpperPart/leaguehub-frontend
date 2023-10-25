@@ -130,6 +130,15 @@ const MenuItem = styled.li<FlexVal>`
   justify-content: center;
   margin: 0 auto;
   flex: ${(props) => props.flexVal};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &: hover {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
 `;
 
 const DisqualificationButton = styled.button`
