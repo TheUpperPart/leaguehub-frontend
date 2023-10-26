@@ -111,7 +111,7 @@ const CallAdminChat = ({
 
   useEffect(() => {
     if (!matchMessages || matchMessages.length === 0) return;
-    setChats(matchMessages);
+    setChats(matchMessages.reverse());
   }, [matchMessages]);
 
   return (
