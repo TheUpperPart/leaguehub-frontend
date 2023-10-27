@@ -12,17 +12,73 @@ import useModals from '@hooks/useModals';
 
 import { SERVER_URL } from '@config/index';
 import { parse } from 'cookie';
+import { useEffect, useState } from 'react';
+import { connectToStomp } from '@config/stomp';
+import { Client, StompSubscription } from '@stomp/stompjs';
+import { useQuery } from '@tanstack/react-query';
+import authAPI from '@apis/authAPI';
+import { BracketHeader } from '@type/bracket';
+import RoundAlarmHeader from '@components/RoundAlarm/RoundAlarmHeader';
+import RoundAlarmBody from '@components/RoundAlarm/RoundAlarmBody';
+import { CallAdmin } from '@type/admin';
 interface Props {
   role: string;
 }
 
+const fetchRoundInfo = async (channelLink: string): Promise<BracketHeader> => {
+  const res = await authAPI<BracketHeader>({ method: 'get', url: `/api/match/${channelLink}` });
+  return res.data;
+};
+
 const Admin = ({ role }: Props) => {
   const router = useRouter();
+  const [client, setClient] = useState<Client>();
+
+  const [curRound, setCurRound] = useState<number>();
+
+  const [alramInfo, setAlramInfo] = useState<CallAdmin>();
 
   const { openModal, closeModal } = useModals();
 
+  const { data, isSuccess } = useQuery({
+    queryKey: ['roundInfos'],
+    queryFn: () => {
+      setCurRound(1);
+      return fetchRoundInfo(router.query.channelLink as string);
+    },
+  });
+
   if (!role) {
     router.push('/');
+  }
+
+  const isMySelfAlarm = () => {
+    return curRound === alramInfo?.matchRound;
+  };
+
+  useEffect(() => {
+    const tmpClient = connectToStomp();
+    tmpClient.activate();
+
+    let checkInSubscription: StompSubscription;
+
+    tmpClient.onConnect = () => {
+      setClient(tmpClient);
+      checkInSubscription = tmpClient.subscribe(
+        `/match/${router.query.channelLink as string}`,
+        (data) => {
+          setAlramInfo(JSON.parse(data.body));
+        },
+      );
+    };
+    return () => {
+      if (!client) return;
+      if (checkInSubscription) checkInSubscription.unsubscribe();
+      client.deactivate();
+    };
+  }, []);
+
+  if (isSuccess) {
   }
 
   return (
@@ -41,25 +97,37 @@ const Admin = ({ role }: Props) => {
         >
           대회 관리하기
         </Button>
+        <Button
+          width={20}
+          height={6}
+          onClick={() =>
+            openModal(Modal, {
+              onClose: () => closeModal(Modal),
+              children: (
+                <ModifyChannel
+                  channelLink={router.query.channelLink as string}
+                  onClose={() => closeModal(Modal)}
+                />
+              ),
+            })
+          }
+        >
+          채널 정보 수정하기
+        </Button>
       </BracketContainer>
-      <Header>채널 정보 설정</Header>
-      <Button
-        width={20}
-        height={6}
-        onClick={() =>
-          openModal(Modal, {
-            onClose: () => closeModal(Modal),
-            children: (
-              <ModifyChannel
-                channelLink={router.query.channelLink as string}
-                onClose={() => closeModal(Modal)}
-              />
-            ),
-          })
-        }
-      >
-        채널 정보 수정하기
-      </Button>
+      <Header>대회 알림</Header>
+      <BracketContainer>
+        <RoundList>
+          {data?.roundList.map((ele) => {
+            return <RoundAlarmHeader liveRound={data.liveRound} curRound={ele} key={ele} />;
+          })}
+        </RoundList>
+      </BracketContainer>
+      {curRound && (
+        <div>
+          <RoundAlarmBody curRound={curRound} havingAlarm={isMySelfAlarm()} />
+        </div>
+      )}
     </Container>
   );
 };
@@ -80,6 +148,12 @@ const BracketContainer = styled.div`
   display: flex;
   align-items: center;
   column-gap: 3rem;
+`;
+
+const RoundList = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 2rem;
 `;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

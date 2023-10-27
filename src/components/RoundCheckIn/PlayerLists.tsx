@@ -16,6 +16,10 @@ interface CheckMine {
   isDisqualification: boolean;
 }
 
+interface FlexVal {
+  flexVal: number;
+}
+
 const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) => {
   const router = useRouter();
   const { channelLink } = router.query;
@@ -33,6 +37,13 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
     alert('서버에 에러가 발생했습니다. 나중에 다시 시도해주세요');
   };
 
+  const isAvailableDisqualification = (player: MatchPlayerScoreInfos): boolean => {
+    console.log(requestUser, player.playerStatus);
+    if (requestUser === -1 && player.playerStatus === 'DISQUALIFICATION') return true;
+
+    return false;
+  };
+
   return (
     <Container>
       <MenuList isMine={false} isDisqualification={false}>
@@ -41,10 +52,10 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
             width: 7rem;
           `}
         ></div>
-        <MenuItem>순위</MenuItem>
-        <MenuItem>게임ID</MenuItem>
-        <MenuItem>점수</MenuItem>
-        <MenuItem>준비</MenuItem>
+        <MenuItem flexVal={1}>순위</MenuItem>
+        <MenuItem flexVal={3}>게임ID</MenuItem>
+        <MenuItem flexVal={1}>점수</MenuItem>
+        <MenuItem flexVal={1}>준비</MenuItem>
       </MenuList>
       {players.length !== 0 &&
         players.map((player) => (
@@ -53,15 +64,21 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
             isMine={player.matchPlayerId === requestUser}
             isDisqualification={player.playerStatus === 'DISQUALIFICATION'}
           >
-            {requestUser === -1 && player.playerStatus !== 'DISQUALIFICATION' && (
+            {isAvailableDisqualification(player) ? (
               <DisqualificationButton onClick={() => onClickDisqualification(player)}>
                 실격처리
               </DisqualificationButton>
+            ) : (
+              <div
+                css={css`
+                  width: 7rem;
+                `}
+              ></div>
             )}
-            <MenuItem># {player.matchRank}</MenuItem>
-            <MenuItem>{player.gameId}</MenuItem>
-            <MenuItem>{player.score}</MenuItem>
-            <MenuItem>
+            <MenuItem flexVal={1}># {player.matchRank}</MenuItem>
+            <MenuItem flexVal={3}>{player.gameId}</MenuItem>
+            <MenuItem flexVal={1}>{player.score}</MenuItem>
+            <MenuItem flexVal={1}>
               {checkInUsers.includes(player.matchPlayerId) ? (
                 <Icon kind='checked' color='1975FF' size={24} />
               ) : player.playerStatus === 'DISQUALIFICATION' ? (
@@ -106,12 +123,22 @@ const MenuList = styled.ul<CheckMine>`
   }
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.li<FlexVal>`
   width: 5rem;
   text-align: center;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  flex: ${(props) => props.flexVal};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &: hover {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
 `;
 
 const DisqualificationButton = styled.button`

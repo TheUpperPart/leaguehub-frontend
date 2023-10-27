@@ -3,14 +3,15 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { Client } from '@stomp/stompjs';
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { BASE_PROFILE_IMG } from '@config/index';
 
 interface CallAdminChatProps {
   client: Client | undefined;
   matchId: string;
   players: MatchPlayerScoreInfos[];
-  matchMessage: MatchMessages[];
+  matchMessages: MatchMessages[];
   requestUser: number;
 }
 
@@ -18,13 +19,18 @@ const CallAdminChat = ({
   client,
   matchId,
   players,
-  matchMessage,
+  matchMessages,
   requestUser,
 }: CallAdminChatProps) => {
   const [chats, setChats] = useState<MatchMessages[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const router = useRouter();
   const { channelLink } = router.query;
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleInputMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setInputMessage(e.target.value);
@@ -57,16 +63,37 @@ const CallAdminChat = ({
     setInputMessage('');
   };
 
+  const callAdmin = () => {
+    if (!client) {
+      return;
+    }
+
+    if (!window.confirm('관리자를 호출하시겠어요?\n호출한 이후에는 취소할 수 없습니다.')) {
+      console.log('cancel');
+      return;
+    }
+
+    const requestUserParticipantId = players.find(
+      (player) => player.matchPlayerId === requestUser,
+    )?.participantId;
+
+    client.publish({
+      destination: `/app/match/${
+        router.query.channelLink as string
+      }/${requestUserParticipantId}/${matchId}/call-admin`,
+    });
+  };
+
   const findUserIMG = (playerParticipantId: number): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
 
-    if (!user) return '';
+    if (!user) return BASE_PROFILE_IMG;
     return user.profileSrc;
   };
 
   const findUserName = (playerParticipantId: number): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
-    if (!user) return '';
+    if (!user) return '관리자';
     return user.gameId;
   };
 
@@ -88,15 +115,19 @@ const CallAdminChat = ({
   }, [client]);
 
   useEffect(() => {
-    if (!matchMessage || matchMessage.length === 0) return;
-    setChats(matchMessage);
-  }, [matchMessage]);
+    if (!matchMessages || matchMessages.length === 0) return;
+    setChats(matchMessages.reverse());
+  }, [matchMessages]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats]);
 
   return (
     <Container>
       <Header>
         <div>Chat</div>
-        <CallAdminButton>Call Admin</CallAdminButton>
+        <CallAdminButton onClick={callAdmin}>Call Admin</CallAdminButton>
       </Header>
       <ChattingWrapper>
         {chats.length !== 0 &&
@@ -126,6 +157,7 @@ const CallAdminChat = ({
               </ChattingContent>
             </ChattingInfo>
           ))}
+        <div ref={chatEndRef} />
       </ChattingWrapper>
       <div
         css={css`
@@ -170,6 +202,8 @@ const CallAdminButton = styled.button`
   width: 9rem;
   border: none;
   border-radius: 0.3rem;
+
+  cursor: pointer;
 `;
 
 const ChattingWrapper = styled.div`

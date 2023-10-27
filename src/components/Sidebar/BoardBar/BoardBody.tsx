@@ -146,6 +146,17 @@ const BoardBody = ({ channelLink }: Props) => {
     if (JSON.stringify(boards) === JSON.stringify(data.channelBoardLoadDtoList)) return;
     setBoards(data.channelBoardLoadDtoList);
   }, [data?.channelBoardLoadDtoList]);
+  
+  useEffect(() => {
+    setBoards((prevBoards) => {
+      return prevBoards.map((board) => {
+        if (board.boardId === selected) {
+          return { ...board, boardTitle: lastVisitedBoardIdLists[channelLink].boardTitle };
+        }
+        return board;
+      });
+    });
+  }, [lastVisitedBoardIdLists[channelLink]?.boardTitle]);
 
   return (
     <Container>
@@ -158,10 +169,10 @@ const BoardBody = ({ channelLink }: Props) => {
                   <Title>현재 라운드</Title>
                   <Wrapper
                     onClick={() => {
-                      setSelected('bracket');
+                      setSelected('CurrentRound');
                       router.push(`/contents/${channelLink}/checkIn/${data.myMatchId}`);
                     }}
-                    isSelected={selected === 'bracket'}
+                    isSelected={selected === 'CurrentRound'}
                   >
                     <CurrentRound>
                       <div>라운드 {data.myMatchRound}</div>

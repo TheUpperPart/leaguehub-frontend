@@ -1,10 +1,13 @@
 import LastVisitedBoardListsContext from '@contexts/LastVisitedBoardListsContext';
 import { useState } from 'react';
 
+interface LastVisitedBoard {
+  boardId: string;
+  boardTitle: string;
+}
+
 export interface LastVisitedBoardList {
-  [key: string]: {
-    [boardId: string]: string;
-  };
+  [key: string]: LastVisitedBoard;
 }
 
 interface Props {
