@@ -94,13 +94,16 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
 
     tmpClient.onConnect = () => {
       setClient(tmpClient);
+
       checkInSubscription = tmpClient.subscribe(`/match/${matchId}`, (data) => {
         const receivedUserStatus = JSON.parse(data.body);
         if (userStatus[receivedUserStatus.matchPlayerId]) return;
 
+        const status: Status = Number(receivedUserStatus) === 1 ? 'READY' : 'DISQUALIFICATION';
+
         setUserStatus({
           ...userStatus,
-          [receivedUserStatus.matchPlayerId]: receivedUserStatus.matchPlayerStatus,
+          [receivedUserStatus.matchPlayerId]: status,
         });
       });
     };
