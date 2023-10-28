@@ -1,14 +1,13 @@
-import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import { MatchMessages, MatchPlayerScoreInfos, UserStatus } from '@components/RoundCheckIn';
 import CallAdminChat from '@components/RoundCheckIn/CallAdminChat';
 import styled from '@emotion/styled';
 import { Client } from '@stomp/stompjs';
-import { useRouter } from 'next/router';
 import { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 
 interface CheckInPageProps {
   ParticipantCheckin: () => void;
+  ParticipantDisqualifying: (participantId: number, matchPlayerId: number) => void;
   client: Client | undefined;
   matchId: string;
   players: MatchPlayerScoreInfos[];
@@ -20,6 +19,7 @@ interface CheckInPageProps {
 
 const CheckInPage = ({
   ParticipantCheckin,
+  ParticipantDisqualifying,
   client,
   matchId,
   players,
@@ -32,24 +32,25 @@ const CheckInPage = ({
   const [isSendingRanking, setIsSendingRanking] = useState<boolean>(false);
   const [rank, setRank] = useState<string>('');
 
-  const router = useRouter();
-  const { channelLink } = router.query;
-
   const handleRankingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     if (!e.target) return;
     setRank(e.target.value);
   };
 
   const participantAbstention: MouseEventHandler<HTMLElement> = async () => {
+    if (requestUser === -1) return;
+
     if (!confirm('해당 경기를 기권하시겠습니까?')) return;
 
-    const res = await authAPI({ method: 'post', url: `/api/${channelLink}/disqualification` });
-    if (res.status === 200) {
-      alert('정상적으로 기권처리 되었습니다.');
+    const user = players.find((player) => player.matchPlayerId === requestUser);
+    if (!user) {
+      alert('에러가 발생했습니다.');
       return;
     }
 
-    alert('서버 에러가 발생했습니다. 나중에 다시 처리해주세요');
+    ParticipantDisqualifying(user.participantId, requestUser);
+
+    alert('정상적으로 기권처리 되었습니다.');
   };
 
   const onClickRankingButton: MouseEventHandler<HTMLElement> = () => {

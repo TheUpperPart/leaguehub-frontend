@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
 interface PlayerListsProps {
+  ParticipantDisqualifying: (participantId: number, matchPlayerId: number) => void;
   players: MatchPlayerScoreInfos[];
   userStatus: UserStatus;
   requestUser: number;
@@ -16,25 +17,21 @@ interface CheckMine {
   isDisqualification: boolean;
 }
 
-const PlayerLists = ({ players, userStatus, requestUser }: PlayerListsProps) => {
-  const router = useRouter();
-  const { channelLink } = router.query;
-
+const PlayerLists = ({
+  ParticipantDisqualifying,
+  players,
+  userStatus,
+  requestUser,
+}: PlayerListsProps) => {
   const onClickDisqualification = async (player: MatchPlayerScoreInfos) => {
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${channelLink}/${player.participantId}/disqualification`,
-    });
+    if (!confirm(`${player.gameId}님을 정말로 실격시키겠습니까?`)) return;
 
-    if (res.status === 200) {
-      alert(`${player.gameId}님을 실격처리하였습니다`);
-      return;
-    }
-    alert('서버에 에러가 발생했습니다. 나중에 다시 시도해주세요');
+    ParticipantDisqualifying(player.participantId, player.matchPlayerId);
+
+    alert(`${player.gameId}님을 실격처리하였습니다`);
   };
 
   const isAvailableDisqualification = (player: MatchPlayerScoreInfos): boolean => {
-    console.log(requestUser, player.playerStatus);
     if (requestUser === -1 && player.playerStatus === 'DISQUALIFICATION') return true;
 
     return false;
