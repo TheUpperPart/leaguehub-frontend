@@ -1,6 +1,6 @@
 import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
-import { MatchMessages, MatchPlayerScoreInfos } from '@components/RoundCheckIn';
+import { MatchMessages, MatchPlayerScoreInfos, UserStatus } from '@components/RoundCheckIn';
 import CallAdminChat from '@components/RoundCheckIn/CallAdminChat';
 import styled from '@emotion/styled';
 import { Client } from '@stomp/stompjs';
@@ -14,7 +14,7 @@ interface CheckInPageProps {
   players: MatchPlayerScoreInfos[];
   matchMessages: MatchMessages[];
   requestUser: number;
-  checkInUser: number[];
+  userStatus: UserStatus;
   currentMatchRound: number;
 }
 
@@ -25,7 +25,7 @@ const CheckInPage = ({
   players,
   matchMessages,
   requestUser,
-  checkInUser,
+  userStatus,
   currentMatchRound,
 }: CheckInPageProps) => {
   const [ready, setReady] = useState<boolean>(false);
@@ -42,11 +42,13 @@ const CheckInPage = ({
 
   const participantAbstention: MouseEventHandler<HTMLElement> = async () => {
     if (!confirm('해당 경기를 기권하시겠습니까?')) return;
+
     const res = await authAPI({ method: 'post', url: `/api/${channelLink}/disqualification` });
     if (res.status === 200) {
       alert('정상적으로 기권처리 되었습니다.');
       return;
     }
+
     alert('서버 에러가 발생했습니다. 나중에 다시 처리해주세요');
   };
 
@@ -68,18 +70,20 @@ const CheckInPage = ({
         destination: `/app/match/${matchId}/${currentMatchRound}/score-update`,
       });
     }
+
     setIsSendingRanking(true);
   };
 
   useEffect(() => {
-    const findUser = checkInUser.find((user) => requestUser === user);
-    if (findUser === undefined) {
+    const findUser = userStatus.hasOwnProperty(requestUser);
+
+    if (!findUser) {
       setReady(false);
       return;
     }
 
     setReady(true);
-  }, [checkInUser]);
+  }, [userStatus]);
 
   return (
     <Container>
@@ -89,7 +93,7 @@ const CheckInPage = ({
         <RemainTimeItem></RemainTimeItem>
       </RemainTimeWrapper>
       <ButtonWrapper>
-        {players.length !== 0 && players.length <= checkInUser.length ? (
+        {players.length !== 0 && players.length <= Object.keys(userStatus).length ? (
           <>
             <RankingSelect value={rank} onChange={handleRankingChange} disabled={isSendingRanking}>
               <option value=''>경기 후 게임 결과를 입력해주세요</option>

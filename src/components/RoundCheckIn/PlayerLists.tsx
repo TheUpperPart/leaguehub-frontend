@@ -1,13 +1,13 @@
 import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
-import { MatchPlayerScoreInfos } from '@components/RoundCheckIn';
+import { MatchPlayerScoreInfos, UserStatus } from '@components/RoundCheckIn';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
 interface PlayerListsProps {
   players: MatchPlayerScoreInfos[];
-  checkInUsers: number[];
+  userStatus: UserStatus;
   requestUser: number;
 }
 
@@ -16,7 +16,7 @@ interface CheckMine {
   isDisqualification: boolean;
 }
 
-const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) => {
+const PlayerLists = ({ players, userStatus, requestUser }: PlayerListsProps) => {
   const router = useRouter();
   const { channelLink } = router.query;
 
@@ -38,6 +38,15 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
     if (requestUser === -1 && player.playerStatus === 'DISQUALIFICATION') return true;
 
     return false;
+  };
+
+  const getPlayerStatusIcon = (player: MatchPlayerScoreInfos) => {
+    if (!userStatus.hasOwnProperty(player.matchPlayerId))
+      return <Icon kind='notChecked' color='1975FF' size={24} />;
+
+    if (player.playerStatus === 'READY') return <Icon kind='checked' color='1975FF' size={24} />;
+
+    return <Icon kind='disqualification' color='red' size={24} />;
   };
 
   return (
@@ -74,15 +83,7 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
             <MenuItem># {player.matchRank}</MenuItem>
             <MenuItem>{player.gameId}</MenuItem>
             <MenuItem>{player.score}</MenuItem>
-            <MenuItem>
-              {checkInUsers.includes(player.matchPlayerId) ? (
-                <Icon kind='checked' color='1975FF' size={24} />
-              ) : player.playerStatus === 'DISQUALIFICATION' ? (
-                <Icon kind='disqualification' color='red' size={24} />
-              ) : (
-                <Icon kind='notChecked' color='1975FF' size={24} />
-              )}
-            </MenuItem>
+            <MenuItem>{getPlayerStatusIcon(player)}</MenuItem>
           </MenuList>
         ))}
     </Container>
