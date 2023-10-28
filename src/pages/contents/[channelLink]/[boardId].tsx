@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
 import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 export interface Content {
@@ -59,6 +59,18 @@ const boardContents = () => {
     handleBoard(channelLink as string, boardId as string, title);
   };
 
+  const deleteBoard: MouseEventHandler<HTMLElement> = async () => {
+    if (!confirm('공지를 삭제하시겠습니까?')) return;
+    const res = await authAPI({ method: 'delete', url: `/api/channel/${channelLink}/${boardId}` });
+
+    if (res.status !== 200) {
+      alert('서버 에러가 발생했습니다.');
+      return;
+    }
+
+    alert('정상적으로 처리되었습니다.');
+  };
+
   useEffect(() => {
     setIsModify(false);
     if (!channelLink || !boardId) {
@@ -90,7 +102,7 @@ const boardContents = () => {
           </div>
           {channelPermission === 0 && (
             <>
-              <ModifyButton>공지 삭제</ModifyButton>
+              <ModifyButton onClick={deleteBoard}>공지 삭제</ModifyButton>
               <ModifyButton onClick={() => setIsModify(true)}>내용 수정</ModifyButton>
             </>
           )}
