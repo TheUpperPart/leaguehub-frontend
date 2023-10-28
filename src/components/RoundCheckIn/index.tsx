@@ -8,6 +8,7 @@ import { Client, StompSubscription } from '@stomp/stompjs';
 import authAPI from '@apis/authAPI';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
+import Cookies from 'js-cookie';
 
 export interface MatchPlayerScoreInfos {
   matchPlayerId: number;
@@ -154,6 +155,17 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
     });
   };
 
+  const participantDisqualifying = (participantId: number, matchPlayerId: number) => {
+    const accessToken = Cookies.get('accessToken');
+    if (!client || !matchPlayers || !accessToken) return;
+    const role = matchPlayers.requestMatchPlayerId === -1 ? 0 : 1;
+
+    client.publish({
+      destination: `/app/${channelLink}/${matchId}/disqualification`,
+      body: JSON.stringify({ accessToken, participantId, matchPlayerId, role }),
+    });
+  };
+
   return (
     <Container>
       <ContainerHeader>
@@ -189,12 +201,18 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
       </ContainerHeader>
       <FlexWrapper>
         <PlayerLists
+          ParticipantDisqualifying={(participantId, matchPlayerId) =>
+            participantDisqualifying(participantId, matchPlayerId)
+          }
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
           userStatus={userStatus}
           players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
         />
         <CheckInPage
           ParticipantCheckin={() => participantCheckin()}
+          ParticipantDisqualifying={(participantId, matchPlayerId) =>
+            participantDisqualifying(participantId, matchPlayerId)
+          }
           client={client}
           matchId={matchId}
           players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
