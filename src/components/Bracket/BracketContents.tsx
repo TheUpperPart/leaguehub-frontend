@@ -53,24 +53,26 @@ const BracketContents = (props: Props) => {
                 {match.matchPlayerInfoList.length === 0 ? (
                   <MatchNoGame>아직 대진표가 생성되지 않았어요 :(</MatchNoGame>
                 ) : (
-                  match.matchPlayerInfoList.map((user) => {
-                    return (
-                      <UserContainer myself={user.gameId === data.myGameId}>
-                        <UserImgContainer>
-                          {user.profileSrc ? (
-                            <UserImg src={user.profileSrc} alt='profile' width={30} height={30} />
-                          ) : (
-                            <UserNameImg>
-                              <UserNameImgText>{user.gameId.substring(0, 2)}</UserNameImgText>
-                            </UserNameImg>
-                          )}
-                        </UserImgContainer>
+                  match.matchPlayerInfoList
+                    .sort((a, b) => b.score - a.score)
+                    .map((user) => {
+                      return (
+                        <UserContainer myself={user.gameId === data.myGameId}>
+                          <UserImgContainer>
+                            {user.profileSrc ? (
+                              <UserImg src={user.profileSrc} alt='profile' width={30} height={30} />
+                            ) : (
+                              <UserNameImg>
+                                <UserNameImgText>{user.gameId.substring(0, 2)}</UserNameImgText>
+                              </UserNameImg>
+                            )}
+                          </UserImgContainer>
 
-                        <UserName>{user.gameId}</UserName>
-                        <UserScore>{user.score}</UserScore>
-                      </UserContainer>
-                    );
-                  })
+                          <UserName>{user.gameId}</UserName>
+                          <UserScore>{user.score}</UserScore>
+                        </UserContainer>
+                      );
+                    })
                 )}
               </MatchContent>
             </MatchContainer>
