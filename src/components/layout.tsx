@@ -50,6 +50,9 @@ const CommonLayout = styled.div`
 const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
+  background-image: url('/img/board/main.png');
+  background-size: 100% 100vh;
+  background-repeat: no-repeat;
 `;
 
 const SidebarWrapper = styled.div`
