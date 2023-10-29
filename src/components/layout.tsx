@@ -6,10 +6,14 @@ import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
 import GlobalStyle from 'src/styles/GlobalStyle';
 import Header from '@components/Header/Header';
 import useChannels from '@hooks/useChannels';
+import useProfile from '@hooks/useProfile';
+import NoAuthMain from './Main/NoAuthMain';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { channels } = useChannels();
   const [selectedChannelLink, setSelectedChannelLink] = useState<string | null>(null);
+
+  const { status } = useProfile();
 
   const updateSelectedChannel = (channelId: string) => {
     setSelectedChannelLink(channelId);
@@ -17,10 +21,33 @@ const Layout = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     // 새로고침시 첫 번째 채널 보여주도록 설정
-    if (channels) {
+    if (channels && status === 'success') {
       channels.length !== 0 && setSelectedChannelLink(channels[0].channelLink);
     }
   }, [channels]);
+
+  // 요청했을 때만
+  if (status === 'loading') {
+    return (
+      <>
+        <CommonLayout>
+          <GlobalStyle />
+          <div>Loading...</div>
+        </CommonLayout>
+      </>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <>
+        <CommonLayout>
+          <GlobalStyle />
+          <NoAuthMain />
+        </CommonLayout>
+      </>
+    );
+  }
 
   return (
     <>
