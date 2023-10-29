@@ -5,6 +5,8 @@ import { Profile } from '@type/profile';
 interface ProfileState {
   profile: Profile | null;
   setProfile: React.Dispatch<React.SetStateAction<Profile | null>>;
+  status: 'loading' | 'error' | 'success';
+  isInitialLoading: boolean;
 }
 
 const ProfileContext = createContext<ProfileState | null>(null);
