@@ -71,9 +71,11 @@ const Header = () => {
 export default Header;
 
 const Headers = styled.header`
-  width: 100%;
+  width: calc(100% - 5rem);
+  margin: 0 2.5rem;
+  background-color: #f1f1f1;
 
-  background-color: #141c24;
+  border-radius: 0 0 16px 16px;
 `;
 
 const Container = styled.div`
@@ -98,7 +100,7 @@ const LoginBtn = styled.button`
   column-gap: 0.5rem;
 
   background-color: inherit;
-  color: white;
+  color: #000000;
   cursor: pointer;
 `;
 
@@ -128,8 +130,8 @@ const DropList = styled.li`
 
   display: flex;
 
-  background-color: #344051;
-  color: white;
+  background-color: #f1f1f1;
+  color: #000000;
 
   height: 4rem;
   border: 1px solid black;

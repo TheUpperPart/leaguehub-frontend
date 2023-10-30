@@ -22,28 +22,29 @@ const ChannelCircle = ({
 export default ChannelCircle;
 
 const ChannelBtn = styled.div<{ url?: string }>`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 7rem;
-  height: 7rem;
+  width: 8rem;
+  height: 8rem;
   border: 0;
-
-  border-radius: 50%;
+  margin: 12px 0;
+  border-radius: 34px;
 
   cursor: pointer;
   font-size: 1.2rem;
-  color: #ffffff;
+  color: #000000;
   transition: border-radius 0.3s ease;
 
-  background: linear-gradient(to bottom, #344051 75%, #202b37 25%);
+  background-color: #ffffff;
 
   ${(prop) =>
     prop.url &&
     css`
       background-image: url(${prop.url});
-      background-size: 100% 75%;
+      background-size: 100% 100%;
       background-position: center top;
       background-repeat: no-repeat;
     `}
@@ -64,10 +65,20 @@ const ChannelName = styled.div`
 `;
 
 const ChannelGame = styled.div`
+  position: absolute;
   width: 100%;
   height: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
+  color: #ffffff;
+  background-color: #ff4655;
+  border: 0.2px solid #1e1e1e;
+
+  border-radius: 8px;
+  width: 3.1rem;
+  height: 1.2rem;
+
+  bottom: -5px;
 `;
