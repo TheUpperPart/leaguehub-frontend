@@ -1,35 +1,12 @@
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import { Login } from '@type/login';
 import { SERVER_URL } from '@config/index';
-import Cookies from 'js-cookie';
 
-interface Props {
-  data: Login;
-}
+import { serialize } from 'cookie';
 
-const Auth = (props: Props) => {
-  const route = useRouter();
-
-  useEffect(() => {
-    // 로그인 성공했을 때
-    if (props.data.success) {
-      Cookies.set('accessToken', props.data.accessToken);
-      Cookies.set('refreshToken', props.data.refreshToken);
-    }
-
-    // 마지막에 방문한 path를 가져옴
-    const latestVisit = localStorage.getItem('latestVisit');
-    if (latestVisit) {
-      route.push(latestVisit);
-    } else {
-      route.push('/');
-    }
-  }, []);
-
+const Auth = () => {
   return <div></div>;
 };
 
@@ -44,14 +21,22 @@ export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (co
         'Kakao-Code': `${context.query.code}`,
       },
     });
+
     const { accessToken, refreshToken } = res.data;
+
+    const cookie1 = serialize('accessToken', accessToken, {
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    const cookie2 = serialize('refreshToken', refreshToken, {
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    context.res.setHeader('set-Cookie', [cookie1, cookie2]);
+
     return {
-      props: {
-        data: {
-          accessToken,
-          refreshToken,
-          success: true,
-        },
+      redirect: {
+        permanent: false,
+        destination: '/',
       },
     };
   } catch (error) {
@@ -59,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (co
     return {
       redirect: {
         permanent: false,
-        destination: '/login',
+        destination: '/',
       },
     };
   }

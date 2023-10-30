@@ -34,7 +34,7 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
   const profileQuery = useQuery<ProfileAPI>({
     queryKey: ['getProfile'],
     queryFn: fetchProfile,
-    enabled: isHaveAccessToken ? true : false, // 액세스 토큰이 있으면 query 요청
+    retry: 0,
   });
 
   // 프로필 데이터를 가져왔다면
@@ -48,7 +48,16 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
   }, [profileQuery.data]);
 
   return (
-    <ProfileContext.Provider value={{ profile, setProfile }}>{children}</ProfileContext.Provider>
+    <ProfileContext.Provider
+      value={{
+        profile,
+        setProfile,
+        status: profileQuery.status,
+        isInitialLoading: profileQuery.isInitialLoading,
+      }}
+    >
+      {children}
+    </ProfileContext.Provider>
   );
 };
 
