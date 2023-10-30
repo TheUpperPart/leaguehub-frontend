@@ -1,7 +1,7 @@
+import DivideLine from '@components/DivideLine/DivideLine';
 import Icon from '@components/Icon';
 import Modal from '@components/Modal';
 import ParticipantList from '@components/Modal/ParticipantLists';
-import { GameEnum } from '@constants/MakeGame';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useModals from '@hooks/useModals';
@@ -22,8 +22,8 @@ const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: Bo
         <span css={labelStyle}>개최자</span>
         <span css={hostnameStyle}>{hostname}</span>
         <TitleContainer>{leagueTitle}</TitleContainer>
-        <GameNameWrapper>{GameEnum[gameCategory]}</GameNameWrapper>
       </Wrapper>
+      <DivideLine />
       <ParticipateWrapper
         onClick={() =>
           openModal(Modal, {
@@ -32,11 +32,12 @@ const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: Bo
           })
         }
       >
-        <span>참여자(팀)</span>
+        <span css={participantStyle}>참여자(팀)</span>
         <ParticipateBox>
           <Icon kind='team' color='#637083' size='2rem' />
           {participateNum}
         </ParticipateBox>
+        <DivideLine />
       </ParticipateWrapper>
     </Container>
   );
@@ -45,53 +46,60 @@ const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: Bo
 export default BoardHeader;
 
 const Container = styled.div`
-  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 `;
 
-const Wrapper = styled.div`
-  border-bottom: solid 1px #344051;
-`;
+const Wrapper = styled.div``;
 
 const labelStyle = css`
-  color: #ced2da;
-  font-size: 1.2rem;
+  color: #717171;
+  padding: 5px;
+  margin-bottom: 8px;
 `;
 
 const hostnameStyle = css`
   font-size: 1.5rem;
   font-weight: semi-bold;
+  color: #000000;
+`;
+
+const participantStyle = css`
+  color: #868686;
+  font-size: 1.2rem;
 `;
 
 const TitleContainer = styled.div`
-  width: 100%;
-  height: 3rem;
+  width: 19.2rem;
+  height: 2.8rem;
+  font-size: 1.6rem;
+
+  color: #000000;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #637083;
-  border-radius: 0.5rem;
-  margin-top: 3px;
+  border-radius: 6px;
   font-weight: bold;
 `;
 
-const GameNameWrapper = styled.div`
-  text-align: center;
-  padding: 1rem 0 1rem;
-`;
-
 const ParticipateWrapper = styled.div`
-  padding: 1rem 0 1rem;
-  border-bottom: solid 1px #344051;
-  &: hover {
+  width: 19.2rem;
+  color: #000000;
+  font-size: 1.6rem;
+
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
 `;
 
 const ParticipateBox = styled.div`
-  background-color: #344051;
+  background-color: #ffffff;
   padding: 1rem 1rem 1rem 1rem;
   display: flex;
   justify-content: space-between;
