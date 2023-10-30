@@ -48,9 +48,6 @@ const ContentModify = ({ title, content, onUpdateContent }: ContentModifyProps) 
     <>
       <TitleField placeholder={'제목을 입력해주세요'} defaultValue={title} ref={titleRef} />
       <InputField placeholder={'텍스트를 입력해주세요'} defaultValue={content} ref={textRef} />
-      <ContentButton right='25' backgroundColor='#ff0044'>
-        삭제하기
-      </ContentButton>
       <ContentButton
         right='15'
         backgroundColor='grey'
