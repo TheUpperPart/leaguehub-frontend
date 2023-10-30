@@ -62,20 +62,19 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
 };
 
 const Container = styled.div`
-  width: 20rem;
+  width: 20.4rem;
   height: 100vh;
-  background-color: #202b37;
+  background-color: #f1f1f1;
   overflow: auto;
   position: relative;
+  padding: 2.4rem 0;
 `;
 
 const ContentContainer = styled.div`
-  height: 96%;
   padding-bottom: 3rem;
 `;
 
 const FooterContainer = styled.div`
-  position: sticky;
   bottom: 0;
   left: 0;
   width: 100%;
