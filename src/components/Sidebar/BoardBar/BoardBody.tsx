@@ -116,7 +116,6 @@ const BoardBody = ({ channelLink }: Props) => {
     const newBoards = [...boards];
     const [removed] = newBoards.splice(source.index, 1);
     newBoards.splice(destination.index, 0, removed);
-    console.log(newBoards);
     for (let i = 0; i < newBoards.length; i++) {
       newBoards[i].boardIndex = i + 1;
     }
@@ -146,13 +145,13 @@ const BoardBody = ({ channelLink }: Props) => {
     if (JSON.stringify(boards) === JSON.stringify(data.channelBoardLoadDtoList)) return;
     setBoards(data.channelBoardLoadDtoList);
   }, [data?.channelBoardLoadDtoList]);
-  
+
   useEffect(() => {
     setBoards((prevBoards) => {
       return prevBoards.map((board) => {
-        if (board.boardId === selected) {
+        if (board.boardId.toString() === selected)
           return { ...board, boardTitle: lastVisitedBoardIdLists[channelLink].boardTitle };
-        }
+
         return board;
       });
     });
