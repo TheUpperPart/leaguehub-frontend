@@ -8,13 +8,14 @@ import { Client, StompSubscription } from '@stomp/stompjs';
 import authAPI from '@apis/authAPI';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
+import Cookies from 'js-cookie';
 
 export interface MatchPlayerScoreInfos {
   matchPlayerId: number;
   participantId: number;
   gameId: string;
   gameTier: string;
-  playerStatus: string;
+  playerStatus: Status;
   score: number;
   matchRank: number;
   profileSrc: string;
@@ -44,10 +45,16 @@ interface RoundCheckInProps {
   matchId: string;
 }
 
+type Status = 'READY' | 'DISQUALIFICATION' | 'WAITING';
+
+export interface UserStatus {
+  [key: number]: Exclude<Status, 'WAITING'>;
+}
+
 const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
-  const [client, setClient] = useState<Client>();
   const [matchPlayers, setMatchPlayers] = useState<GetMatchPlayerScoreInfos>();
-  const [checkInUser, setCheckInUser] = useState<number[]>([]);
+  const [userStatus, setUserStatus] = useState<UserStatus>([]);
+  const [client, setClient] = useState<Client>();
 
   const router = useRouter();
 
@@ -56,18 +63,27 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
       method: 'get',
       url: `/api/channel/${channelLink}/match/${matchId}/player/info`,
     });
+
     if (res.status !== 200 || res.data.requestMatchPlayerId === 0) {
       router.back();
       return;
     }
 
     setMatchPlayers(res.data);
-    const readyUser = res.data.matchPlayerInfos
-      .filter((info) => info.playerStatus === 'READY')
-      .map((info) => info.matchPlayerId);
 
-    setCheckInUser(readyUser);
+    const updatedStatus: UserStatus = {};
+
+    res.data.matchPlayerInfos.forEach((info) => {
+      if (info.playerStatus === 'WAITING') return;
+
+      updatedStatus[info.matchPlayerId] = info.playerStatus;
+    });
+
+    setUserStatus(updatedStatus);
   };
+
+  const readyUserLength = () =>
+    Object.values(userStatus).filter((value) => value === 'READY').length;
 
   useEffect(() => {
     fetchData();
@@ -79,10 +95,18 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
 
     tmpClient.onConnect = () => {
       setClient(tmpClient);
+
       checkInSubscription = tmpClient.subscribe(`/match/${matchId}`, (data) => {
-        const readyUserPlayerId = Number(JSON.parse(data.body).matchPlayerId);
-        if (checkInUser.includes(readyUserPlayerId)) return;
-        setCheckInUser((prevUsers) => [...prevUsers, readyUserPlayerId]);
+        const receivedUserStatus = JSON.parse(data.body);
+        if (userStatus[receivedUserStatus.matchPlayerId]) return;
+
+        const status: Status =
+          Number(receivedUserStatus.matchPlayerStatus) === 1 ? 'READY' : 'DISQUALIFICATION';
+
+        setUserStatus((prevUserStatus) => ({
+          ...prevUserStatus,
+          [receivedUserStatus.matchPlayerId]: status,
+        }));
       });
     };
 
@@ -113,7 +137,7 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
             matchPlayerInfos: responseData.matchPlayerInfoList,
           };
         });
-        setCheckInUser([]);
+        setUserStatus([]);
       },
     );
 
@@ -129,6 +153,17 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
     client.publish({
       destination: `/app/match/${matchId}/checkIn`,
       body: JSON.stringify({ matchPlayerId: matchPlayers.requestMatchPlayerId }),
+    });
+  };
+
+  const participantDisqualifying = (participantId: number, matchPlayerId: number) => {
+    const accessToken = Cookies.get('accessToken');
+    if (!client || !matchPlayers || !accessToken) return;
+    const role = matchPlayers.requestMatchPlayerId === -1 ? 0 : 1;
+
+    client.publish({
+      destination: `/app/${channelLink}/${matchId}/disqualification`,
+      body: JSON.stringify({ accessToken, participantId, matchPlayerId, role }),
     });
   };
 
@@ -161,24 +196,30 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
           </CheckInfo>
           <CheckInfo>
             <Icon kind='checked' color='1975FF' />
-            <div>{checkInUser.length}</div>
+            <div>{readyUserLength()}</div>
           </CheckInfo>
         </FlexWrapper>
       </ContainerHeader>
       <FlexWrapper>
         <PlayerLists
+          ParticipantDisqualifying={(participantId, matchPlayerId) =>
+            participantDisqualifying(participantId, matchPlayerId)
+          }
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
-          checkInUsers={checkInUser}
+          userStatus={userStatus}
           players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
         />
         <CheckInPage
           ParticipantCheckin={() => participantCheckin()}
+          ParticipantDisqualifying={(participantId, matchPlayerId) =>
+            participantDisqualifying(participantId, matchPlayerId)
+          }
           client={client}
           matchId={matchId}
           players={matchPlayers ? matchPlayers.matchPlayerInfos : []}
           matchMessages={matchPlayers ? matchPlayers.matchMessages : []}
           requestUser={matchPlayers ? matchPlayers.requestMatchPlayerId : -1}
-          checkInUser={checkInUser}
+          userStatus={userStatus}
           currentMatchRound={matchPlayers ? matchPlayers.matchCurrentSet : -1}
         />
       </FlexWrapper>

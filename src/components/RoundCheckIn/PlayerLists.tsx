@@ -1,13 +1,14 @@
 import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
-import { MatchPlayerScoreInfos } from '@components/RoundCheckIn';
+import { MatchPlayerScoreInfos, UserStatus } from '@components/RoundCheckIn';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
 interface PlayerListsProps {
+  ParticipantDisqualifying: (participantId: number, matchPlayerId: number) => void;
   players: MatchPlayerScoreInfos[];
-  checkInUsers: number[];
+  userStatus: UserStatus;
   requestUser: number;
 }
 
@@ -20,28 +21,34 @@ interface FlexVal {
   flexVal: number;
 }
 
-const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) => {
-  const router = useRouter();
-  const { channelLink } = router.query;
-
+const PlayerLists = ({
+  ParticipantDisqualifying,
+  players,
+  userStatus,
+  requestUser,
+}: PlayerListsProps) => {
   const onClickDisqualification = async (player: MatchPlayerScoreInfos) => {
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${channelLink}/${player.participantId}/disqualification`,
-    });
+    if (!confirm(`${player.gameId}님을 정말로 실격시키겠습니까?`)) return;
 
-    if (res.status === 200) {
-      alert(`${player.gameId}님을 실격처리하였습니다`);
-      return;
-    }
-    alert('서버에 에러가 발생했습니다. 나중에 다시 시도해주세요');
+    ParticipantDisqualifying(player.participantId, player.matchPlayerId);
+
+    alert(`${player.gameId}님을 실격처리하였습니다`);
   };
 
   const isAvailableDisqualification = (player: MatchPlayerScoreInfos): boolean => {
-    console.log(requestUser, player.playerStatus);
-    if (requestUser === -1 && player.playerStatus === 'DISQUALIFICATION') return true;
+    if (requestUser === -1 && userStatus[player.matchPlayerId] !== 'DISQUALIFICATION') return true;
 
     return false;
+  };
+
+  const getPlayerStatusIcon = (player: MatchPlayerScoreInfos) => {
+    if (!userStatus.hasOwnProperty(player.matchPlayerId))
+      return <Icon kind='notChecked' color='1975FF' size={24} />;
+
+    if (userStatus[player.matchPlayerId] === 'READY')
+      return <Icon kind='checked' color='1975FF' size={24} />;
+
+    return <Icon kind='disqualification' color='red' size={24} />;
   };
 
   return (
@@ -62,7 +69,7 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
           <MenuList
             key={player.matchPlayerId}
             isMine={player.matchPlayerId === requestUser}
-            isDisqualification={player.playerStatus === 'DISQUALIFICATION'}
+            isDisqualification={userStatus[player.matchPlayerId] === 'DISQUALIFICATION'}
           >
             {isAvailableDisqualification(player) ? (
               <DisqualificationButton onClick={() => onClickDisqualification(player)}>
@@ -78,15 +85,7 @@ const PlayerLists = ({ players, checkInUsers, requestUser }: PlayerListsProps) =
             <MenuItem flexVal={1}># {player.matchRank}</MenuItem>
             <MenuItem flexVal={3}>{player.gameId}</MenuItem>
             <MenuItem flexVal={1}>{player.score}</MenuItem>
-            <MenuItem flexVal={1}>
-              {checkInUsers.includes(player.matchPlayerId) ? (
-                <Icon kind='checked' color='1975FF' size={24} />
-              ) : player.playerStatus === 'DISQUALIFICATION' ? (
-                <Icon kind='disqualification' color='red' size={24} />
-              ) : (
-                <Icon kind='notChecked' color='1975FF' size={24} />
-              )}
-            </MenuItem>
+            <MenuItem flexVal={1}>{getPlayerStatusIcon(player)}</MenuItem>
           </MenuList>
         ))}
     </Container>
