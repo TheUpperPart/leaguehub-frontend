@@ -14,4 +14,6 @@ export type IconKind =
   | 'modify'
   | 'setting'
   | 'cancel'
-  | 'shortcut';
+  | 'shortcut'
+  | 'message'
+  | 'mail';
