@@ -17,6 +17,8 @@ import {
   MdCancel,
   MdIndeterminateCheckBox,
   MdOutlineShortcut,
+  MdMessage,
+  MdEmail,
 } from 'react-icons/md';
 import { MouseEventHandler } from 'react';
 
@@ -37,6 +39,8 @@ const ICON: { [key in IconKind]: IconType } = {
   cancel: MdCancel,
   disqualification: MdIndeterminateCheckBox,
   shortcut: MdOutlineShortcut,
+  message: MdMessage,
+  mail: MdEmail,
 };
 
 interface IconProps {
