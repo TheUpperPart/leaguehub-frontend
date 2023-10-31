@@ -32,7 +32,7 @@ const PlayerLists = ({
   };
 
   const isAvailableDisqualification = (player: MatchPlayerScoreInfos): boolean => {
-    if (requestUser === -1 && player.playerStatus === 'DISQUALIFICATION') return true;
+    if (requestUser === -1 && userStatus[player.matchPlayerId] !== 'DISQUALIFICATION') return true;
 
     return false;
   };
@@ -41,7 +41,8 @@ const PlayerLists = ({
     if (!userStatus.hasOwnProperty(player.matchPlayerId))
       return <Icon kind='notChecked' color='1975FF' size={24} />;
 
-    if (player.playerStatus === 'READY') return <Icon kind='checked' color='1975FF' size={24} />;
+    if (userStatus[player.matchPlayerId] === 'READY')
+      return <Icon kind='checked' color='1975FF' size={24} />;
 
     return <Icon kind='disqualification' color='red' size={24} />;
   };
@@ -64,7 +65,7 @@ const PlayerLists = ({
           <MenuList
             key={player.matchPlayerId}
             isMine={player.matchPlayerId === requestUser}
-            isDisqualification={player.playerStatus === 'DISQUALIFICATION'}
+            isDisqualification={userStatus[player.matchPlayerId] === 'DISQUALIFICATION'}
           >
             {isAvailableDisqualification(player) ? (
               <DisqualificationButton onClick={() => onClickDisqualification(player)}>
