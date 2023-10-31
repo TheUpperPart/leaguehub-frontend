@@ -17,6 +17,10 @@ interface CheckMine {
   isDisqualification: boolean;
 }
 
+interface FlexVal {
+  flexVal: number;
+}
+
 const PlayerLists = ({
   ParticipantDisqualifying,
   players,
@@ -55,10 +59,10 @@ const PlayerLists = ({
             width: 7rem;
           `}
         ></div>
-        <MenuItem>순위</MenuItem>
-        <MenuItem>게임ID</MenuItem>
-        <MenuItem>점수</MenuItem>
-        <MenuItem>준비</MenuItem>
+        <MenuItem flexVal={1}>순위</MenuItem>
+        <MenuItem flexVal={3}>게임ID</MenuItem>
+        <MenuItem flexVal={1}>점수</MenuItem>
+        <MenuItem flexVal={1}>준비</MenuItem>
       </MenuList>
       {players.length !== 0 &&
         players.map((player) => (
@@ -78,10 +82,10 @@ const PlayerLists = ({
                 `}
               ></div>
             )}
-            <MenuItem># {player.matchRank}</MenuItem>
-            <MenuItem>{player.gameId}</MenuItem>
-            <MenuItem>{player.score}</MenuItem>
-            <MenuItem>{getPlayerStatusIcon(player)}</MenuItem>
+            <MenuItem flexVal={1}># {player.matchRank}</MenuItem>
+            <MenuItem flexVal={3}>{player.gameId}</MenuItem>
+            <MenuItem flexVal={1}>{player.score}</MenuItem>
+            <MenuItem flexVal={1}>{getPlayerStatusIcon(player)}</MenuItem>
           </MenuList>
         ))}
     </Container>
@@ -118,12 +122,22 @@ const MenuList = styled.ul<CheckMine>`
   }
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.li<FlexVal>`
   width: 5rem;
   text-align: center;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  flex: ${(props) => props.flexVal};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &: hover {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
 `;
 
 const DisqualificationButton = styled.button`

@@ -47,17 +47,17 @@ const boardsInfo: BoardsInfo = {
     myMatchId: 0,
     channelBoardLoadDtoList: [
       {
-        boardId: 'aaa',
+        boardId: 111,
         boardTitle: '공지사항',
         boardIndex: 0,
       },
       {
-        boardId: 'bbb',
+        boardId: 222,
         boardTitle: '게임 룰',
         boardIndex: 1,
       },
       {
-        boardId: 'ccc',
+        boardId: 333,
         boardTitle: '커뮤니티',
         boardIndex: 2,
       },
@@ -68,17 +68,17 @@ const boardsInfo: BoardsInfo = {
     myMatchId: 1,
     channelBoardLoadDtoList: [
       {
-        boardId: 'bbb',
+        boardId: 222,
         boardTitle: '리그 공지사항',
         boardIndex: 0,
       },
       {
-        boardId: 'ccc',
+        boardId: 333,
         boardTitle: '참여자 규칙',
         boardIndex: 1,
       },
       {
-        boardId: 'ddd',
+        boardId: 444,
         boardTitle: '참여하기',
         boardIndex: 2,
       },
@@ -89,17 +89,17 @@ const boardsInfo: BoardsInfo = {
     myMatchId: 2,
     channelBoardLoadDtoList: [
       {
-        boardId: 'eee',
+        boardId: 333,
         boardTitle: '리그 공지사항',
         boardIndex: 0,
       },
       {
-        boardId: 'fff',
+        boardId: 444,
         boardTitle: '참여자 규칙',
         boardIndex: 1,
       },
       {
-        boardId: 'ggg',
+        boardId: 555,
         boardTitle: '참여하기',
         boardIndex: 2,
       },

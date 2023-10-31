@@ -83,13 +83,13 @@ const BoardBody = ({ channelLink }: Props) => {
     if (boards === undefined) return;
     const res = await postData(channelLink);
     const newBoard: Channels = {
-      boardId: res.boardId.toString(),
+      boardId: res.boardId,
       boardTitle: res.boardTitle,
       boardIndex: res.boardIndex,
     };
     setBoards((prevBoards) => [...prevBoards, newBoard]);
-    selectBoardId(newBoard.boardId);
-    handleBoard(channelLink, newBoard.boardId, res.boardTitle);
+    selectBoardId(newBoard.boardId.toString());
+    handleBoard(channelLink, newBoard.boardId.toString(), res.boardTitle);
   };
 
   const postCustomBoard = async (customedBoards: Channels[]) => {
@@ -97,7 +97,7 @@ const BoardBody = ({ channelLink }: Props) => {
       method: 'post',
       url: `/api/channel/${channelLink}/order`,
       data: {
-        channelBoardLoadDtoList: boards,
+        channelBoardLoadDtoList: customedBoards,
       },
     });
 
@@ -117,7 +117,7 @@ const BoardBody = ({ channelLink }: Props) => {
     const [removed] = newBoards.splice(source.index, 1);
     newBoards.splice(destination.index, 0, removed);
     for (let i = 0; i < newBoards.length; i++) {
-      newBoards[i].boardIndex = i;
+      newBoards[i].boardIndex = i + 1;
     }
     postCustomBoard(newBoards);
   };
@@ -135,17 +135,23 @@ const BoardBody = ({ channelLink }: Props) => {
 
     if (isSuccess) {
       const tmpBoards = data.channelBoardLoadDtoList;
-      selectBoardId(tmpBoards[0].boardId);
-      handleBoard(channelLink, tmpBoards[0].boardId, tmpBoards[0].boardTitle);
+      selectBoardId(tmpBoards[0].boardId.toString());
+      handleBoard(channelLink, tmpBoards[0].boardId.toString(), tmpBoards[0].boardTitle);
     }
   }, [channelLink, isSuccess]);
 
   useEffect(() => {
+    if (!boards.length || !data?.channelBoardLoadDtoList) return;
+    if (JSON.stringify(boards) === JSON.stringify(data.channelBoardLoadDtoList)) return;
+    setBoards(data.channelBoardLoadDtoList);
+  }, [data?.channelBoardLoadDtoList]);
+
+  useEffect(() => {
     setBoards((prevBoards) => {
       return prevBoards.map((board) => {
-        if (board.boardId === selected) {
+        if (board.boardId.toString() === selected)
           return { ...board, boardTitle: lastVisitedBoardIdLists[channelLink].boardTitle };
-        }
+
         return board;
       });
     });
@@ -182,7 +188,7 @@ const BoardBody = ({ channelLink }: Props) => {
                 </div>
               )}
               <div>
-                <Title>보드 목록</Title>
+                <Title>대회 관리</Title>
                 {channelPermission === 0 && (
                   <Wrapper
                     isSelected={selected === 'admin'}
@@ -203,10 +209,15 @@ const BoardBody = ({ channelLink }: Props) => {
                   대진표
                   <Icon kind='lock' color='#637083' size='1.5rem' />
                 </Wrapper>
+                <Title>공지사항</Title>
                 {boards &&
                   boards.map((board, index) =>
                     channelPermission === 0 ? (
-                      <Draggable key={board.boardId} draggableId={board.boardId} index={index}>
+                      <Draggable
+                        key={board.boardId}
+                        draggableId={board.boardId.toString()}
+                        index={index}
+                      >
                         {(provided) => (
                           <Wrapper
                             ref={provided.innerRef}
@@ -215,7 +226,7 @@ const BoardBody = ({ channelLink }: Props) => {
                             data-id={board.boardId}
                             data-board-title={board.boardTitle}
                             onClick={onClickBoard}
-                            isSelected={board.boardId === selected}
+                            isSelected={board.boardId.toString() === selected}
                           >
                             {board.boardTitle}
                             <Icon kind='lock' color='#637083' size='1.5rem' />
@@ -264,11 +275,13 @@ const Wrapper = styled.li<{ isSelected: boolean }>`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: #39587e;
+    background: linear-gradient(90deg, rgba(211, 250, 255, 0.3) 0%, rgba(211, 250, 255, 0) 128.25%);
   }
   color: white;
 
-  ${({ isSelected }) => isSelected && `background-color: #39587E`};
+  ${({ isSelected }) =>
+    isSelected &&
+    `background: linear-gradient(90deg, rgba(211, 250, 255, 0.30) 0%, rgba(211, 250, 255, 0.00) 128.25%)`};
 `;
 
 const CurrentRound = styled.div`

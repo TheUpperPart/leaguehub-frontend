@@ -12,6 +12,11 @@ export interface Content {
   title: string;
   content: string;
 }
+interface ContentButtonProps {
+  onClick?: () => void;
+  right?: string;
+  backgroundColor?: string;
+}
 
 const updateData = async (channelLink: string, boardId: string, updatedContent: Content) => {
   const res = await authAPI({
@@ -22,6 +27,7 @@ const updateData = async (channelLink: string, boardId: string, updatedContent: 
       content: updatedContent.content,
     },
   });
+
   return res;
 };
 
@@ -39,7 +45,9 @@ const boardContents = () => {
       method: 'get',
       url: `/api/channel/${channelLink}/${boardId}`,
     });
+
     if (res.status !== 200) return router.push('/');
+
     setContents(res.data);
   };
 
@@ -49,14 +57,30 @@ const boardContents = () => {
       content,
     };
     if (!channelLink) return;
+
     const res = await updateData(channelLink as string, boardId as string, updatedContent);
     if (res.status !== 200) {
       alert('요청실패');
       return;
     }
+
     setContents(updatedContent);
     setIsModify(false);
     handleBoard(channelLink as string, boardId as string, title);
+  };
+
+  const deleteBoard = async () => {
+    if (!confirm('공지를 삭제하시겠습니까?')) return;
+    const res = await authAPI({ method: 'delete', url: `/api/channel/${channelLink}/${boardId}` });
+
+    if (res.status !== 200) {
+      alert('서버 에러가 발생했습니다.');
+      return;
+    }
+
+    handleBoard(channelLink as string, '', '');
+
+    alert('정상적으로 처리되었습니다.');
   };
 
   useEffect(() => {
@@ -90,8 +114,12 @@ const boardContents = () => {
           </div>
           {channelPermission === 0 && (
             <>
-              <ModifyButton>공지 삭제</ModifyButton>
-              <ModifyButton onClick={() => setIsModify(true)}>내용 수정</ModifyButton>
+              <ModifyButton right='15' backgroundColor='#ff0044' onClick={() => deleteBoard()}>
+                공지 삭제
+              </ModifyButton>
+              <ModifyButton backgroundColor='#0067a3' onClick={() => setIsModify(true)}>
+                내용 수정
+              </ModifyButton>
             </>
           )}
         </>
@@ -117,16 +145,17 @@ const Title = styled.div`
   border-bottom: 1px solid #d3d3d3;
 `;
 
-const ModifyButton = styled.button`
+const ModifyButton = styled.button<ContentButtonProps>`
   font-size: 2rem;
   color: white;
-  background-color: #0067a3;
   position: fixed;
   bottom: 3rem;
   right: 5rem;
   border: none;
   padding: 1rem;
   border-radius: 1rem;
+  right: ${(props) => props.right + 'rem'};
+  background-color: ${(props) => props.backgroundColor};
 
   &:hover {
     cursor: pointer;

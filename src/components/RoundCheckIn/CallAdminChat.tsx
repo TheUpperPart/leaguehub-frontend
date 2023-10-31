@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { Client } from '@stomp/stompjs';
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { BASE_PROFILE_IMG } from '@config/index';
 
@@ -26,6 +26,11 @@ const CallAdminChat = ({
   const [inputMessage, setInputMessage] = useState('');
   const router = useRouter();
   const { channelLink } = router.query;
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleInputMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setInputMessage(e.target.value);
@@ -111,8 +116,12 @@ const CallAdminChat = ({
 
   useEffect(() => {
     if (!matchMessages || matchMessages.length === 0) return;
-    setChats(matchMessages);
+    setChats(matchMessages.reverse());
   }, [matchMessages]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats]);
 
   return (
     <Container>
@@ -148,6 +157,7 @@ const CallAdminChat = ({
               </ChattingContent>
             </ChattingInfo>
           ))}
+        <div ref={chatEndRef} />
       </ChattingWrapper>
       <div
         css={css`
