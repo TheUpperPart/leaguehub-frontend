@@ -166,7 +166,7 @@ const BoardBody = ({ channelLink }: Props) => {
               {isSuccess && data.myMatchRound !== 0 && (
                 <div>
                   <Title>현재 라운드</Title>
-                  <Wrapper
+                  <BoardContainer
                     onClick={() => {
                       setSelected('CurrentRound');
                       router.push(`/contents/${channelLink}/checkIn/${data.myMatchId}`);
@@ -184,13 +184,14 @@ const BoardBody = ({ channelLink }: Props) => {
                         <RedCircle />
                       </div>
                     </CurrentRound>
-                  </Wrapper>
+                  </BoardContainer>
                 </div>
               )}
-              <div>
-                <Title>대회 관리</Title>
+              <AdminTable>
+                <Title>대회</Title>
+                <NoticeScrollContainer></NoticeScrollContainer>
                 {channelPermission === 0 && (
-                  <Wrapper
+                  <BoardContainer
                     isSelected={selected === 'admin'}
                     data-id='admin'
                     data-board-title='관리자'
@@ -198,60 +199,64 @@ const BoardBody = ({ channelLink }: Props) => {
                   >
                     대회 관리
                     <Icon kind='lock' color='#637083' size='1.5rem' />
-                  </Wrapper>
+                  </BoardContainer>
                 )}
-                <Wrapper
+
+                <BoardContainer
                   isSelected={selected === 'bracket'}
                   data-id='bracket'
                   data-board-title='대진표'
                   onClick={onClickBoard}
                 >
                   대진표
-                  <Icon kind='lock' color='#637083' size='1.5rem' />
-                </Wrapper>
+                </BoardContainer>
+              </AdminTable>
+              <NoticeTable>
                 <Title>공지사항</Title>
-                {boards &&
-                  boards.map((board, index) =>
-                    channelPermission === 0 ? (
-                      <Draggable
-                        key={board.boardId}
-                        draggableId={board.boardId.toString()}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <Wrapper
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
+                <ScrollContainer>
+                  <NoticeScrollContainer>
+                    {boards &&
+                      boards.map((board, index) =>
+                        channelPermission === 0 ? (
+                          <Draggable
+                            key={board.boardId}
+                            draggableId={board.boardId.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <BoardContainer
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                data-id={board.boardId}
+                                data-board-title={board.boardTitle}
+                                onClick={onClickBoard}
+                                isSelected={board.boardId.toString() === selected}
+                              >
+                                {board.boardTitle}
+                              </BoardContainer>
+                            )}
+                          </Draggable>
+                        ) : (
+                          <BoardContainer
+                            key={board.boardId}
                             data-id={board.boardId}
                             data-board-title={board.boardTitle}
                             onClick={onClickBoard}
-                            isSelected={board.boardId.toString() === selected}
+                            isSelected={selected === board.boardId.toString()}
                           >
                             {board.boardTitle}
-                            <Icon kind='lock' color='#637083' size='1.5rem' />
-                          </Wrapper>
-                        )}
-                      </Draggable>
-                    ) : (
-                      <Wrapper
-                        key={board.boardId}
-                        data-id={board.boardId}
-                        data-board-title={board.boardTitle}
-                        onClick={onClickBoard}
-                        isSelected={selected === board.boardId.toString()}
-                      >
-                        {board.boardTitle}
-                      </Wrapper>
-                    ),
-                  )}
-              </div>
-              {channelPermission === 0 && (
-                <Wrapper isSelected={false} onClick={onClickNewBoard}>
-                  공지 추가하기
-                  <Icon kind='plus' color='#637083' size='1.6rem' />
-                </Wrapper>
-              )}
+                          </BoardContainer>
+                        ),
+                      )}
+                    {channelPermission === 0 && (
+                      <BoardContainer isSelected={false} onClick={onClickNewBoard}>
+                        공지 추가하기
+                      </BoardContainer>
+                    )}
+                  </NoticeScrollContainer>
+                </ScrollContainer>
+              </NoticeTable>
             </div>
           )}
         </Droppable>
@@ -264,24 +269,7 @@ const BoardBody = ({ channelLink }: Props) => {
 export default BoardBody;
 
 const Container = styled.ul`
-  color: white;
-`;
-
-const Wrapper = styled.li<{ isSelected: boolean }>`
-  font-size: 1.5rem;
-  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background: linear-gradient(90deg, rgba(211, 250, 255, 0.3) 0%, rgba(211, 250, 255, 0) 128.25%);
-  }
-  color: white;
-
-  ${({ isSelected }) =>
-    isSelected &&
-    `background: linear-gradient(90deg, rgba(211, 250, 255, 0.30) 0%, rgba(211, 250, 255, 0.00) 128.25%)`};
+  color: #000000;
 `;
 
 const CurrentRound = styled.div`
@@ -303,7 +291,66 @@ const Boarder = styled.div`
 `;
 
 const Title = styled.div`
+  width: 100%;
+  font-size: 1.2rem;
+  color: #868686;
+  text-align: left;
+`;
+
+const AdminTable = styled.div`
+  width: 19.2rem;
+  height: 12.8rem;
+
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 1rem;
+`;
+
+const ScrollContainer = styled.div`
+  min-height: 20rem;
+  max-height: 20rem;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #202b37;
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #868686;
+    border-radius: 1rem;
+  }
+`;
+
+const NoticeTable = styled.div``;
+
+const NoticeScrollContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 1rem;
+`;
+
+const BoardContainer = styled.li<{ isSelected: boolean }>`
+  width: 19.2rem;
+  height: 4.8rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: #aec3ae;
+  }
+
+  background-color: #ffffff;
   font-size: 1.4rem;
-  color: #adb5bd;
-  padding: 0.8rem 0 0.8rem 0.8rem;
+  cursor: pointer;
+  color: #000000;
+  border-radius: 6px;
+
+  ${({ isSelected }) => isSelected && `background-color: #AEC3AE;`}
 `;
