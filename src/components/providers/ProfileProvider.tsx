@@ -47,6 +47,10 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
     }
   }, [profileQuery.data]);
 
+  const refetchProfile = async () => {
+    await profileQuery.refetch();
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -54,6 +58,7 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
         setProfile,
         status: profileQuery.status,
         isInitialLoading: profileQuery.isInitialLoading,
+        refetchProfile,
       }}
     >
       {children}
