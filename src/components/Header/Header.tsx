@@ -37,32 +37,51 @@ const Header = () => {
       Cookies.remove('refreshToken');
 
       router.push('/');
-    } catch (error) {}
+    } catch (error) {
+      alert('로그아웃에 실패하였습니다.\n다시 시도해주세요');
+    }
+  };
+
+  const copyInviteCode = async () => {
+    const { channelLink } = router.query;
+    try {
+      await navigator.clipboard.writeText(channelLink as string);
+      alert('클립보드에 초대링크가 복사되었습니다.');
+    } catch (e) {
+      alert('복사에 실패하였습니다. 다시 시도해주세요');
+    }
   };
 
   return (
     <Headers>
       <Container>
-        {profileContext?.profile ? (
-          <LoginBtn onClick={handleDropDown}>
-            <ProfileImg
-              src={profileContext.profile.profileUrl}
-              width={24}
-              height={24}
-              alt='profile'
-            />
-            <Text>{profileContext.profile.nickname}</Text>
-            <DropDown click={clickDropdown}>
-              <DropList onClick={moveToMypage}>마이페이지</DropList>
-              <DropList onClick={handleLogout}>로그아웃</DropList>
-            </DropDown>
-          </LoginBtn>
-        ) : (
-          <LoginBtn onClick={handleLink}>
-            <Icon kind='my' color='white' size={24} />
-            <Text>로그인</Text>
-          </LoginBtn>
-        )}
+        <ContentsWrapper>
+          <Content onClick={copyInviteCode}>
+            <ContentText>초대코드</ContentText>
+            <Icon kind='mail' size={20} />
+          </Content>
+          <Content>
+            <ContentText>문의</ContentText>
+            <Icon kind='message' size={20} />
+          </Content>
+        </ContentsWrapper>
+        <MyInfo>
+          {profileContext?.profile && (
+            <LoginBtn onClick={handleDropDown}>
+              <ProfileImg
+                src={profileContext.profile.profileUrl}
+                width={24}
+                height={24}
+                alt='profile'
+              />
+              <Text>{profileContext.profile.nickname}</Text>
+              <DropDown click={clickDropdown}>
+                <DropList onClick={moveToMypage}>마이페이지</DropList>
+                <DropList onClick={handleLogout}>로그아웃</DropList>
+              </DropDown>
+            </LoginBtn>
+          )}
+        </MyInfo>
       </Container>
     </Headers>
   );
@@ -72,21 +91,50 @@ export default Header;
 
 const Headers = styled.header`
   width: calc(100% - 5rem);
-  margin: 0 2.5rem;
-  background-color: #f1f1f1;
 
+  margin: 0 2.5rem;
+
+  background-color: #f1f1f1;
   border-radius: 0 0 16px 16px;
 `;
 
 const Container = styled.div`
   width: 95%;
   height: 5.5rem;
+
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-
-  position: relative;
+  justify-content: space-between;
 `;
+
+const ContentsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Content = styled.button`
+  height: 3.6rem;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  padding: 0 1rem;
+
+  background-color: #ffffff;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  cursor: pointer;
+`;
+
+const ContentText = styled.span`
+  margin-right: 1rem;
+`;
+
+const MyInfo = styled.div``;
 
 const ProfileImg = styled(Image)`
   border-radius: 50%;
