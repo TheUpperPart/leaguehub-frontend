@@ -36,6 +36,7 @@ const Header = () => {
       Cookies.remove('accessToken');
       Cookies.remove('refreshToken');
 
+      await profileContext?.refetchProfile();
       router.push('/');
     } catch (error) {
       alert('로그아웃에 실패하였습니다.\n다시 시도해주세요');

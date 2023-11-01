@@ -7,6 +7,7 @@ interface ProfileState {
   setProfile: React.Dispatch<React.SetStateAction<Profile | null>>;
   status: 'loading' | 'error' | 'success';
   isInitialLoading: boolean;
+  refetchProfile: () => Promise<void>;
 }
 
 const ProfileContext = createContext<ProfileState | null>(null);
