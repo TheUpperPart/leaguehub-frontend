@@ -6,6 +6,7 @@ import { Client } from '@stomp/stompjs';
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { BASE_PROFILE_IMG } from '@config/index';
+import Cookies from 'js-cookie';
 
 interface CallAdminChatProps {
   client: Client | undefined;
@@ -45,17 +46,33 @@ const CallAdminChat = ({
 
   const sendMessage = () => {
     if (!client || inputMessage.length === 0) return;
-    const requestUserParticipantId = players.find(
-      (player) => player.matchPlayerId === requestUser,
-    )?.participantId;
 
-    const newMessage = {
-      channelLink,
-      content: inputMessage,
-      matchId,
-      participantId: requestUserParticipantId,
-      type: 'TEXT',
-    };
+    let newMessage;
+
+    if (requestUser === -1) {
+      const accessToken = Cookies.get('accessToken');
+
+      newMessage = {
+        channelLink,
+        content: inputMessage,
+        matchId,
+        accessToken,
+        type: 'ADMIN',
+      };
+    } else {
+      const requestUserParticipantId = players.find(
+        (player) => player.matchPlayerId === requestUser,
+      )?.participantId;
+
+      newMessage = {
+        channelLink,
+        content: inputMessage,
+        matchId,
+        participantId: requestUserParticipantId,
+        type: 'USER',
+      };
+    }
+
     client.publish({
       destination: `/app/match/chat`,
       body: JSON.stringify(newMessage),
