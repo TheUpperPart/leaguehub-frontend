@@ -23,11 +23,12 @@ export interface MatchPlayerScoreInfos {
 }
 
 export interface MatchMessages {
-  channelId: number;
+  channelLink: number;
   content: string;
   matchId: number;
   participantId: number;
-  timestamp: string;
+  adminName: string;
+  accessToken: string;
   type: string;
 }
 
