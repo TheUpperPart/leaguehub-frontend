@@ -21,6 +21,8 @@ const BracketInfoChannel = () => {
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['matchCount', router.query.channelLink as string],
     queryFn: () => fetchInitialMatchCount(router.query.channelLink as string),
+    cacheTime: 0,
+    staleTime: 0,
   });
 
   const handleRoundInfo = (e: React.ChangeEvent<HTMLSelectElement>, roundIndex: number) => {
@@ -32,34 +34,47 @@ const BracketInfoChannel = () => {
   };
 
   const updateRoundMatchCount = async () => {
+    if (!roundInfo) {
+      return;
+    }
+
     try {
       const res = await authAPI({
         method: 'post',
         url: `/api/match/${router.query.channelLink as string}/count`,
         data: {
-          roundCountList: roundInfo?.reverse(),
+          matchSetCountList: [...roundInfo].reverse(),
         },
       });
-
-      console.log(res);
 
       alert('수정이 완료되었습니다!');
     } catch (error) {
       console.log(error);
+      alert('이미 시작된 경기는 재 배정할 수 없습니다.');
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      setRoundInfo(data?.roundCountList.reverse());
+      setRoundInfo([...data?.matchSetCountList].reverse());
     }
   }, [data]);
+
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+
+  if (isError) {
+    return <div>에러</div>;
+  }
 
   return (
     <Container>
       <Header>라운드 수정</Header>
       <Content>
-        {roundInfo?.map((currentMatchCount, index) => {
+        {isLoading && <div>로딩 중</div>}
+        {isError && <div>Error</div>}
+        {roundInfo?.reverse().map((currentMatchCount, index) => {
           return (
             <RoundInfo key={index}>
               <RoundInfoHeader>Round {index + 1}</RoundInfoHeader>
