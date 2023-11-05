@@ -1,3 +1,3 @@
 export interface MatchCountList {
-  roundCountList: number[];
+  matchSetCountList: number[];
 }
