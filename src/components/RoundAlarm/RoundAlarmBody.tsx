@@ -13,8 +13,6 @@ interface Props {
 const RoundAlarmBody = ({ curRound, havingAlarm }: Props) => {
   const router = useRouter();
 
-  console.log(havingAlarm);
-
   const [roundInfo, setRoundInfo] = useState<BracketContents>();
 
   useEffect(() => {
