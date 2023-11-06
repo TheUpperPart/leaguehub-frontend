@@ -152,7 +152,7 @@ const CallAdminChat = ({
           chats.map((message, idx) => (
             <ChattingInfo key={idx}>
               {message.type === 'ALERT' ? (
-                <AlertWrapper>관리자를 호출하였습니다</AlertWrapper>
+                <AlertWrapper>누군가 관리자를 호출하였습니다</AlertWrapper>
               ) : (
                 <ChattingContent>
                   {requestUser === findRequestUser(message.participantId) ? (
@@ -233,7 +233,12 @@ const ChattingWrapper = styled.div`
   overflow: scroll;
 `;
 
-const AlertWrapper = styled.div``;
+const AlertWrapper = styled.div`
+  background-color: #e2e2e2;
+  padding: 0.7rem;
+  margin: 0 auto;
+  border-radius: 0.4rem;
+`;
 
 const ImageWrapper = styled.div`
   border-radius: 0.3rem;
