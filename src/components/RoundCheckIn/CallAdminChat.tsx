@@ -101,20 +101,21 @@ const CallAdminChat = ({
     });
   };
 
-  const findUserIMG = (playerParticipantId: number): string => {
+  const findUserIMG = (playerParticipantId: number | undefined): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
 
     if (!user) return BASE_PROFILE_IMG;
     return user.profileSrc;
   };
 
-  const findUserName = (playerParticipantId: number): string => {
-    const user = players.find((player) => player.participantId === playerParticipantId);
-    if (!user) return '관리자';
+  const findUserName = (message: MatchMessages): string => {
+    const user = players.find((player) => player.participantId === message.participantId);
+
+    if (!user) return message.adminName ? message.adminName : '관리자';
     return user.gameId;
   };
 
-  const findRequestUser = (playerParticipantId: number): number => {
+  const findRequestUser = (playerParticipantId: number | undefined): number => {
     const user = players.find((player) => player.participantId === playerParticipantId);
     if (!user) return -1;
     return user.matchPlayerId;
@@ -150,28 +151,32 @@ const CallAdminChat = ({
         {chats.length !== 0 &&
           chats.map((message, idx) => (
             <ChattingInfo key={idx}>
-              <ChattingContent>
-                {requestUser === findRequestUser(message.participantId) ? (
-                  <MyChattingContent>
-                    <MyContentText>{message.content}</MyContentText>
-                  </MyChattingContent>
-                ) : (
-                  <>
-                    <ImageWrapper>
-                      <Image
-                        src={findUserIMG(message.participantId)}
-                        alt='프로필사진'
-                        width={45}
-                        height={45}
-                      />
-                    </ImageWrapper>
-                    <ContentWrapper>
-                      <ContentName>{findUserName(message.participantId)}</ContentName>
-                      <ContentText>{message.content}</ContentText>
-                    </ContentWrapper>
-                  </>
-                )}
-              </ChattingContent>
+              {message.type === 'ALERT' ? (
+                <AlertWrapper>관리자를 호출하였습니다</AlertWrapper>
+              ) : (
+                <ChattingContent>
+                  {requestUser === findRequestUser(message.participantId) ? (
+                    <MyChattingContent>
+                      <MyContentText>{message.content}</MyContentText>
+                    </MyChattingContent>
+                  ) : (
+                    <>
+                      <ImageWrapper>
+                        <Image
+                          src={findUserIMG(message.participantId)}
+                          alt='프로필사진'
+                          width={45}
+                          height={45}
+                        />
+                      </ImageWrapper>
+                      <ContentWrapper>
+                        <ContentName>{findUserName(message)}</ContentName>
+                        <ContentText>{message.content}</ContentText>
+                      </ContentWrapper>
+                    </>
+                  )}
+                </ChattingContent>
+              )}
             </ChattingInfo>
           ))}
         <div ref={chatEndRef} />
@@ -227,6 +232,8 @@ const ChattingWrapper = styled.div`
   height: 40rem;
   overflow: scroll;
 `;
+
+const AlertWrapper = styled.div``;
 
 const ImageWrapper = styled.div`
   border-radius: 0.3rem;
