@@ -107,7 +107,7 @@ const players: GetMatchPlayerScoreInfos = {
   ],
   matchMessages: [
     {
-      channelId: 123,
+      channelLink: 123,
       content: '안녕하세요',
       matchId: 1,
       participantId: 1,
@@ -115,7 +115,7 @@ const players: GetMatchPlayerScoreInfos = {
       type: 'TEXT',
     },
     {
-      channelId: 123,
+      channelLink: 123,
       content: '네 안녕하세요',
       matchId: 2,
       participantId: 2,
@@ -123,7 +123,7 @@ const players: GetMatchPlayerScoreInfos = {
       type: 'TEXT',
     },
     {
-      channelId: 123,
+      channelLink: 123,
       content: '이경훈 욕설 신고요',
       matchId: 3,
       participantId: 3,
@@ -131,7 +131,7 @@ const players: GetMatchPlayerScoreInfos = {
       type: 'TEXT',
     },
     {
-      channelId: 123,
+      channelLink: 123,
       content: 'ㅅㄱㅇ',
       matchId: 4,
       participantId: 4,
@@ -139,7 +139,14 @@ const players: GetMatchPlayerScoreInfos = {
       type: 'TEXT',
     },
     {
-      channelId: 123,
+      channelLink: 123,
+      content: '관리자 호출',
+      matchId: 4,
+      timestamp: '2023-10-09T07:03:06.959Z',
+      type: 'ALERT',
+    },
+    {
+      channelLink: 123,
       content: '근데 이경훈이 누구임?',
       matchId: 4,
       participantId: 4,
@@ -147,7 +154,7 @@ const players: GetMatchPlayerScoreInfos = {
       type: 'TEXT',
     },
     {
-      channelId: 123,
+      channelLink: 123,
       content:
         '이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.',
       matchId: 8,
