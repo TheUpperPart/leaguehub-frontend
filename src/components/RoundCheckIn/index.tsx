@@ -26,9 +26,9 @@ export interface MatchMessages {
   channelLink: number;
   content: string;
   matchId: number;
-  participantId: number;
-  adminName: string;
-  accessToken: string;
+  participantId?: number;
+  adminName?: string;
+  timestamp: string;
   type: string;
 }
 
