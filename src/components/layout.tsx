@@ -8,6 +8,7 @@ import Header from '@components/Header/Header';
 import useChannels from '@hooks/useChannels';
 import useProfile from '@hooks/useProfile';
 import NoAuthMain from './Main/NoAuthMain';
+import Loading from './Loading/Loading';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { channels } = useChannels();
@@ -32,7 +33,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       <>
         <CommonLayout>
           <GlobalStyle />
-          <div>Loading...</div>
+          <Loading />
         </CommonLayout>
       </>
     );
