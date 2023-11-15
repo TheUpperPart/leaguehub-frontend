@@ -167,13 +167,17 @@ const SelectRule = ({ handleCurrentModalStep }: Props) => {
         </Rule>
         <Rule>
           <RuleTitle>4. 대회 이미지(선택)</RuleTitle>
-          <ImageUploadInput
-            type='file'
-            accept='image/*'
-            ref={inputRef}
-            onChange={fetchUploadChannelImage}
-          />
-          {imageUrl && <Image width={50} height={50} src={imageUrl} alt='channelImage' />}
+          <ImageContainer>
+            <ImageUploadInput
+              type='file'
+              accept='image/*'
+              ref={inputRef}
+              onChange={fetchUploadChannelImage}
+            />
+            <ImagePreview>
+              {imageUrl && <Image width={50} height={50} src={imageUrl} alt='channelImage' />}
+            </ImagePreview>
+          </ImageContainer>
         </Rule>
         <StepBtnContainer>
           <Button width={25} height={7} borderRadius={1} onClick={fetchMakeGame}>
@@ -265,12 +269,18 @@ const StepBtnContainer = styled.div`
 `;
 
 const ImageUploadInput = styled.input`
-  position: absolute;
-  width: 0;
-  height: 0;
   padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
   border: 0;
+  flex: 1;
+`;
+
+const ImageContainer = styled.div`
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImagePreview = styled.div`
+  flex: 1;
 `;
