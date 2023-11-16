@@ -6,6 +6,7 @@ import { Client } from '@stomp/stompjs';
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { BASE_PROFILE_IMG } from '@config/index';
+import Cookies from 'js-cookie';
 
 interface CallAdminChatProps {
   client: Client | undefined;
@@ -45,17 +46,33 @@ const CallAdminChat = ({
 
   const sendMessage = () => {
     if (!client || inputMessage.length === 0) return;
-    const requestUserParticipantId = players.find(
-      (player) => player.matchPlayerId === requestUser,
-    )?.participantId;
 
-    const newMessage = {
-      channelLink,
-      content: inputMessage,
-      matchId,
-      participantId: requestUserParticipantId,
-      type: 'TEXT',
-    };
+    let newMessage;
+
+    if (requestUser === -1) {
+      const accessToken = Cookies.get('accessToken');
+
+      newMessage = {
+        channelLink,
+        content: inputMessage,
+        matchId,
+        accessToken,
+        type: 'ADMIN',
+      };
+    } else {
+      const requestUserParticipantId = players.find(
+        (player) => player.matchPlayerId === requestUser,
+      )?.participantId;
+
+      newMessage = {
+        channelLink,
+        content: inputMessage,
+        matchId,
+        participantId: requestUserParticipantId,
+        type: 'USER',
+      };
+    }
+
     client.publish({
       destination: `/app/match/chat`,
       body: JSON.stringify(newMessage),
@@ -84,20 +101,21 @@ const CallAdminChat = ({
     });
   };
 
-  const findUserIMG = (playerParticipantId: number): string => {
+  const findUserIMG = (playerParticipantId: number | undefined): string => {
     const user = players.find((player) => player.participantId === playerParticipantId);
 
     if (!user) return BASE_PROFILE_IMG;
     return user.profileSrc;
   };
 
-  const findUserName = (playerParticipantId: number): string => {
-    const user = players.find((player) => player.participantId === playerParticipantId);
-    if (!user) return '관리자';
+  const findUserName = (message: MatchMessages): string => {
+    const user = players.find((player) => player.participantId === message.participantId);
+
+    if (!user) return message.adminName ? message.adminName : '관리자';
     return user.gameId;
   };
 
-  const findRequestUser = (playerParticipantId: number): number => {
+  const findRequestUser = (playerParticipantId: number | undefined): number => {
     const user = players.find((player) => player.participantId === playerParticipantId);
     if (!user) return -1;
     return user.matchPlayerId;
@@ -133,28 +151,32 @@ const CallAdminChat = ({
         {chats.length !== 0 &&
           chats.map((message, idx) => (
             <ChattingInfo key={idx}>
-              <ChattingContent>
-                {requestUser === findRequestUser(message.participantId) ? (
-                  <MyChattingContent>
-                    <MyContentText>{message.content}</MyContentText>
-                  </MyChattingContent>
-                ) : (
-                  <>
-                    <ImageWrapper>
-                      <Image
-                        src={findUserIMG(message.participantId)}
-                        alt='프로필사진'
-                        width={45}
-                        height={45}
-                      />
-                    </ImageWrapper>
-                    <ContentWrapper>
-                      <ContentName>{findUserName(message.participantId)}</ContentName>
-                      <ContentText>{message.content}</ContentText>
-                    </ContentWrapper>
-                  </>
-                )}
-              </ChattingContent>
+              {message.type === 'ALERT' ? (
+                <AlertWrapper>누군가 관리자를 호출하였습니다</AlertWrapper>
+              ) : (
+                <ChattingContent>
+                  {requestUser === findRequestUser(message.participantId) ? (
+                    <MyChattingContent>
+                      <MyContentText>{message.content}</MyContentText>
+                    </MyChattingContent>
+                  ) : (
+                    <>
+                      <ImageWrapper>
+                        <Image
+                          src={findUserIMG(message.participantId)}
+                          alt='프로필사진'
+                          width={45}
+                          height={45}
+                        />
+                      </ImageWrapper>
+                      <ContentWrapper>
+                        <ContentName>{findUserName(message)}</ContentName>
+                        <ContentText>{message.content}</ContentText>
+                      </ContentWrapper>
+                    </>
+                  )}
+                </ChattingContent>
+              )}
             </ChattingInfo>
           ))}
         <div ref={chatEndRef} />
@@ -209,6 +231,13 @@ const CallAdminButton = styled.button`
 const ChattingWrapper = styled.div`
   height: 40rem;
   overflow: scroll;
+`;
+
+const AlertWrapper = styled.div`
+  background-color: #e2e2e2;
+  padding: 0.7rem;
+  margin: 0 auto;
+  border-radius: 0.4rem;
 `;
 
 const ImageWrapper = styled.div`
