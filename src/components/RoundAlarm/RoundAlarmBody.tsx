@@ -28,7 +28,7 @@ const RoundAlarmBody = ({ curRound, havingAlarm }: Props) => {
     };
 
     getRoundInfo();
-  }, []);
+  }, [router.query.channelLink as string]);
 
   const moveToCheckIn = (matchId: number) => {
     authAPI({
