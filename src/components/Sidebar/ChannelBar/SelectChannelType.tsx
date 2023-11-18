@@ -89,7 +89,7 @@ const SelectChannelType = (props: Props) => {
         </>
       )}
       {currentModalStep === MakeChannelStep.SelectGame && (
-        <SelectGame handleCurrentModalStep={handleCurrentModalStep} />
+        <SelectGame handleCurrentModalStep={handleCurrentModalStep} handleModal={handleModal} />
       )}
 
       {currentModalStep === MakeChannelStep.SettingRule && (

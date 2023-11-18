@@ -47,7 +47,7 @@ describe('채널 추가 테스트', () => {
     const makeBtn = screen.getByText('대회 개최');
     await userEvent.click(makeBtn);
 
-    const title = screen.getByText('개최하실 게임을 선택해주세요.');
+    const title = screen.getByText('개최 종목을 선택해주세요');
     expect(title).toBeInTheDocument();
   });
 
