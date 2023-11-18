@@ -8,6 +8,7 @@ import { BoardInfo } from '@type/board';
 import authAPI from '@apis/authAPI';
 import { useEffect } from 'react';
 import useChannels from '@hooks/useChannels';
+import MainHeader from '@components/MainHeader/MainHeader';
 
 const fetchData = async (channelLink: string) => {
   const res = await authAPI<BoardInfo>({ method: 'get', url: '/api/channel/' + channelLink });
@@ -19,6 +20,7 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
   const { data } = useQuery(['getBoard', channelLink], () => fetchData(channelLink), {
     staleTime: Infinity,
     cacheTime: Infinity,
+    enabled: channelLink !== 'main',
   });
 
   const updateChannelData = (leagueTitle: string, maxPlayer: number) => {
@@ -36,7 +38,7 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
 
   return (
     <Container>
-      {data && (
+      {data ? (
         <>
           <ContentContainer>
             <BoardHeader
@@ -56,6 +58,10 @@ const BoardBar = ({ channelLink }: { channelLink: string }) => {
             />
           </FooterContainer>
         </>
+      ) : (
+        <ContentContainer>
+          <MainHeader />
+        </ContentContainer>
       )}
     </Container>
   );

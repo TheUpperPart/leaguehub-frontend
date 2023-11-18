@@ -2,11 +2,20 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-const MainChannelCircle = () => {
+interface Props {
+  updateSelectedChannel: (channelLink: string) => void;
+}
+
+const MainChannelCircle = ({ updateSelectedChannel }: Props) => {
   const router = useRouter();
 
+  const hanleClick = () => {
+    updateSelectedChannel('main');
+    router.push('/');
+  };
+
   return (
-    <ChannelBtn onClick={() => router.push('/')}>
+    <ChannelBtn onClick={hanleClick}>
       <Image src={'/img/logo/logo-circle.png'} width={58} height={38} alt='circle-logo' />
     </ChannelBtn>
   );
