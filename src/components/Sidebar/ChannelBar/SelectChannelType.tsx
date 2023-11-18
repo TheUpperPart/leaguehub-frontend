@@ -104,13 +104,28 @@ const SelectChannelType = (props: Props) => {
 
       {currentModalStep === MakeChannelStep.JoinGame && (
         <>
-          <ModalTitle>채널 참여하기</ModalTitle>
+          <ModalTitle>
+            <div
+              css={css`
+                color: #b3b3b3;
+              `}
+            >
+              채널 추가하기
+            </div>
+            <div
+              css={css`
+                color: #444444;
+              `}
+            >
+              x
+            </div>
+          </ModalTitle>
           <ModalSubTitle>채널에 참여하여 대회를 확인해보세요!</ModalSubTitle>
           <Content2>
             <FormConatiner>
               <ChannelForm onSubmit={fetchEnterNewChannel}>
                 <ChannelInput required value={channelInput} onChange={handleChannelInput} />
-                <Button width={10} height={4} type='submit'>
+                <Button width={10} height={5} type='submit'>
                   채널 참여
                 </Button>
               </ChannelForm>
@@ -130,7 +145,7 @@ const SelectChannelType = (props: Props) => {
 export default SelectChannelType;
 
 const Container = styled.div`
-  width: 50rem;
+  width: 55rem;
   max-height: 80rem;
   padding: 3rem;
 
@@ -205,6 +220,8 @@ const ChannelInput = styled.input`
   width: 25rem;
   height: 5rem;
   border: none;
+  padding: 0 1.2rem 0 1.2rem;
+  margin-right: 0.2rem;
 
   background-color: #f1f0e8;
 
