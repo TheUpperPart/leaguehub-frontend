@@ -57,14 +57,18 @@ const Header = () => {
     <Headers>
       <Container>
         <ContentsWrapper>
-          <Content onClick={copyInviteCode}>
-            <ContentText>초대코드</ContentText>
-            <Icon kind='mail' size={20} />
-          </Content>
-          <Content>
-            <ContentText>문의</ContentText>
-            <Icon kind='message' size={20} />
-          </Content>
+          {router.pathname.startsWith('/contents') && (
+            <>
+              <Content onClick={copyInviteCode}>
+                <ContentText>초대코드</ContentText>
+                <Icon kind='mail' size={20} />
+              </Content>
+              <Content>
+                <ContentText>문의</ContentText>
+                <Icon kind='message' size={20} />
+              </Content>
+            </>
+          )}
         </ContentsWrapper>
         <MyInfo>
           {profileContext?.profile && (
