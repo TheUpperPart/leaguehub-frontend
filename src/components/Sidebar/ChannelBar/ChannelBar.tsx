@@ -39,7 +39,7 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
     <ChannelbarContainer>
       <ScrollContainer>
         <MainCircleContainer>
-          <MainChannelCircle />
+          <MainChannelCircle updateSelectedChannel={updateSelectedChannel} />
           <Line>
             <svg
               width='60'
