@@ -21,7 +21,6 @@ const BracketInfoChannel = () => {
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['matchCount', router.query.channelLink as string],
     queryFn: () => fetchInitialMatchCount(router.query.channelLink as string),
-    cacheTime: 0,
     staleTime: 0,
   });
 
