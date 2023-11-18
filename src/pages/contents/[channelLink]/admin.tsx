@@ -41,7 +41,7 @@ const Admin = ({ role }: Props) => {
   const { openModal, closeModal } = useModals();
 
   const { data, isSuccess } = useQuery({
-    queryKey: ['roundInfos'],
+    queryKey: ['adminRoundList', router.query.channelLink as string],
     queryFn: () => {
       setCurRound(1);
       return fetchRoundInfo(router.query.channelLink as string);
@@ -76,10 +76,7 @@ const Admin = ({ role }: Props) => {
       if (checkInSubscription) checkInSubscription.unsubscribe();
       client.deactivate();
     };
-  }, []);
-
-  if (isSuccess) {
-  }
+  }, [router.query.channelLink as string]);
 
   return (
     <Container>
