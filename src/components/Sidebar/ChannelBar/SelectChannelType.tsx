@@ -69,13 +69,7 @@ const SelectChannelType = (props: Props) => {
             >
               채널 추가하기
             </div>
-            <div
-              css={css`
-                color: #444444;
-              `}
-            >
-              x
-            </div>
+            <ExitButton onClick={() => handleModal()}>x</ExitButton>
           </ModalTitle>
           <ModalSubTitle>채널을 추가하여 시작해보세요!</ModalSubTitle>
           <Content>
@@ -112,13 +106,7 @@ const SelectChannelType = (props: Props) => {
             >
               채널 추가하기
             </div>
-            <div
-              css={css`
-                color: #444444;
-              `}
-            >
-              x
-            </div>
+            <ExitButton onClick={() => handleModal()}>x</ExitButton>
           </ModalTitle>
           <ModalSubTitle>채널에 참여하여 대회를 확인해보세요!</ModalSubTitle>
           <Content2>
@@ -214,6 +202,14 @@ const ChannelForm = styled.form`
   margin: 0 auto;
   align-items: center;
   background-color: #ffffff;
+`;
+
+const ExitButton = styled.div`
+  color: #444444;
+
+  &: hover {
+    cursor: pointer;
+  }
 `;
 
 const ChannelInput = styled.input`
