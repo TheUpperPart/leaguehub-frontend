@@ -42,7 +42,7 @@ const BgMain = styled.div`
   background: url('/img/main/main.png');
   background-size: 100% 100vh;
   background-repeat: no-repeat;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: -5;
 `;
 
