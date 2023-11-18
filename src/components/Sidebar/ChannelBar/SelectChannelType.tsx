@@ -93,7 +93,7 @@ const SelectChannelType = (props: Props) => {
       )}
 
       {currentModalStep === MakeChannelStep.SettingRule && (
-        <SelectRule handleCurrentModalStep={handleCurrentModalStep} />
+        <SelectRule handleCurrentModalStep={handleCurrentModalStep} handleModal={handleModal} />
       )}
 
       {currentModalStep === MakeChannelStep.JoinGame && (
