@@ -9,8 +9,10 @@ import useChannels from '@hooks/useChannels';
 import useProfile from '@hooks/useProfile';
 import NoAuthMain from './Main/NoAuthMain';
 import Loading from './Loading/Loading';
+import { useRouter } from 'next/router';
 
 const Layout = ({ children }: PropsWithChildren) => {
+  const router = useRouter();
   const { channels } = useChannels();
   const [selectedChannelLink, setSelectedChannelLink] = useState<string | null>(null);
 
@@ -21,9 +23,16 @@ const Layout = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    // 새로고침시 첫 번째 채널 보여주도록 설정
-    if (channels && status === 'success') {
-      channels.length !== 0 && setSelectedChannelLink(channels[0].channelLink);
+    // 특정 채널에서 새로고침
+    if (router.pathname.startsWith('/content') && channels && status === 'success') {
+      const findIndex = channels.findIndex(
+        (chanel) => chanel.channelLink === (router.query.channelLink as string),
+      );
+      channels.length !== 0 && setSelectedChannelLink(channels[findIndex].channelLink);
+    }
+    // 그 이외
+    else {
+      setSelectedChannelLink('main');
     }
   }, [channels]);
 
@@ -89,7 +98,7 @@ const SidebarWrapper = styled.div`
 
 const Main = styled.main`
   overflow-y: auto;
-
+  max-height: calc(100vh - 5.5rem);
   ::-webkit-scrollbar {
     width: 1rem;
   }
