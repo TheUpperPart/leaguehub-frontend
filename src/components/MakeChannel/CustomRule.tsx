@@ -58,7 +58,6 @@ const CustomRule = ({ state }: Props) => {
 export default CustomRule;
 
 const Container = styled.div`
-  margin: 2rem;
   border-radius: 5px;
   border: 2px solid #353535;
   width: 20rem;

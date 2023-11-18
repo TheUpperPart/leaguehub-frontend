@@ -1,13 +1,17 @@
-import Button from '@components/Button';
 import Icon from '@components/Icon';
 import { GameEnum, MakeChannelStep } from '@constants/MakeGame';
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useMakeGame from '@hooks/useMakeGame';
+import { gameImageLink } from '@constants/GameImageLink';
 
 interface Props {
   handleCurrentModalStep: (step: keyof typeof MakeChannelStep) => void;
   handleModal: () => void;
+}
+
+interface ButtonProps {
+  backgroundImg: string;
 }
 
 const SelectGame = ({ handleCurrentModalStep, handleModal }: Props) => {
@@ -52,10 +56,22 @@ const SelectGame = ({ handleCurrentModalStep, handleModal }: Props) => {
       <Wrapper>
         <Title>개최 종목을 선택해주세요</Title>
         <GameContainer>
-          <GameBtn onClick={() => handleSelectGame('TFT')}>전략적 팀 전투</GameBtn>
-          <GameBtn onClick={() => handleSelectGame('LOL')}>리그오브레전드</GameBtn>
-          <GameBtn onClick={() => handleSelectGame('HSS')}>하스스톤</GameBtn>
-          <GameBtn onClick={() => handleSelectGame('FIFA')}>피파</GameBtn>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.TFT} onClick={() => handleSelectGame('TFT')} />
+            <GameName>전략적 팀 전투</GameName>
+          </ImageWrapper>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.LOL} onClick={() => handleSelectGame('LOL')} />
+            <GameName>리그오브레전드</GameName>
+          </ImageWrapper>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.HS} onClick={() => handleSelectGame('HSS')} />
+            <GameName>하스스톤</GameName>
+          </ImageWrapper>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.FIFA} onClick={() => handleSelectGame('FIFA')} />
+            <GameName>피파</GameName>
+          </ImageWrapper>
         </GameContainer>
       </Wrapper>
     </Container>
@@ -108,10 +124,14 @@ const GameContainer = styled.div`
   row-gap: 2rem;
 `;
 
-const GameBtn = styled.button`
-  background-color: #353535;
+const GameBtn = styled.button<ButtonProps>`
+  ${(props) => `background-image: url(${props.backgroundImg});`}
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
   width: 23rem;
-  height: 8rem;
+  height: 23rem;
   border-radius: 1rem;
   color: #f9fafb;
   border: none;
@@ -127,4 +147,19 @@ const ExitButton = styled.div`
   &: hover {
     cursor: pointer;
   }
+`;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  &: hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
+`;
+
+const GameName = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
