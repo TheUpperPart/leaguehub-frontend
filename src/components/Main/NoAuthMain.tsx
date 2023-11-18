@@ -4,6 +4,7 @@ import Image from 'next/image';
 const NoAuthMain = () => {
   return (
     <Main>
+      <BgMain />
       <Container>
         <LogoContainer>
           <LogoImage src='/img/logo/logo-l.png' width='584' height='101' alt='logo' />
@@ -32,13 +33,21 @@ const Main = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100vh;
+`;
+
+const BgMain = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100vh;
   background: url('/img/main/main.png');
   background-size: 100% 100vh;
   background-repeat: no-repeat;
+  opacity: 0.8;
+  z-index: -5;
 `;
 
 const Container = styled.div`
-  color: white;
+  color: black;
   height: 50rem;
   width: 60rem;
   margin: 0 auto;
@@ -58,7 +67,8 @@ const Title = styled.h2`
 
 const ContentText = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
 `;
 const KakaoLogin = styled.a``;
 
@@ -69,6 +79,7 @@ const Footer = styled.div`
   margin: 10rem auto 0 auto;
   font-size: 2rem;
   text-align: center;
+  font-weight: 700;
 `;
 
 export default NoAuthMain;
