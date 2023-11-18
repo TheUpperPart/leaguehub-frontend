@@ -33,7 +33,7 @@ const CustomRule = ({ state }: Props) => {
 
   return (
     <Container>
-      <select onChange={handleTier} defaultValue={'0'}>
+      <SelectBox onChange={handleTier} defaultValue={'0'}>
         {Object.keys(TFTTier).map((tier) => {
           return (
             <option key={tier} value={TFTTier[tier].defaultValue}>
@@ -41,15 +41,15 @@ const CustomRule = ({ state }: Props) => {
             </option>
           );
         })}
-      </select>
+      </SelectBox>
 
       {tier < 2400 && (
-        <select onChange={handleGrade}>
+        <SelectBox onChange={handleGrade}>
           <option value='0'>4 티어</option>
           <option value='100'>3 티어</option>
           <option value='200'>2 티어</option>
           <option value='300'>1 티어</option>
-        </select>
+        </SelectBox>
       )}
     </Container>
   );
@@ -58,5 +58,15 @@ const CustomRule = ({ state }: Props) => {
 export default CustomRule;
 
 const Container = styled.div`
-  margin: 2rem 0;
+  border-radius: 5px;
+  border: 2px solid #353535;
+  width: 20rem;
+`;
+
+const SelectBox = styled.select`
+  border: none;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 50%;
+  overflow: hidden;
 `;

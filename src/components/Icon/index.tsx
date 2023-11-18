@@ -19,6 +19,7 @@ import {
   MdOutlineShortcut,
   MdMessage,
   MdEmail,
+  MdArrowBack,
 } from 'react-icons/md';
 import { MouseEventHandler } from 'react';
 
@@ -41,6 +42,7 @@ const ICON: { [key in IconKind]: IconType } = {
   shortcut: MdOutlineShortcut,
   message: MdMessage,
   mail: MdEmail,
+  goBack: MdArrowBack,
 };
 
 interface IconProps {

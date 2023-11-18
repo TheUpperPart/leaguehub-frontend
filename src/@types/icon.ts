@@ -16,4 +16,5 @@ export type IconKind =
   | 'cancel'
   | 'shortcut'
   | 'message'
-  | 'mail';
+  | 'mail'
+  | 'goBack';

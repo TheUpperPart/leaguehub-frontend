@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Button from '@components/Button/index';
@@ -13,12 +13,14 @@ import Image from 'next/image';
 import { ChannelCircleProps } from '@type/channelCircle';
 import useChannels from '@hooks/useChannels';
 import { useRouter } from 'next/router';
+import Icon from '@components/Icon';
 
 interface Props {
   handleCurrentModalStep: (step: keyof typeof MakeChannelStep) => void;
+  handleModal: () => void;
 }
 
-const SelectRule = ({ handleCurrentModalStep }: Props) => {
+const SelectRule = ({ handleCurrentModalStep, handleModal }: Props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const router = useRouter();
@@ -67,7 +69,8 @@ const SelectRule = ({ handleCurrentModalStep }: Props) => {
         },
       });
       resetState();
-      router.push('/');
+      router.push('/main');
+      handleModal();
       addChannel(res.data);
     } catch (error) {
       console.log(error);
@@ -99,6 +102,36 @@ const SelectRule = ({ handleCurrentModalStep }: Props) => {
 
   return (
     <Container>
+      <ModalTitle>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          `}
+        >
+          <div
+            css={css`
+              padding-top: 0.3rem;
+              &: hover {
+                cursor: pointer;
+              }
+            `}
+          >
+            <Icon kind='goBack' size='2rem' onClick={() => handleCurrentModalStep('SelectGame')} />
+          </div>
+          <div
+            css={css`
+              color: #b3b3b3;
+              padding-left: 1rem;
+            `}
+          >
+            채널 추가하기
+          </div>
+        </div>
+        <ExitButton onClick={() => handleModal()}>x</ExitButton>
+      </ModalTitle>
+
       <Wrapper>
         <Rule>
           <RuleTitle>1. 대회 방식</RuleTitle>
@@ -156,8 +189,14 @@ const SelectRule = ({ handleCurrentModalStep }: Props) => {
               changeState={() => handleIsUseCustomRule('playCount')}
             />
             {isUseCustomRule.playCount && (
-              <div>
-                <input
+              <div
+                css={css`
+                  width: 100%;
+                  display: flex;
+                  flex-direction: row;
+                `}
+              >
+                <Input
                   value={customRule.playCountMin}
                   onChange={(e) => handleCustomRule('playCountMin', Number(e.target.value))}
                 />
@@ -180,11 +219,8 @@ const SelectRule = ({ handleCurrentModalStep }: Props) => {
           </ImageContainer>
         </Rule>
         <StepBtnContainer>
-          <Button width={25} height={7} borderRadius={1} onClick={fetchMakeGame}>
+          <Button width={18} height={5} borderRadius={1} onClick={fetchMakeGame}>
             생성하기
-          </Button>
-          <Button width={25} height={7} onClick={() => handleCurrentModalStep('SelectGame')}>
-            뒤로 가기
           </Button>
         </StepBtnContainer>
       </Wrapper>
@@ -220,16 +256,16 @@ const RuleTitle = styled.h2`
 `;
 
 const CustomContainer = styled.div`
-  height: 8rem;
   display: grid;
   align-items: center;
   grid-template-columns: 10rem 10rem 1fr;
+  margin: 1.5rem 0 1.5rem;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 2rem;
+  row-gap: 1rem;
   margin: 2rem 0;
 `;
 
@@ -238,21 +274,33 @@ const BtnContainer = styled.div`
 `;
 
 const RuleInput = styled.input`
-  width: 20rem;
+  width: 90%;
   height: 6rem;
   margin: 0;
-  border: 0.1rem solid black;
+  border: 0.2rem solid #d9d9d9;
   border-radius: 1rem;
   font-size: 1.6rem;
   padding: 1rem;
+
+  &: focus {
+    color: black;
+    outline: 0.2rem solid black;
+  }
 `;
 
 const RuleInfo = styled.span`
   font-size: 1.5rem;
+  color: grey;
 `;
 
 const RuleBtn = styled(Button)<{ isSelected: boolean }>`
-  background-color: ${(prop) => (prop.isSelected ? 'black' : 'gray')};
+  margin-top: 1rem;
+  background-color: ${(prop) => (prop.isSelected ? '#353535' : 'gray')};
+  font-size: 1.3rem;
+  border: 2px solid black;
+  border-radius: 2.5rem;
+  width: 7rem;
+  height: 4rem;
 `;
 
 const CustomTitle = styled.h3`
@@ -262,10 +310,7 @@ const CustomTitle = styled.h3`
 const StepBtnContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  flex-direction: column;
-  row-gap: 2rem;
+  justify-content: flex-end;
 `;
 
 const ImageUploadInput = styled.input`
@@ -275,7 +320,7 @@ const ImageUploadInput = styled.input`
 `;
 
 const ImageContainer = styled.div`
-  height: 100px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -283,4 +328,28 @@ const ImageContainer = styled.div`
 
 const ImagePreview = styled.div`
   flex: 1;
+`;
+
+const ModalTitle = styled.h1`
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  height: 4rem;
+`;
+
+const ExitButton = styled.div`
+  color: #444444;
+  display: flex;
+  flex-direction: row;
+
+  &: hover {
+    cursor: pointer;
+  }
+`;
+
+const Input = styled.input`
+  padding: 1rem;
+  border: 2px solid #353535;
+  border-radius: 5px;
+  width: 20rem;
 `;

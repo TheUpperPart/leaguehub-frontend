@@ -30,12 +30,12 @@ const Button = styled.button<Circle>`
   margin: 0;
   padding: 0;
   border: none;
-  width: 8rem;
+  width: 6rem;
   height: 3rem;
 
   transition: all 0.3s ease-in-out;
 
-  background-color: ${(prop) => (prop.isOn ? '#1D5D9B' : '#9BA4B5')};
+  background-color: ${(prop) => (prop.isOn ? '#353535' : '#9BA4B5')};
 
   border-radius: 3rem;
   cursor: pointer;
@@ -46,7 +46,7 @@ const Circle = styled.div<Circle>`
   width: 2rem;
   height: 2rem;
   top: 0.5rem;
-  left: ${(prop) => (prop.isOn ? '5rem' : '1rem')};
+  left: ${(prop) => (prop.isOn ? '3rem' : '1rem')};
 
   transition: all 0.3s ease-in-out;
 

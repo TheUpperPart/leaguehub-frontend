@@ -1,14 +1,20 @@
-import Button from '@components/Button';
+import Icon from '@components/Icon';
 import { GameEnum, MakeChannelStep } from '@constants/MakeGame';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useMakeGame from '@hooks/useMakeGame';
+import { gameImageLink } from '@constants/GameImageLink';
 
 interface Props {
   handleCurrentModalStep: (step: keyof typeof MakeChannelStep) => void;
+  handleModal: () => void;
 }
 
-const SelectGame = ({ handleCurrentModalStep }: Props) => {
+interface ButtonProps {
+  backgroundImg: string;
+}
+
+const SelectGame = ({ handleCurrentModalStep, handleModal }: Props) => {
   const { handleSelectGameCategory } = useMakeGame();
 
   const handleSelectGame = (category: keyof typeof GameEnum) => {
@@ -18,19 +24,55 @@ const SelectGame = ({ handleCurrentModalStep }: Props) => {
 
   return (
     <Container>
+      <ModalTitle>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          `}
+        >
+          <div
+            css={css`
+              padding-top: 0.3rem;
+              &: hover {
+                cursor: pointer;
+              }
+            `}
+          >
+            <Icon kind='goBack' size='2rem' onClick={() => handleCurrentModalStep('MakeOrJoin')} />
+          </div>
+          <div
+            css={css`
+              color: #b3b3b3;
+              padding-left: 1rem;
+            `}
+          >
+            채널 추가하기
+          </div>
+        </div>
+        <ExitButton onClick={() => handleModal()}>x</ExitButton>
+      </ModalTitle>
       <Wrapper>
-        <Title>개최하실 게임을 선택해주세요.</Title>
+        <Title>개최 종목을 선택해주세요</Title>
         <GameContainer>
-          <GameBtn onClick={() => handleSelectGame('TFT')}>TFT</GameBtn>
-          <GameBtn onClick={() => handleSelectGame('LOL')}>L.O.L</GameBtn>
-          <GameBtn onClick={() => handleSelectGame('HSS')}>하스스톤</GameBtn>
-          <GameBtn onClick={() => handleSelectGame('FIFA')}>FIFA</GameBtn>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.TFT} onClick={() => handleSelectGame('TFT')} />
+            <GameName>전략적 팀 전투</GameName>
+          </ImageWrapper>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.LOL} onClick={() => handleSelectGame('LOL')} />
+            <GameName>리그오브레전드</GameName>
+          </ImageWrapper>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.HS} onClick={() => handleSelectGame('HSS')} />
+            <GameName>하스스톤</GameName>
+          </ImageWrapper>
+          <ImageWrapper>
+            <GameBtn backgroundImg={gameImageLink.FIFA} onClick={() => handleSelectGame('FIFA')} />
+            <GameName>피파</GameName>
+          </ImageWrapper>
         </GameContainer>
-        <BtnContainer>
-          <Button width={20} height={5} onClick={() => handleCurrentModalStep('MakeOrJoin')}>
-            뒤로 가기
-          </Button>
-        </BtnContainer>
       </Wrapper>
     </Container>
   );
@@ -52,10 +94,16 @@ export const fadeIn = keyframes`
 const Container = styled.div`
   min-height: inherit;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
 
   animation: ${fadeIn} 1s ease;
+`;
+
+const ModalTitle = styled.h1`
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  height: 4rem;
 `;
 
 const Wrapper = styled.div``;
@@ -68,18 +116,22 @@ const Title = styled.h1`
 
 const GameContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   column-gap: 2rem;
   justify-content: center;
-  flex-direction: column;
 
   row-gap: 2rem;
 `;
 
-const GameBtn = styled.button`
-  background-color: #202b37;
-  width: 100%;
-  height: 8rem;
+const GameBtn = styled.button<ButtonProps>`
+  ${(props) => `background-image: url(${props.backgroundImg});`}
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  width: 23rem;
+  height: 23rem;
   border-radius: 1rem;
   color: #f9fafb;
   border: none;
@@ -87,6 +139,27 @@ const GameBtn = styled.button`
   cursor: pointer;
 `;
 
-const BtnContainer = styled.div`
-  margin-top: 2rem;
+const ExitButton = styled.div`
+  color: #444444;
+  display: flex;
+  flex-direction: row;
+
+  &: hover {
+    cursor: pointer;
+  }
+`;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  &: hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
+`;
+
+const GameName = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
 `;

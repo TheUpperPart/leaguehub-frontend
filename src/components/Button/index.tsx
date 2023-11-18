@@ -30,7 +30,7 @@ const CustomBtn = styled.button<ButtonProps>`
 
   border: none;
 
-  background-color: #202b37;
+  background-color: #353535;
   border-radius: 1rem;
   color: #f9fafb;
   font-size: 2rem;
