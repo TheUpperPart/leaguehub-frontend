@@ -3,12 +3,11 @@ import Button from '@components/Button';
 import SelectGame from '@components/MakeChannel/SelectGame';
 import SelectRule from '@components/MakeChannel/SelectRule';
 import { MakeChannelStep } from '@constants/MakeGame';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
 import { ChannelCircleProps } from '@type/channelCircle';
 import { AxiosError } from 'axios';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 interface Props {
@@ -62,20 +61,35 @@ const SelectChannelType = (props: Props) => {
     <Container>
       {currentModalStep === MakeChannelStep.MakeOrJoin && (
         <>
-          <ModalTitle>채널 추가하기</ModalTitle>
-          <ModalSubTitle>채널을 추가하고 시작해보세요!</ModalSubTitle>
+          <ModalTitle>
+            <div
+              css={css`
+                color: #b3b3b3;
+              `}
+            >
+              채널 추가하기
+            </div>
+            <div
+              css={css`
+                color: #444444;
+              `}
+            >
+              x
+            </div>
+          </ModalTitle>
+          <ModalSubTitle>채널을 추가하여 시작해보세요!</ModalSubTitle>
           <Content>
             <BtnContainer>
-              <BtnTitle>대회를 만들고 싶다면?</BtnTitle>
-              <Button width={20} height={10} onClick={() => handleCurrentModalStep('SelectGame')}>
+              <Button width={20} height={9} onClick={() => handleCurrentModalStep('SelectGame')}>
                 대회 개최
               </Button>
+              <BtnTitle>대회를 만들고 싶다면?</BtnTitle>
             </BtnContainer>
             <BtnContainer>
-              <BtnTitle>채널에 참여하고싶다면?</BtnTitle>
-              <Button width={20} height={10} onClick={() => handleCurrentModalStep('JoinGame')}>
+              <Button width={20} height={9} onClick={() => handleCurrentModalStep('JoinGame')}>
                 채널 참여
               </Button>
+              <BtnTitle>채널에 참여하고싶다면?</BtnTitle>
             </BtnContainer>
           </Content>
         </>
@@ -137,15 +151,17 @@ const Container = styled.div`
 `;
 
 const ModalTitle = styled.h1`
-  font-size: 4rem;
-  height: 7rem;
-  line-height: 7rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  height: 5rem;
 `;
 
 const ModalSubTitle = styled.div`
-  font-size: 2.4rem;
+  font-size: 3rem;
   height: 4rem;
   line-height: 4rem;
+  font-weight: bold;
 `;
 
 const Content = styled.div`
@@ -167,6 +183,8 @@ const BtnContainer = styled.div``;
 
 const BtnTitle = styled.div`
   font-size: 1.5rem;
+  color: #b3b3b3;
+  padding-top: 1rem;
 `;
 
 const FormConatiner = styled.div`
@@ -194,6 +212,7 @@ const ChannelInput = styled.input`
 
   color: #61677a;
 `;
+
 ChannelInput.defaultProps = { placeholder: '참여 코드 입력' };
 
 export const fadeIn = keyframes`
