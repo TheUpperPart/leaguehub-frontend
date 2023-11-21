@@ -37,7 +37,6 @@ const BasicInfoChannel = ({ channelLink, leagueTitle, maxPlayer }: BasicInfoChan
 
   return (
     <Container>
-      <Header>리그 수정하기</Header>
       <Content>
         <Wrapper>
           <FlexWrapper>리그 제목</FlexWrapper>
@@ -63,9 +62,7 @@ const BasicInfoChannel = ({ channelLink, leagueTitle, maxPlayer }: BasicInfoChan
         </Wrapper>
       </Content>
 
-      <ButtonWrapper>
-        <SubmitButton onClick={onClickSubmit}>수정하기</SubmitButton>
-      </ButtonWrapper>
+      <SubmitButton onClick={onClickSubmit}>수정하기</SubmitButton>
     </Container>
   );
 };
@@ -73,14 +70,7 @@ const BasicInfoChannel = ({ channelLink, leagueTitle, maxPlayer }: BasicInfoChan
 export default BasicInfoChannel;
 
 const Container = styled.div`
-  margin: 2rem 4rem;
-`;
-const Header = styled.div`
-  text-align: left;
-
-  font-size: 3rem;
-  font-weight: 900;
-  color: white;
+  width: 40rem;
 `;
 
 const Content = styled.div``;
@@ -95,9 +85,7 @@ const Wrapper = styled.div`
   min-height: 7rem;
 `;
 
-const FlexWrapper = styled.div`
-  color: white;
-`;
+const FlexWrapper = styled.div``;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -117,18 +105,23 @@ const Input = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  width: 10rem;
-  height: 6rem;
-  background-color: #344051;
+  position: absolute;
+  bottom: 2rem;
+  right: -4rem;
+  width: 8rem;
+  height: 4rem;
+  background-color: #ffffff;
   border: none;
   border-radius: 0.5rem;
-  color: white;
+  color: #020202;
   margin: 0 6rem 0 6rem;
   &:hover {
     cursor: pointer;
+    background-color: #ff4655;
+    color: #ffffff;
   }
   &:disabled {
-    background-color: #d3d3d3;
+    background-color: #ffffff;
     cursor: not-allowed;
   }
 `;

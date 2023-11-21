@@ -69,7 +69,6 @@ const BracketInfoChannel = () => {
 
   return (
     <Container>
-      <Header>라운드 수정</Header>
       <Content>
         {isLoading && <div>로딩 중</div>}
         {isError && <div>Error</div>}
@@ -90,9 +89,7 @@ const BracketInfoChannel = () => {
             </RoundInfo>
           );
         })}
-        <ButtonWrapper>
-          <ModifyButton onClick={updateRoundMatchCount}>수정완료</ModifyButton>
-        </ButtonWrapper>
+        <ModifyButton onClick={updateRoundMatchCount}>수정 하기</ModifyButton>
       </Content>
     </Container>
   );
@@ -101,18 +98,15 @@ const BracketInfoChannel = () => {
 export default BracketInfoChannel;
 
 const Container = styled.div`
-  margin: 2rem 4rem;
+  color: #020202;
 `;
 
-const Header = styled.div`
-  text-align: left;
-
-  font-size: 3rem;
-  font-weight: 900;
-  color: white;
+const Content = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 95%;
+  margin: 0 auto;
 `;
-
-const Content = styled.div``;
 
 const RoundInfo = styled.div`
   height: 7rem;
@@ -122,26 +116,33 @@ const RoundInfo = styled.div`
 `;
 
 const RoundInfoHeader = styled.div`
-  font-size: 2rem;
-  color: white;
+  font-size: 1.6rem;
+  width: 10rem;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 `;
 
 const ModifyButton = styled.button`
-  width: 10rem;
-  height: 6rem;
-  background-color: #344051;
+  position: absolute;
+  bottom: 2rem;
+  right: -4rem;
+  width: 8rem;
+  height: 4rem;
+  background-color: #ffffff;
   border: none;
   border-radius: 0.5rem;
-  color: white;
+  color: #020202;
   margin: 0 6rem 0 6rem;
-
-  cursor: pointer;
-
-  font-size: 1.8rem;
+  &:hover {
+    cursor: pointer;
+    background-color: #ff4655;
+    color: #ffffff;
+  }
+  &:disabled {
+    background-color: #ffffff;
+    cursor: not-allowed;
+  }
 `;
