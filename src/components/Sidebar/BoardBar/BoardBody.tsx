@@ -134,9 +134,9 @@ const BoardBody = ({ channelLink }: Props) => {
     }
 
     if (isSuccess) {
-      const tmpBoards = data.channelBoardLoadDtoList;
-      selectBoardId(tmpBoards[0].boardId.toString());
-      handleBoard(channelLink, tmpBoards[0].boardId.toString(), tmpBoards[0].boardTitle);
+      selectBoardId('main');
+      // const tmpBoards = data.channelBoardLoadDtoList;
+      // handleBoard(channelLink, tmpBoards[0].boardId.toString(), tmpBoards[0].boardTitle);
     }
   }, [channelLink, isSuccess]);
 
