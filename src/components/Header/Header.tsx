@@ -49,7 +49,20 @@ const Header = () => {
       await navigator.clipboard.writeText(channelLink as string);
       alert('클립보드에 초대링크가 복사되었습니다.');
     } catch (e) {
-      alert('복사에 실패하였습니다. 다시 시도해주세요');
+      // execCommand 사용
+      const textArea = document.createElement('textarea');
+      textArea.value = `${channelLink}`;
+      document.body.appendChild(textArea);
+      textArea.select();
+      textArea.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error('복사 실패', err);
+      }
+      textArea.setSelectionRange(0, 0);
+      document.body.removeChild(textArea);
+      alert('텍스트가 복사되었습니다.');
     }
   };
 

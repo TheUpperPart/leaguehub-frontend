@@ -281,6 +281,8 @@ export default BoardBody;
 
 const Container = styled.ul`
   color: #000000;
+  width: 20rem;
+  margin: 0 auto;
 `;
 
 const CurrentRound = styled.div`
@@ -301,15 +303,15 @@ const Boarder = styled.div`
   border-bottom: solid 1px #344051;
 `;
 
-const Title = styled.div`
-  width: 100%;
+const Title = styled.h2`
+  width: 18.4rem;
   font-size: 1.2rem;
   color: #868686;
   text-align: left;
 `;
 
 const AdminTable = styled.div`
-  width: 19.2rem;
+  width: 18.4rem;
 
   margin: 0 auto;
   display: flex;
@@ -320,25 +322,32 @@ const AdminTable = styled.div`
 `;
 
 const ScrollContainer = styled.div`
-  min-height: 20rem;
-  max-height: 20rem;
+  min-height: 25rem;
+  max-height: 25rem;
   overflow-y: auto;
-
+  overflow-x: hidden;
   ::-webkit-scrollbar {
-    width: 0.5rem;
+    width: 0.2rem;
   }
   ::-webkit-scrollbar-thumb {
     background-color: #202b37;
-    border-radius: 1rem;
+    border-radius: 0.1rem;
   }
   ::-webkit-scrollbar-track {
     background-color: #868686;
-    border-radius: 1rem;
+    border-radius: 0.1rem;
   }
 `;
 
 const NoticeTable = styled.div`
-  padding-top: 1rem;
+  width: 18.4rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+  row-gap: 1rem;
 `;
 
 const NoticeScrollContainer = styled.div`
@@ -349,21 +358,25 @@ const NoticeScrollContainer = styled.div`
 `;
 
 const BoardContainer = styled.li<{ isSelected: boolean }>`
-  width: 19.2rem;
+  width: 18.4rem;
   height: 4.8rem;
   display: flex;
   align-items: center;
   padding-left: 1rem;
 
   &:hover {
-    background-color: #aec3ae;
+    background-color: #ff4655;
+    color: #f2f2f2;
   }
 
   background-color: #ffffff;
   font-size: 1.3rem;
   cursor: pointer;
-  color: #000000;
-  border-radius: 6px;
+  color: #020202;
+  border-radius: 0.6rem;
 
-  ${({ isSelected }) => isSelected && `background-color: #AEC3AE;`}
+  ${({ isSelected }) =>
+    isSelected &&
+    `    background-color: #ff4655;
+    color: #f2f2f2;`}
 `;

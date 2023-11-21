@@ -60,7 +60,7 @@ const BoardContainer = styled.li<{ isSelected: boolean }>`
 
   &:hover {
     background-color: #ff4655;
-    color: white;
+    color: #f2f2f2;
   }
 
   background-color: #ffffff;
@@ -70,7 +70,10 @@ const BoardContainer = styled.li<{ isSelected: boolean }>`
   border-radius: 6px;
   padding-left: 1rem;
 
-  ${({ isSelected }) => isSelected && `background-color: #FF4655; color:white;`}
+  ${({ isSelected }) =>
+    isSelected &&
+    `    background-color: #ff4655;
+    color: #f2f2f2;`}
 `;
 
 const Boards = styled.div`

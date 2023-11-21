@@ -42,14 +42,33 @@ const BoardFooter = ({
     }
   };
 
+  if (channelPermission === 0) {
+    return <></>;
+  }
+
   return <Container>{renderLeagueButton()}</Container>;
 };
 
 const Container = styled.div`
-  color: black;
+  color: #020202;
+  background-color: #ffffff;
   font-size: 1.5rem;
   text-align: center;
   cursor: pointer;
+  position: absolute;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  width: 18.4rem;
+  height: 4rem;
+  left: 1rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  padding-left: 1rem;
+  &:hover {
+    background-color: #ff4655;
+    color: #f2f2f2;
+  }
 `;
 
 export default BoardFooter;
