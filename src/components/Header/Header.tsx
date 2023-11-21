@@ -183,9 +183,9 @@ const DropDown = styled.ul<{ click: boolean }>`
   width: 10rem;
 
   top: 5.5rem;
-  right: 0rem;
+  right: 2.5rem;
 
-  color: black;
+  color: #020202;
 `;
 
 const DropList = styled.li`
@@ -200,5 +200,5 @@ const DropList = styled.li`
   color: #000000;
 
   height: 4rem;
-  border: 1px solid black;
+  border: 1px solid #020202;
 `;
