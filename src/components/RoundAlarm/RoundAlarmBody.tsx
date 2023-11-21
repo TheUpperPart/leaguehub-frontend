@@ -74,7 +74,7 @@ const Ground = styled.div`
 
 const GroupContainer = styled.div`
   width: 15rem;
-  height: 7rem;
+  height: 5rem;
   display: flex;
   align-items: center;
 
