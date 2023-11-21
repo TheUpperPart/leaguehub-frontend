@@ -147,6 +147,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
 const Container = styled.div`
   margin: 0 auto;
+  color: #020202;
 `;
 
 const Wrapper = styled.div`
@@ -157,13 +158,14 @@ const Wrapper = styled.div`
 `;
 
 const Contents = styled.div`
-  width: 60rem;
-  background-color: #edede9;
+  width: 50rem;
+  background-color: #f2f2f2;
   border-radius: 2rem;
 `;
 
 const Title = styled.h2`
   text-align: center;
+  margin: 2rem 0;
 `;
 
 const Content = styled.div`
