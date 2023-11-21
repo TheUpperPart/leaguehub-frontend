@@ -19,7 +19,7 @@ const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: Bo
   return (
     <Container>
       <Wrapper>
-        <span css={labelStyle}>개최자</span>
+        <span css={labelStyle}>개최자 </span>
         <span css={hostnameStyle}>{hostname}</span>
         <TitleContainer>{leagueTitle}</TitleContainer>
       </Wrapper>
@@ -46,6 +46,8 @@ const BoardHeader = ({ hostname, leagueTitle, gameCategory, participateNum }: Bo
 export default BoardHeader;
 
 const Container = styled.div`
+  width: 20rem;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,12 +56,13 @@ const Container = styled.div`
   font-size: 1.4rem;
 `;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin: 0 auto;
+`;
 
 const labelStyle = css`
   color: #717171;
-  padding: 5px;
-  margin-bottom: 8px;
+  margin-bottom: 1.6rem;
 `;
 
 const hostnameStyle = css`
@@ -74,10 +77,9 @@ const participantStyle = css`
 `;
 
 const TitleContainer = styled.div`
-  width: 19.2rem;
   height: 2.8rem;
   font-size: 1.6rem;
-
+  width: 18.4rem;
   color: #000000;
   background-color: #ffffff;
   display: flex;
@@ -88,7 +90,7 @@ const TitleContainer = styled.div`
 `;
 
 const ParticipateWrapper = styled.div`
-  width: 19.2rem;
+  width: 18.4rem;
   color: #000000;
   font-size: 1.6rem;
 
@@ -100,7 +102,7 @@ const ParticipateWrapper = styled.div`
 
 const ParticipateBox = styled.div`
   background-color: #ffffff;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

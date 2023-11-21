@@ -73,18 +73,13 @@ const Container = styled.div`
   background-color: #f1f1f1;
   overflow: auto;
   position: relative;
-  padding: 2.4rem 0;
+  padding-top: 1.6rem;
 `;
 
-const ContentContainer = styled.div`
-  padding-bottom: 3rem;
-`;
+const ContentContainer = styled.div``;
 
 const FooterContainer = styled.div`
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3rem;
+  width: 20.4rem;
 `;
 
 export default BoardBar;
