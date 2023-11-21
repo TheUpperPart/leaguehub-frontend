@@ -4,13 +4,14 @@ import styled from '@emotion/styled';
 import { BracketContents } from '@type/bracket';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { CallAdmin } from '@type/admin';
 
 interface Props {
   curRound: number;
-  havingAlarm: boolean;
+  alramInfo: CallAdmin | undefined;
 }
 
-const RoundAlarmBody = ({ curRound, havingAlarm }: Props) => {
+const RoundAlarmBody = ({ curRound, alramInfo }: Props) => {
   const router = useRouter();
 
   const [roundInfo, setRoundInfo] = useState<BracketContents>();
@@ -28,7 +29,7 @@ const RoundAlarmBody = ({ curRound, havingAlarm }: Props) => {
     };
 
     getRoundInfo();
-  }, []);
+  }, [router.query.channelLink as string]);
 
   const moveToCheckIn = (matchId: number) => {
     authAPI({
@@ -39,15 +40,23 @@ const RoundAlarmBody = ({ curRound, havingAlarm }: Props) => {
     router.push(`/contents/${router.query.channelLink as string}/checkIn/${matchId}`);
   };
 
+  const isMySelfAlarm = () => {
+    return curRound === alramInfo?.matchRound;
+  };
+
+  console.log(roundInfo);
+
   return (
     <Ground>
       {roundInfo?.matchInfoDtoList.map((match) => {
         return (
           <GroupContainer key={match.matchId} onClick={() => moveToCheckIn(match.matchId)}>
             <GroupTitle>{match.matchName}</GroupTitle>
-            <Icon kind='shortcut' size={25} />
+            <AlarmContainer>
+              <Icon kind='shortcut' size={25} />
 
-            {(match.alarm || havingAlarm) && <AlarmCircle />}
+              {(match.alarm || isMySelfAlarm()) && <AlarmCircle />}
+            </AlarmContainer>
           </GroupContainer>
         );
       })}
@@ -57,14 +66,21 @@ const RoundAlarmBody = ({ curRound, havingAlarm }: Props) => {
 
 const Ground = styled.div`
   margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(4, 15rem);
+  column-gap: 2rem;
+  row-gap: 2rem;
 `;
 
 const GroupContainer = styled.div`
   width: 15rem;
-  height: 4rem;
+  height: 7rem;
   display: flex;
   align-items: center;
+
+  background-color: #f3f3f3;
   border: 0.2rem solid #132043;
+  border-radius: 3rem;
 
   justify-content: space-around;
 
@@ -75,6 +91,14 @@ const GroupContainer = styled.div`
 
 const GroupTitle = styled.div`
   font-size: 2rem;
+  line-height: 2rem;
+  display: flex;
+  align-items: center;
+`;
+
+const AlarmContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const AlarmCircle = styled.div`

@@ -41,7 +41,7 @@ const Admin = ({ role }: Props) => {
   const { openModal, closeModal } = useModals();
 
   const { data, isSuccess } = useQuery({
-    queryKey: ['roundInfos'],
+    queryKey: ['adminRoundList', router.query.channelLink as string],
     queryFn: () => {
       setCurRound(1);
       return fetchRoundInfo(router.query.channelLink as string);
@@ -51,10 +51,6 @@ const Admin = ({ role }: Props) => {
   if (!role) {
     router.push('/');
   }
-
-  const isMySelfAlarm = () => {
-    return curRound === alramInfo?.matchRound;
-  };
 
   useEffect(() => {
     const tmpClient = connectToStomp();
@@ -76,10 +72,7 @@ const Admin = ({ role }: Props) => {
       if (checkInSubscription) checkInSubscription.unsubscribe();
       client.deactivate();
     };
-  }, []);
-
-  if (isSuccess) {
-  }
+  }, [router.query.channelLink as string]);
 
   return (
     <Container>
@@ -123,11 +116,7 @@ const Admin = ({ role }: Props) => {
           })}
         </RoundList>
       </BracketContainer>
-      {curRound && (
-        <div>
-          <RoundAlarmBody curRound={curRound} havingAlarm={isMySelfAlarm()} />
-        </div>
-      )}
+      {curRound && <RoundAlarmBody curRound={curRound} alramInfo={alramInfo} />}
     </Container>
   );
 };
@@ -136,6 +125,20 @@ export default Admin;
 
 const Container = styled.div`
   margin-left: 2rem;
+  height: calc(100vh - 5.5rem);
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #202b37;
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #344051;
+    border-radius: 1rem;
+  }
 `;
 
 const Header = styled.div`
