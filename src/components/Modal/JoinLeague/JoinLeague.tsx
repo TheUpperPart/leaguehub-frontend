@@ -30,10 +30,8 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
       return;
     }
 
-    const concatGameId = gameIdVal + '#' + gameTagVal;
-
     const userTier: string = (
-      await authAPI.get(SERVER_URL + '/api/participant/stat?gameid=' + concatGameId)
+      await authAPI.get(SERVER_URL + `/api/participant/stat/${gameIdVal}/${gameTagVal}`)
     ).data.tier;
     setTier(userTier);
     setGameId(gameIdVal);
