@@ -34,7 +34,7 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
       await authAPI.get(SERVER_URL + `/api/participant/stat/${gameIdVal}/${gameTagVal}`)
     ).data.tier;
     setTier(userTier);
-    setGameId(gameIdVal);
+    setGameId(gameIdVal + '#' + gameTagVal);
   };
 
   const nicknameHandler: MouseEventHandler<HTMLElement | SVGElement> = () => {

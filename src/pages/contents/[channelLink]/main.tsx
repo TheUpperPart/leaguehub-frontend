@@ -1,7 +1,6 @@
 import authAPI from '@apis/authAPI';
 import HomeCard from '@components/Card/HomeCard';
 import MainContentModify from '@components/Content/MainContentModify';
-import Loading from '@components/Loading/Loading';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
 import { useQuery } from '@tanstack/react-query';
@@ -37,7 +36,7 @@ const Main = () => {
   const { channelPermission } = useChannels();
   const channelLink = router.query.channelLink;
 
-  const { data, isLoading, isSuccess } = useQuery<MainContent | undefined>(
+  const { data, isSuccess } = useQuery<MainContent | undefined>(
     ['getMainContents', channelLink],
     () => {
       return fetchData(channelLink as string);
@@ -48,14 +47,14 @@ const Main = () => {
     if (isSuccess && data) setMainContents(data);
   }, [isSuccess]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const handleContentUpdate = async (updatedContent: MainContent) => {
     if (!channelLink) return;
 
-    const res = await authAPI({ method: 'post', url: `/api/channel/${channelLink}/main` });
+    const res = await authAPI({
+      method: 'post',
+      url: `/api/channel/${channelLink}/main`,
+      data: updatedContent,
+    });
     if (res.status !== 200) return router.push('/');
 
     setMainContents(updatedContent);
