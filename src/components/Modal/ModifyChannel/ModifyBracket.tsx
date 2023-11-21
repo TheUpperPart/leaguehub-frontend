@@ -45,18 +45,21 @@ const Container = styled.div`
   position: relative;
 
   width: 40rem;
-  height: 60rem;
+  height: 40rem;
   display: flex;
 
-  background-color: #344051;
+  border-radius: 4rem;
+
+  background-color: #f2f2f2;
 `;
 
 const Content = styled.div`
-  margin: 2rem 1rem;
+  width: 95%;
+  margin: 0 auto;
 `;
 
 const Header = styled.div`
-  color: white;
+  color: #020202;
 
   font-size: 2rem;
 
@@ -80,7 +83,7 @@ const HeaderList = styled.button<{ isSelected: boolean }>`
     `}
 
   background-color: inherit;
-  color: white;
+  color: #020202;
   font-size: 2rem;
   font-weight: 900;
 

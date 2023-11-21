@@ -27,6 +27,8 @@ const Button = styled.button<{ status: bracketStatus }>`
   font-size: 1.6rem;
   color: white;
 
+  border-radius: 2rem;
+
   ${(prop) =>
     prop.status === 'PAST' &&
     `

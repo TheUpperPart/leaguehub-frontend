@@ -78,9 +78,7 @@ const Admin = ({ role }: Props) => {
     <Container>
       <Header>대회 설정</Header>
       <BracketContainer>
-        <Button
-          width={20}
-          height={6}
+        <AdminButton
           onClick={() =>
             openModal(Modal, {
               onClose: () => closeModal(Modal),
@@ -89,10 +87,8 @@ const Admin = ({ role }: Props) => {
           }
         >
           대회 관리하기
-        </Button>
-        <Button
-          width={20}
-          height={6}
+        </AdminButton>
+        <AdminButton
           onClick={() =>
             openModal(Modal, {
               onClose: () => closeModal(Modal),
@@ -106,7 +102,7 @@ const Admin = ({ role }: Props) => {
           }
         >
           채널 정보 수정하기
-        </Button>
+        </AdminButton>
       </BracketContainer>
       <Header>대회 알림</Header>
       <BracketContainer>
@@ -145,6 +141,20 @@ const Header = styled.div`
   font-size: 3rem;
   font-weight: 900;
   margin: 2rem 0;
+`;
+
+const AdminButton = styled.button`
+  background-color: #f2f2f2;
+  width: 15rem;
+  height: 6rem;
+
+  border-radius: 2rem;
+
+  cursor: pointer;
+  &:hover {
+    background-color: #ff4655;
+    color: #f2f2f2;
+  }
 `;
 
 const BracketContainer = styled.div`
