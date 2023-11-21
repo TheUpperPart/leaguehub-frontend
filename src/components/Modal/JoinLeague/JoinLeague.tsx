@@ -19,26 +19,21 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
   const { profile } = useProfile();
   const userNameRef = useRef<HTMLInputElement>(null);
   const gameIdRef = useRef<HTMLInputElement>(null);
-
-  function validateFormat(gameId: string) {
-    const regex = /^[^#]+#\d+$/;
-    console.log(gameId);
-    return regex.test(gameId);
-  }
+  const gameTagRef = useRef<HTMLInputElement>(null);
 
   const submitGameId: MouseEventHandler<HTMLElement> = async () => {
     const gameIdVal = gameIdRef.current?.value;
-    if (!gameIdVal || gameIdVal.length < 2) {
+    const gameTagVal = gameTagRef.current?.value;
+
+    if (!gameIdVal || !gameTagVal || gameIdVal.length < 2 || gameTagVal.length < 2) {
+      alert('아이디와 태그번호를 입력해주세요');
       return;
     }
 
-    if (!validateFormat(gameIdVal)) {
-      alert("'게임아이디#태그번호' 와 같은 형식으로 검색해주세요");
-      return;
-    }
+    const concatGameId = gameIdVal + '#' + gameTagVal;
 
     const userTier: string = (
-      await authAPI.get(SERVER_URL + '/api/participant/stat?gameid=' + gameIdVal)
+      await authAPI.get(SERVER_URL + '/api/participant/stat?gameid=' + concatGameId)
     ).data.tier;
     setTier(userTier);
     setGameId(gameIdVal);
@@ -120,7 +115,16 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
         <FlexWrapper>
           <InputButton>
             <Input type='text' placeholder='게임 아이디' ref={gameIdRef} />
-            <Button onClick={submitGameId}>입력</Button>
+            <div
+              css={css`
+                margin-top: 0.5rem;
+                width: 100%;
+                position: relative;
+              `}
+            >
+              #<Input type='text' placeholder='게임 태그 번호' ref={gameTagRef} />
+              <Button onClick={submitGameId}>입력</Button>
+            </div>
           </InputButton>
         </FlexWrapper>
       </Wrapper>
@@ -189,7 +193,7 @@ const Input = styled.input`
   height: 4rem;
   border: none;
   border-radius: 0.6rem;
-  padding: 0.6rem;
+  padding: 0.6rem 5rem 0.6rem 0.6rem;
 `;
 
 const Button = styled.button`
@@ -201,7 +205,7 @@ const Button = styled.button`
   border: none;
   color: white;
   border-radius: 0.6rem;
-  right: 3.2rem;
+  right: 2.5rem;
   top: 0.5rem;
 
   &:hover {
