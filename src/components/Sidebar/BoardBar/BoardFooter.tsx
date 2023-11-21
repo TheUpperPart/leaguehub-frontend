@@ -46,7 +46,7 @@ const BoardFooter = ({
 };
 
 const Container = styled.div`
-  color: white;
+  color: black;
   font-size: 1.5rem;
   text-align: center;
   cursor: pointer;

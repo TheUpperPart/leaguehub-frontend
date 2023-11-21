@@ -20,11 +20,23 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
   const userNameRef = useRef<HTMLInputElement>(null);
   const gameIdRef = useRef<HTMLInputElement>(null);
 
+  function validateFormat(gameId: string) {
+    const regex = /^[^#]+#\d+$/;
+    console.log(gameId);
+    return regex.test(gameId);
+  }
+
   const submitGameId: MouseEventHandler<HTMLElement> = async () => {
     const gameIdVal = gameIdRef.current?.value;
     if (!gameIdVal || gameIdVal.length < 2) {
       return;
     }
+
+    if (!validateFormat(gameIdVal)) {
+      alert("'게임아이디#태그번호' 와 같은 형식으로 검색해주세요");
+      return;
+    }
+
     const userTier: string = (
       await authAPI.get(SERVER_URL + '/api/participant/stat?gameid=' + gameIdVal)
     ).data.tier;
@@ -56,7 +68,9 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
         nickname,
       },
     });
+
     if (res.status !== 200) return;
+
     alert('정상적으로 리그참여 요청을 전송했어요');
     onClose();
   };
