@@ -52,10 +52,6 @@ const Admin = ({ role }: Props) => {
     router.push('/');
   }
 
-  const isMySelfAlarm = () => {
-    return curRound === alramInfo?.matchRound;
-  };
-
   useEffect(() => {
     const tmpClient = connectToStomp();
     tmpClient.activate();
@@ -120,11 +116,7 @@ const Admin = ({ role }: Props) => {
           })}
         </RoundList>
       </BracketContainer>
-      {curRound && (
-        <div>
-          <RoundAlarmBody curRound={curRound} havingAlarm={isMySelfAlarm()} />
-        </div>
-      )}
+      {curRound && <RoundAlarmBody curRound={curRound} alramInfo={alramInfo} />}
     </Container>
   );
 };
@@ -133,6 +125,20 @@ export default Admin;
 
 const Container = styled.div`
   margin-left: 2rem;
+  height: calc(100vh - 5.5rem);
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #202b37;
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #344051;
+    border-radius: 1rem;
+  }
 `;
 
 const Header = styled.div`
