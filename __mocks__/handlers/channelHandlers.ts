@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import { SERVER_URL } from '@config/index';
 import { ChannelCircleProps } from '@type/channelCircle';
+import { MainContent } from '@pages/contents/[channelLink]/main';
 
 const getChannels: ChannelCircleProps[][] = [
   [
@@ -73,6 +74,17 @@ const channelHandlers = [
   }),
   rest.post(SERVER_URL + '/api/:channelLink/participant', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({}));
+  }),
+  rest.get(SERVER_URL + '/api/channel/:channelLink/main', (req, res, ctx) => {
+    const mockMainContent: MainContent = {
+      channelTitleInfo: '제목제목',
+      channelContentInfo: '소제목소제목 내용내용 가나다라마바사',
+      channelRuleInfo: '참가조건이 들어가는 내용입니다',
+      channelTimeInfo: '대회 일정이 들어가는 내용입니다',
+      channelPrizeInfo: '대회 경품이 들어가는 내용임 ㅇㅇ',
+    };
+
+    return res(ctx.status(200), ctx.json(mockMainContent));
   }),
 ];
 
