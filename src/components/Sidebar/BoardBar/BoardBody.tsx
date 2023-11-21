@@ -164,7 +164,11 @@ const BoardBody = ({ channelLink }: Props) => {
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {isSuccess && data.myMatchRound !== 0 && (
-                <div>
+                <div
+                  css={css`
+                    padding-left: 0.5rem;
+                  `}
+                >
                   <Title>현재 라운드</Title>
                   <BoardContainer
                     onClick={() => {
@@ -189,7 +193,14 @@ const BoardBody = ({ channelLink }: Props) => {
               )}
               <AdminTable>
                 <Title>대회</Title>
-                <NoticeScrollContainer></NoticeScrollContainer>
+                <BoardContainer
+                  isSelected={selected === 'main'}
+                  data-id='main'
+                  data-board-title='메인'
+                  onClick={onClickBoard}
+                >
+                  홈
+                </BoardContainer>
                 {channelPermission === 0 && (
                   <BoardContainer
                     isSelected={selected === 'admin'}
@@ -275,7 +286,7 @@ const Container = styled.ul`
 const CurrentRound = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
 `;
 
 const RedCircle = styled.div`
@@ -299,7 +310,6 @@ const Title = styled.div`
 
 const AdminTable = styled.div`
   width: 19.2rem;
-  height: 12.8rem;
 
   margin: 0 auto;
   display: flex;
@@ -327,7 +337,9 @@ const ScrollContainer = styled.div`
   }
 `;
 
-const NoticeTable = styled.div``;
+const NoticeTable = styled.div`
+  padding-top: 1rem;
+`;
 
 const NoticeScrollContainer = styled.div`
   display: flex;
@@ -341,13 +353,14 @@ const BoardContainer = styled.li<{ isSelected: boolean }>`
   height: 4.8rem;
   display: flex;
   align-items: center;
+  padding-left: 1rem;
 
   &:hover {
     background-color: #aec3ae;
   }
 
   background-color: #ffffff;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
   color: #000000;
   border-radius: 6px;
