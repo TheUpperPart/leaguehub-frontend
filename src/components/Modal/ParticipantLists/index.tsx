@@ -57,8 +57,8 @@ const ParticipantList = ({ leagueTitle }: ParticipantListProps) => {
 export default ParticipantList;
 
 const Container = styled.div`
-  background-color: #202b37;
-  color: white;
+  background-color: #white;
+  color: black;
   border-radius: 2rem;
   margin: 0 auto;
   width: 60rem;
@@ -82,5 +82,5 @@ const MenuList = styled.li<{ isSelected: boolean }>`
     cursor: pointer;
   }
 
-  ${({ isSelected }) => isSelected && 'border-bottom: 2px solid white'};
+  ${({ isSelected }) => isSelected && 'border-bottom: 2px solid black'};
 `;
