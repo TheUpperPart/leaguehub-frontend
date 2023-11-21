@@ -21,26 +21,27 @@ const fetchChannelInfo = async (channelLink: string) => {
 const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
   const [selectedMenu, setSelectedMenu] = useState<MenuList>('basicInfo');
 
-  const handleSelectedMenu = (menu: MenuList) => {
-    setSelectedMenu(menu);
-  };
-
   const { data, isSuccess, isError, isLoading } = useQuery(['channelInfo', channelLink], () => {
     return fetchChannelInfo(channelLink);
   });
 
   return (
     <Container>
-      <Sidebar>
-        <SidebarContent onClick={() => handleSelectedMenu('basicInfo')}>
-          대회 기본 정보 수정
-        </SidebarContent>
-
-        <SidebarContent onClick={() => handleSelectedMenu('bracketInfo')}>
-          대진표 수정
-        </SidebarContent>
-      </Sidebar>
-      <MainContent>
+      <Content>
+        <Header>
+          <HeaderList
+            isSelected={selectedMenu === 'basicInfo'}
+            onClick={() => setSelectedMenu('basicInfo')}
+          >
+            대회 정보 수정
+          </HeaderList>
+          <HeaderList
+            isSelected={selectedMenu === 'bracketInfo'}
+            onClick={() => setSelectedMenu('bracketInfo')}
+          >
+            대진표 수정
+          </HeaderList>
+        </Header>
         {selectedMenu === 'basicInfo' && (
           <BasicInfoChannel
             channelLink={channelLink}
@@ -49,10 +50,10 @@ const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
           />
         )}
         {selectedMenu === 'bracketInfo' && <BracketInfoChannel />}
-      </MainContent>
-      <CloseButtonContainer>
-        <Icon kind='cancel' size={40} onClick={() => onClose()} />
-      </CloseButtonContainer>
+        <CloseButtonContainer>
+          <Icon kind='cancel' size={40} onClick={() => onClose()} />
+        </CloseButtonContainer>
+      </Content>
     </Container>
   );
 };
@@ -60,38 +61,52 @@ const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
 export default ModifyChannel;
 
 const Container = styled.div`
-  width: 80rem;
-  height: 60rem;
-  background-color: white;
-
-  display: flex;
   position: relative;
+
+  width: 40rem;
+  height: 40rem;
+  display: flex;
+
+  border-radius: 4rem;
+
+  background-color: #f2f2f2;
 `;
 
-const Sidebar = styled.div`
-  width: 30rem;
-  background-color: #141c24;
-`;
-
-const SidebarContent = styled.div`
-  width: 80%;
-  height: 5rem;
+const Content = styled.div`
+  width: 95%;
   margin: 0 auto;
-  color: white;
+`;
+
+const Header = styled.div`
+  color: #020202;
 
   font-size: 2rem;
-  font-weight: 900;
+
+  height: 5rem;
 
   display: flex;
   align-items: center;
-
-  cursor: pointer;
+  column-gap: 2rem;
 `;
 
-const MainContent = styled.div`
-  width: calc(100vw - 30rem);
+const HeaderList = styled.button<{ isSelected: boolean }>`
+  margin: 0;
+  padding: 0;
+  border: none;
 
-  background-color: #202b37;
+  ${(prop) =>
+    prop.isSelected &&
+    `
+      text-decoration:underline;
+      text-underline-position: under;
+    `}
+
+  background-color: inherit;
+  color: #020202;
+  font-size: 2rem;
+  font-weight: 900;
+
+  cursor: pointer;
 `;
 
 const CloseButtonContainer = styled.div`
