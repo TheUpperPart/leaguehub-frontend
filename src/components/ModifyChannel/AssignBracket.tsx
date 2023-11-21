@@ -13,8 +13,6 @@ const fetchAllBracket = async (channelLink: string) => {
     url: `/api/match/${channelLink}`,
   });
 
-  console.log(res);
-
   return res.data;
 };
 
@@ -53,7 +51,7 @@ const AssignBracket = () => {
             {round === data.liveRound && <BracketButton status='DONE'>배정 완료</BracketButton>}
             {round === data.liveRound + 1 && (
               <BracketButton status='READY' onClick={() => fetchSetBracket(round)}>
-                배정하기
+                배정 하기
               </BracketButton>
             )}
             {round > data.liveRound + 1 && <BracketButton status='BAN'>배정 불가</BracketButton>}
@@ -79,8 +77,9 @@ const Bracket = styled.div`
 
 const BracketHeader = styled.div`
   font-size: 1.6rem;
-
-  color: white;
+  font-weight: 700;
+  width: 8rem;
+  color: #020202;
 `;
 
 const BracketButton = styled.button<{ status: bracketStatus }>`
@@ -92,6 +91,8 @@ const BracketButton = styled.button<{ status: bracketStatus }>`
 
   font-size: 1.6rem;
   color: white;
+
+  border-radius: 2rem;
 
   ${(prop) =>
     prop.status === 'DONE' &&
