@@ -69,7 +69,7 @@ const SelectRule = ({ handleCurrentModalStep, handleModal }: Props) => {
         },
       });
       resetState();
-      router.push('/main');
+      router.push('/');
       handleModal();
       addChannel(res.data);
     } catch (error) {

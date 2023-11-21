@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const fetchNotice = async (board: string) => {
+  if (!board) return;
   const res = await authAPI<Array<MainPageNoticeData>>({
     method: 'get',
     url: `/api/notice/${board}`,
