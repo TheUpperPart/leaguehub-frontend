@@ -36,4 +36,4 @@ jobs:
             docker image prune
             docker rm $(docker ps -a -q)
             docker pull ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_IMAGE_NAME }}
-            docker-compose up
+            docker-compose up -d
