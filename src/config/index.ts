@@ -1,4 +1,4 @@
-let SERVER_URL = 'http://leaguehub.co.kr:8080';
+let SERVER_URL = 'https://leaguehub.co.kr';
 const SOCKET_URL = 'ws://leaguehub.co.kr/ws/websocket';
 
 if (process.env.NODE_ENV === 'development') {
