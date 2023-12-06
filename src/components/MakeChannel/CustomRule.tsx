@@ -17,7 +17,7 @@ const CustomRule = ({ state }: Props) => {
     const tierToNum = Number(e.target.value);
 
     setTier(tierToNum);
-    if (tierToNum >= 2400) {
+    if (tierToNum >= 2800) {
       setGrade(0);
     }
   };
@@ -43,7 +43,7 @@ const CustomRule = ({ state }: Props) => {
         })}
       </SelectBox>
 
-      {tier < 2400 && (
+      {tier < 2800 && (
         <SelectBox onChange={handleGrade}>
           <option value='0'>4 티어</option>
           <option value='100'>3 티어</option>

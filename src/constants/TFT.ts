@@ -26,20 +26,24 @@ export const TFTTier: TFTTiers = {
     displayName: '플래티넘',
     defaultValue: 1600,
   },
+  Emerald: {
+    displayName: '에메랄드',
+    defaultValue: 2000,
+  },
   Diamond: {
     displayName: '다이아몬드',
-    defaultValue: 2000,
+    defaultValue: 2400,
   },
   Master: {
     displayName: '마스터',
-    defaultValue: 2400,
+    defaultValue: 2800,
   },
   GrandMaster: {
     displayName: '그랜드 마스터',
-    defaultValue: 2800,
+    defaultValue: 3200,
   },
   Challenger: {
     displayName: '챌린저',
-    defaultValue: 3200,
+    defaultValue: 3600,
   },
 };
