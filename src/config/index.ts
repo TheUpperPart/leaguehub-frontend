@@ -1,5 +1,5 @@
 let SERVER_URL = 'https://leaguehub.co.kr';
-const SOCKET_URL = 'ws://leaguehub.co.kr/ws/websocket';
+const SOCKET_URL = 'wss://leaguehub.co.kr/wss/websocket';
 
 if (process.env.NODE_ENV === 'development') {
   SERVER_URL = 'http://localhost:8080';
