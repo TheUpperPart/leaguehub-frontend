@@ -63,6 +63,7 @@ const Admin = ({ role }: Props) => {
       checkInSubscription = tmpClient.subscribe(
         `/match/${router.query.channelLink as string}`,
         (data) => {
+          console.log(data, '소켓');
           setAlramInfo(JSON.parse(data.body));
         },
       );
@@ -75,45 +76,50 @@ const Admin = ({ role }: Props) => {
   }, [router.query.channelLink as string]);
 
   return (
-    <Container>
-      <Header>대회 설정</Header>
-      <BracketContainer>
-        <AdminButton
-          onClick={() =>
-            openModal(Modal, {
-              onClose: () => closeModal(Modal),
-              children: <ModifyBracket onClose={() => closeModal(Modal)} />,
-            })
-          }
-        >
-          대회 관리하기
-        </AdminButton>
-        <AdminButton
-          onClick={() =>
-            openModal(Modal, {
-              onClose: () => closeModal(Modal),
-              children: (
-                <ModifyChannel
-                  channelLink={router.query.channelLink as string}
-                  onClose={() => closeModal(Modal)}
-                />
-              ),
-            })
-          }
-        >
-          채널 정보 수정하기
-        </AdminButton>
-      </BracketContainer>
-      <Header>대회 알림</Header>
-      <BracketContainer>
-        <RoundList>
-          {data?.roundList.map((ele) => {
-            return <RoundAlarmHeader liveRound={data.liveRound} curRound={ele} key={ele} />;
-          })}
-        </RoundList>
-      </BracketContainer>
-      {curRound && <RoundAlarmBody curRound={curRound} alramInfo={alramInfo} />}
-    </Container>
+    <div>
+      {' '}
+      <div>
+        <Container>
+          <Header>대회 설정</Header>
+          <BracketContainer>
+            <AdminButton
+              onClick={() =>
+                openModal(Modal, {
+                  onClose: () => closeModal(Modal),
+                  children: <ModifyBracket onClose={() => closeModal(Modal)} />,
+                })
+              }
+            >
+              대회 관리하기
+            </AdminButton>
+            <AdminButton
+              onClick={() =>
+                openModal(Modal, {
+                  onClose: () => closeModal(Modal),
+                  children: (
+                    <ModifyChannel
+                      channelLink={router.query.channelLink as string}
+                      onClose={() => closeModal(Modal)}
+                    />
+                  ),
+                })
+              }
+            >
+              채널 정보 수정하기
+            </AdminButton>
+          </BracketContainer>
+          <Header>대회 알림</Header>
+          <BracketContainer>
+            <RoundList>
+              {data?.roundList.map((ele) => {
+                return <RoundAlarmHeader liveRound={data.liveRound} curRound={ele} key={ele} />;
+              })}
+            </RoundList>
+          </BracketContainer>
+          {curRound && <RoundAlarmBody curRound={curRound} alramInfo={alramInfo} />}
+        </Container>
+      </div>
+    </div>
   );
 };
 

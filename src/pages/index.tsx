@@ -44,7 +44,7 @@ export default function Home() {
                   {notice.noticeTitle}
                 </ItemLink>
               </ItemHeader>
-              {notice.noticeInfo && <span>`- ${notice.noticeInfo}`</span>}
+              {notice.noticeInfo && <span>- {notice.noticeInfo}</span>}
             </Item>
           );
         })}
