@@ -23,7 +23,7 @@ const Container = styled.div<{ hasOnClick: boolean }>`
   text-align: center;
   background-color: white;
   border-radius: 1rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   justify-content: center;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
