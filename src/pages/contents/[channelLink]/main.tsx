@@ -36,16 +36,21 @@ const Main = () => {
   const { channelPermission } = useChannels();
   const channelLink = router.query.channelLink;
 
-  const { data, isSuccess } = useQuery<MainContent | undefined>(
+  const { data, isSuccess, refetch } = useQuery<MainContent | undefined>(
     ['getMainContents', channelLink],
     () => {
       return fetchData(channelLink as string);
     },
+    { staleTime: 0, cacheTime: 0 },
   );
 
   useEffect(() => {
     if (isSuccess && data) setMainContents(data);
   }, [isSuccess]);
+
+  useEffect(() => {
+    refetch();
+  }, [router.query.channelLink as string]);
 
   const handleContentUpdate = async (updatedContent: MainContent) => {
     if (!channelLink) return;
