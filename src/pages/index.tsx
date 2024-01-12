@@ -22,6 +22,7 @@ export default function Home() {
     queryKey: ['notice', router.query.selected as string],
     queryFn: () => fetchNotice(router.query.selected as string),
     enabled: selectedBoard !== '',
+    staleTime: 60 * 60 * 24,
   });
 
   useEffect(() => {

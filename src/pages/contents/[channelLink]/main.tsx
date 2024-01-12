@@ -36,13 +36,10 @@ const Main = () => {
   const { channelPermission } = useChannels();
   const channelLink = router.query.channelLink;
 
-  const { data, isSuccess, refetch } = useQuery<MainContent | undefined>(
-    ['getMainContents', channelLink],
-    () => {
-      return fetchData(channelLink as string);
-    },
-    { staleTime: 0, cacheTime: 0 },
-  );
+  const { data, isSuccess, refetch } = useQuery<MainContent | undefined>({
+    queryKey: ['getMainContents', channelLink],
+    queryFn: () => fetchData(channelLink as string),
+  });
 
   useEffect(() => {
     if (isSuccess && data) setMainContents(data);

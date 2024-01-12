@@ -19,8 +19,9 @@ const fetchAllBracket = async (channelLink: string) => {
 const AssignBracket = () => {
   const router = useRouter();
 
-  const { data, isSuccess } = useQuery<BracketHeader>(['bracketSetting'], () => {
-    return fetchAllBracket(router.query.channelLink as string);
+  const { data, isSuccess } = useQuery<BracketHeader>({
+    queryKey: ['bracketSetting'],
+    queryFn: () => fetchAllBracket(router.query.channelLink as string),
   });
 
   const fetchSetBracket = async (round: number) => {
