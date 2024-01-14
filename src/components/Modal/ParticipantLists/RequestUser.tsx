@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { confirmParticipation, fetchRequestUser, rejectParticipation } from '@apis/channels';
 import { Participant } from '@components/Modal/ParticipantLists/ParticipantUser';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -6,23 +6,14 @@ import useChannels from '@hooks/useChannels';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const postData = async (url: string) => {
-  const res = await authAPI({
-    method: 'post',
-    url: url,
-  });
-  return res;
-};
-
 const RequestUser = () => {
   const [requestUsers, setRequestUsers] = useState<Participant[]>();
   const { currentChannel, channelPermission } = useChannels();
 
   const fetchData = async () => {
-    const res = await authAPI<Participant[]>({
-      method: 'get',
-      url: `/api/${currentChannel}/player/requests`,
-    });
+    if (currentChannel === undefined) return;
+    const res = await fetchRequestUser(currentChannel);
+
     setRequestUsers(res.data);
   };
 
@@ -31,13 +22,14 @@ const RequestUser = () => {
   };
 
   const onClick = async (requestUser: Participant, mode: boolean) => {
+    if (!currentChannel) return;
     let res;
     if (mode) {
       if (!confirm(`${requestUser.nickname}님 대회 참가를 수락하시겠습니까?`)) return;
-      res = await postData(`/api/${currentChannel}/${requestUser.pk}/player`);
+      res = await confirmParticipation(currentChannel, requestUser.pk);
     } else {
       if (!confirm(`${requestUser.nickname}님 대회 참가를 거절하시겠습니까?`)) return;
-      res = await postData(`/api/${currentChannel}/${requestUser.pk}/observer`);
+      res = await rejectParticipation(currentChannel, requestUser.pk);
     }
     if (res.status !== 200) return;
     const updatedRequestUsers = requestUsers?.filter((user) => user.pk !== requestUser.pk);

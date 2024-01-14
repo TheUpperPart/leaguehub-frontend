@@ -1,16 +1,12 @@
-import authAPI from '@apis/authAPI';
+import { fetchGamePatchNote } from '@apis/boards';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
-import { MainPageNoticeData } from '@type/mainPage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const fetchNotice = async (board: string) => {
   if (!board) return;
-  const res = await authAPI<Array<MainPageNoticeData>>({
-    method: 'get',
-    url: `/api/notice/${board}`,
-  });
+  const res = await fetchGamePatchNote(board);
   return res.data;
 };
 

@@ -1,9 +1,7 @@
-import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import { MatchPlayerScoreInfos, UserStatus } from '@components/RoundCheckIn';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 
 interface PlayerListsProps {
   ParticipantDisqualifying: (participantId: number, matchPlayerId: number) => void;

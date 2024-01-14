@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import ProfileContext from '@contexts/ProfileContext';
 import { Profile } from '@type/profile';
-import authAPI from '@apis/authAPI';
 import Cookies from 'js-cookie';
+import { fetchProfile } from '@apis/mypage';
 
 interface ProfileAPI {
   nickName: string;
@@ -14,14 +14,6 @@ interface ProfileAPI {
 interface ProfileProviderProps {
   children: React.ReactNode;
 }
-
-const fetchProfile = async () => {
-  const res = await authAPI<ProfileAPI>({
-    method: 'get',
-    url: '/api/member/profile',
-  });
-  return res.data;
-};
 
 const ProfileProvider = ({ children }: ProfileProviderProps) => {
   // 유저가 로그인 되어있는지 확인

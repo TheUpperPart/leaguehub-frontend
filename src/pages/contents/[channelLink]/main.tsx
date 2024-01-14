@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { fetchMainContents, updateMainContents } from '@apis/mainContents';
 import HomeCard from '@components/Card/HomeCard';
 import MainContentModify from '@components/Content/MainContentModify';
 import styled from '@emotion/styled';
@@ -15,19 +15,6 @@ export interface MainContent {
   readonly channelPrizeInfo: string;
 }
 
-const fetchData = async (channelLink: string): Promise<MainContent | undefined> => {
-  const res = await authAPI<MainContent>({
-    method: 'get',
-    url: `/api/channel/${channelLink}/main`,
-  });
-
-  if (res.status !== 200) {
-    return;
-  }
-
-  return res.data;
-};
-
 const Main = () => {
   const [mainContents, setMainContents] = useState<MainContent>();
   const [isModify, setIsModify] = useState(false);
@@ -39,7 +26,7 @@ const Main = () => {
   const { data, isSuccess, refetch } = useQuery<MainContent | undefined>(
     ['getMainContents', channelLink],
     () => {
-      return fetchData(channelLink as string);
+      return fetchMainContents(channelLink as string);
     },
     { staleTime: 0, cacheTime: 0 },
   );
@@ -55,12 +42,7 @@ const Main = () => {
   const handleContentUpdate = async (updatedContent: MainContent) => {
     if (!channelLink) return;
 
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/channel/${channelLink}/main`,
-      data: updatedContent,
-    });
-    if (res.status !== 200) return router.push('/');
+    await updateMainContents(channelLink as string, updatedContent);
 
     setMainContents(updatedContent);
     setIsModify(false);

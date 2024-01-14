@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { deleteBoardContents, fetchBoardContents, updateBoardContents } from '@apis/boardContents';
 import ContentModify from '@components/Content/ContentModify';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -18,19 +18,6 @@ interface ContentButtonProps {
   backgroundColor?: string;
 }
 
-const updateData = async (channelLink: string, boardId: string, updatedContent: Content) => {
-  const res = await authAPI({
-    method: 'post',
-    url: `/api/channel/${channelLink}/${boardId}`,
-    data: {
-      title: updatedContent.title,
-      content: updatedContent.content,
-    },
-  });
-
-  return res;
-};
-
 const boardContents = () => {
   const [contents, setContents] = useState<Content>({ title: '', content: '' });
   const [isModify, setIsModify] = useState(false);
@@ -41,11 +28,7 @@ const boardContents = () => {
   const { handleBoard } = useLastVisitedBoardLists();
 
   const fetchBoardContent = async () => {
-    const res = await authAPI<Content>({
-      method: 'get',
-      url: `/api/channel/${channelLink}/${boardId}`,
-    });
-
+    const res = await fetchBoardContents(channelLink as string, boardId as string);
     if (res.status !== 200) return router.push('/');
 
     setContents(res.data);
@@ -58,7 +41,7 @@ const boardContents = () => {
     };
     if (!channelLink) return;
 
-    const res = await updateData(channelLink as string, boardId as string, updatedContent);
+    const res = await updateBoardContents(channelLink as string, boardId as string, updatedContent);
     if (res.status !== 200) {
       alert('요청실패');
       return;
@@ -71,7 +54,7 @@ const boardContents = () => {
 
   const deleteBoard = async () => {
     if (!confirm('공지를 삭제하시겠습니까?')) return;
-    const res = await authAPI({ method: 'delete', url: `/api/channel/${channelLink}/${boardId}` });
+    const res = await deleteBoardContents(channelLink as string, boardId as string);
 
     if (res.status !== 200) {
       alert('서버 에러가 발생했습니다.');

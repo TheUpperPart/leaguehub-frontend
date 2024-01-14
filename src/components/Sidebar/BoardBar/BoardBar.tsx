@@ -4,20 +4,13 @@ import styled from '@emotion/styled';
 import BoardFooter from '@components/Sidebar/BoardBar/BoardFooter';
 import BoardHeader from '@components/Sidebar/BoardBar/BoardHeader';
 import BoardBody from '@components/Sidebar/BoardBar/BoardBody';
-import { BoardInfo } from '@type/board';
-import authAPI from '@apis/authAPI';
 import { useEffect } from 'react';
 import useChannels from '@hooks/useChannels';
 import MainHeader from '@components/MainHeader/MainHeader';
-
-const fetchData = async (channelLink: string) => {
-  const res = await authAPI<BoardInfo>({ method: 'get', url: '/api/channel/' + channelLink });
-
-  return res.data;
-};
+import { fetchChannelInfo } from '@apis/channels';
 
 const BoardBar = ({ channelLink }: { channelLink: string }) => {
-  const { data } = useQuery(['getBoard', channelLink], () => fetchData(channelLink), {
+  const { data } = useQuery(['getBoard', channelLink], () => fetchChannelInfo(channelLink), {
     staleTime: Infinity,
     cacheTime: Infinity,
     enabled: channelLink !== 'main',

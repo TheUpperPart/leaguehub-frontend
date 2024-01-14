@@ -4,20 +4,11 @@ import Cookies from 'js-cookie';
 
 import { ChannelCircleProps } from '@type/channelCircle';
 import ChannelsContext from '@contexts/ChannelsContext';
-import authAPI from '@apis/authAPI';
+import { fetchChannelLists, updateChannelOrder } from '@apis/channels';
 
 interface Props {
   children: React.ReactNode;
 }
-
-const fetchChannels = async () => {
-  const res = await authAPI<ChannelCircleProps[]>({
-    method: 'get',
-    url: '/api/channels',
-  });
-
-  return res.data;
-};
 
 const ChannelsProvider = ({ children }: Props) => {
   const isHaveAccessToken = Cookies.get('accessToken');
@@ -28,7 +19,7 @@ const ChannelsProvider = ({ children }: Props) => {
 
   const { data } = useQuery<ChannelCircleProps[]>({
     queryKey: ['getChannels'],
-    queryFn: fetchChannels,
+    queryFn: fetchChannelLists,
     enabled: isHaveAccessToken ? true : false,
   });
 
@@ -50,16 +41,7 @@ const ChannelsProvider = ({ children }: Props) => {
 
     setChannels(updateChannels);
 
-    updateChannelsOrder(updateChannels);
-  };
-
-  const updateChannelsOrder = async (channels: ChannelCircleProps[]) => {
-    try {
-      const res = await authAPI({ method: 'post', url: '/api/channels/order', data: channels });
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+    updateChannelOrder(updateChannels);
   };
 
   useEffect(() => {

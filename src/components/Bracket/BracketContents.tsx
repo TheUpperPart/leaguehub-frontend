@@ -1,23 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import authAPI from '@apis/authAPI';
 
-import { BracketContents } from '@type/bracket';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { fetchBracketContents } from '@apis/bracketContents';
 
 interface Props {
   curRound: number;
 }
-
-const fetchBracket = async (channelLink: string, curRound: number) => {
-  const res = await authAPI<BracketContents>({
-    method: 'get',
-    url: `/api/match/${channelLink}/${curRound}`,
-  });
-
-  return res.data;
-};
 
 const BracketContents = (props: Props) => {
   const router = useRouter();
@@ -26,7 +16,7 @@ const BracketContents = (props: Props) => {
     ['bracketContents', props.curRound, router.query.channelLink],
     () => {
       if (typeof router.query.channelLink === 'string') {
-        return fetchBracket(router.query.channelLink, props.curRound);
+        return fetchBracketContents(router.query.channelLink, props.curRound);
       }
     },
   );

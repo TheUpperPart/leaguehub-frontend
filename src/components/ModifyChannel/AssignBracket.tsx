@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { assignNextRound, fetchAllBracket } from '@apis/brackets';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
 import { BracketHeader } from '@type/bracket';
@@ -7,15 +7,6 @@ import { useRouter } from 'next/router';
 
 type bracketStatus = 'DONE' | 'READY' | 'BAN';
 
-const fetchAllBracket = async (channelLink: string) => {
-  const res = await authAPI<BracketHeader>({
-    method: 'get',
-    url: `/api/match/${channelLink}`,
-  });
-
-  return res.data;
-};
-
 const AssignBracket = () => {
   const router = useRouter();
 
@@ -23,21 +14,16 @@ const AssignBracket = () => {
     return fetchAllBracket(router.query.channelLink as string);
   });
 
-  const fetchSetBracket = async (round: number) => {
-    if (window.confirm(`Round ${round}를 배정하시겠습니까?`)) {
-      try {
-        const res = await authAPI({
-          method: 'post',
-          url: `/api/match/${router.query.channelLink as string}/${round}`,
-        });
-
-        if (isSuccess) {
-          data.liveRound = round;
-        }
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          window.alert(error.response?.data.message);
-        }
+  const setBracket = async (round: number) => {
+    if (!window.confirm(`Round ${round}를 배정하시겠습니까?`)) return;
+    try {
+      await assignNextRound(router.query.channelLink as string, round);
+      if (isSuccess) {
+        data.liveRound = round;
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        window.alert(error.response?.data.message);
       }
     }
   };
@@ -50,7 +36,7 @@ const AssignBracket = () => {
             <BracketHeader>Round {round}</BracketHeader>
             {round === data.liveRound && <BracketButton status='DONE'>배정 완료</BracketButton>}
             {round === data.liveRound + 1 && (
-              <BracketButton status='READY' onClick={() => fetchSetBracket(round)}>
+              <BracketButton status='READY' onClick={() => setBracket(round)}>
                 배정 하기
               </BracketButton>
             )}

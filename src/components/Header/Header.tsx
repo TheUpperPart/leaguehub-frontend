@@ -5,8 +5,8 @@ import Icon from '@components/Icon';
 import { useContext, useState } from 'react';
 import Image from 'next/image';
 import ProfileContext from '@contexts/ProfileContext';
-import authAPI from '@apis/authAPI';
 import Cookies from 'js-cookie';
+import { logout } from '@apis/mypage';
 
 const Header = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await authAPI({ method: 'post', url: '/api/member/logout' });
+      await logout();
       Cookies.remove('accessToken');
       Cookies.remove('refreshToken');
 

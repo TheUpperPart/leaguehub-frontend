@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { demoteToObserver, fetchParticipantUser } from '@apis/channels';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useChannels from '@hooks/useChannels';
@@ -19,10 +19,8 @@ const ParticipantUser = () => {
   const { currentChannel, channelPermission } = useChannels();
 
   const fetchData = async () => {
-    const res = await authAPI<Participant[]>({
-      method: 'get',
-      url: `/api/${currentChannel}/players`,
-    });
+    if (!currentChannel) return;
+    const res = await fetchParticipantUser(currentChannel);
     setParticipants(res.data);
   };
 
@@ -31,11 +29,9 @@ const ParticipantUser = () => {
   };
 
   const onClickKickUser = async (participant: Participant) => {
+    if (!currentChannel) return;
     if (!confirm(`${participant.nickname}님을 강퇴하시겠습니까?`)) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${currentChannel}/${participant.pk}/observer`,
-    });
+    const res = await demoteToObserver(currentChannel, participant.pk);
     if (res.status !== 200) return;
     const updatedParticipants = participants?.filter((user) => user.pk !== participant.pk);
     setParticipants(updatedParticipants);

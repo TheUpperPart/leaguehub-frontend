@@ -8,16 +8,29 @@ import useMakeGame from '@hooks/useMakeGame';
 import { GameMethod, MakeChannelStep } from '@constants/MakeGame';
 import CustomRule from './CustomRule';
 import { useRef, useState } from 'react';
-import authAPI from '@apis/authAPI';
 import Image from 'next/image';
-import { ChannelCircleProps } from '@type/channelCircle';
 import useChannels from '@hooks/useChannels';
 import { useRouter } from 'next/router';
 import Icon from '@components/Icon';
+import { createNewChannel } from '@apis/channels';
+import { uploadImage } from '@apis/utils';
 
 interface Props {
   handleCurrentModalStep: (step: keyof typeof MakeChannelStep) => void;
   handleModal: () => void;
+}
+
+export interface NewGameOption {
+  gameCategory: number;
+  matchFormat: number;
+  title: string;
+  maxPlayer: number;
+  tier: boolean;
+  tierMax: number;
+  tierMin: number;
+  playCount: boolean;
+  playCountMin: number;
+  channelImageUrl: string;
 }
 
 const SelectRule = ({ handleCurrentModalStep, handleModal }: Props) => {
@@ -52,22 +65,20 @@ const SelectRule = ({ handleCurrentModalStep, handleModal }: Props) => {
     }
 
     try {
-      const res = await authAPI<ChannelCircleProps>({
-        method: 'post',
-        url: '/api/channel',
-        data: {
-          gameCategory,
-          matchFormat,
-          title: basicInfo.title,
-          maxPlayer: basicInfo.participationNum,
-          tier: isUseCustomRule.tierMax || isUseCustomRule.tierMin,
-          tierMax: customRule.tierMax,
-          tierMin: customRule.tierMin,
-          playCount: isUseCustomRule.playCount,
-          playCountMin: customRule.playCountMin,
-          channelImageUrl: channelImgUrl,
-        },
-      });
+      const newGameOption: NewGameOption = {
+        gameCategory,
+        matchFormat,
+        title: basicInfo.title,
+        maxPlayer: basicInfo.participationNum,
+        tier: isUseCustomRule.tierMax || isUseCustomRule.tierMin,
+        tierMax: customRule.tierMax,
+        tierMin: customRule.tierMin,
+        playCount: isUseCustomRule.playCount,
+        playCountMin: customRule.playCountMin,
+        channelImageUrl: channelImgUrl,
+      };
+
+      const res = await createNewChannel(newGameOption);
       resetState();
       router.push('/');
       handleModal();
@@ -86,14 +97,7 @@ const SelectRule = ({ handleCurrentModalStep, handleModal }: Props) => {
     formData.append('uploadImage', e.target.files[0]);
 
     try {
-      const res = await authAPI<{ imgUrl: string }>({
-        method: 'post',
-        url: `/api/image`,
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const res = await uploadImage(formData);
 
       setImageUrl(res.data.imgUrl);
       handleImgUrl(res.data.imgUrl);

@@ -9,6 +9,7 @@ import authAPI from '@apis/authAPI';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import Cookies from 'js-cookie';
+import { fetchMatchInfos } from '@apis/match';
 
 export interface MatchPlayerScoreInfos {
   matchPlayerId: number;
@@ -60,10 +61,7 @@ const RoundCheckIn = ({ channelLink, matchId }: RoundCheckInProps) => {
   const router = useRouter();
 
   const fetchData = async () => {
-    const res = await authAPI<GetMatchPlayerScoreInfos>({
-      method: 'get',
-      url: `/api/channel/${channelLink}/match/${matchId}/player/info`,
-    });
+    const res = await fetchMatchInfos(channelLink, matchId);
 
     if (res.status !== 200 || res.data.requestMatchPlayerId === 0) {
       router.back();

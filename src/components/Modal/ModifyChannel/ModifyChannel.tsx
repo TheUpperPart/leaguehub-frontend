@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { fetchChannelInfo } from '@apis/channels';
 import Icon from '@components/Icon';
 import BasicInfoChannel from '@components/ModifyChannel/BasicInfoChannel';
 import BracketInfoChannel from '@components/ModifyChannel/BracketInfoChannel';
@@ -12,11 +12,6 @@ interface ModifyChannelProps {
 }
 
 type MenuList = 'basicInfo' | 'bracketInfo';
-
-const fetchChannelInfo = async (channelLink: string) => {
-  const res = await authAPI({ method: 'get', url: `/api/channel/${channelLink}` });
-  return res.data;
-};
 
 const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
   const [selectedMenu, setSelectedMenu] = useState<MenuList>('basicInfo');
@@ -45,8 +40,8 @@ const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
         {selectedMenu === 'basicInfo' && (
           <BasicInfoChannel
             channelLink={channelLink}
-            leagueTitle={data?.leagueTitle}
-            maxPlayer={data?.maxPlayer}
+            leagueTitle={data ? data.leagueTitle : ''}
+            maxPlayer={data ? data.maxPlayer : 0}
           />
         )}
         {selectedMenu === 'bracketInfo' && <BracketInfoChannel />}
