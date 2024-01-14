@@ -37,7 +37,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   }, [channels]);
 
   // 요청했을 때만
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <>
         <CommonLayout>

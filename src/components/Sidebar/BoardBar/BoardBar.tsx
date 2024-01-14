@@ -17,9 +17,10 @@ const fetchData = async (channelLink: string) => {
 };
 
 const BoardBar = ({ channelLink }: { channelLink: string }) => {
-  const { data } = useQuery(['getBoard', channelLink], () => fetchData(channelLink), {
-    staleTime: Infinity,
-    cacheTime: Infinity,
+  const { data } = useQuery({
+    queryKey: ['getBoard', channelLink],
+    queryFn: () => fetchData(channelLink),
+    gcTime: Infinity,
     enabled: channelLink !== 'main',
   });
 

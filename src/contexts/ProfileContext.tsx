@@ -5,7 +5,7 @@ import { Profile } from '@type/profile';
 interface ProfileState {
   profile: Profile | null;
   setProfile: React.Dispatch<React.SetStateAction<Profile | null>>;
-  status: 'loading' | 'error' | 'success';
+  status: 'pending' | 'error' | 'success';
   isInitialLoading: boolean;
   refetchProfile: () => Promise<void>;
 }

@@ -21,8 +21,9 @@ const fetchChannelInfo = async (channelLink: string) => {
 const ModifyChannel = ({ channelLink, onClose }: ModifyChannelProps) => {
   const [selectedMenu, setSelectedMenu] = useState<MenuList>('basicInfo');
 
-  const { data, isSuccess, isError, isLoading } = useQuery(['channelInfo', channelLink], () => {
-    return fetchChannelInfo(channelLink);
+  const { data, isSuccess, isError, isLoading } = useQuery({
+    queryKey: ['channelInfo', channelLink],
+    queryFn: () => fetchChannelInfo(channelLink),
   });
 
   return (
