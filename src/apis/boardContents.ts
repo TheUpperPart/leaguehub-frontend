@@ -27,7 +27,7 @@ export const updateBoardContents = async (
   return res;
 };
 
-export const deleteBoardContents = async (channelLink: string, BoardId: string) => {
+export const deleteBoardContents = async (channelLink: string, boardId: string) => {
   const res = await authAPI({ method: 'delete', url: `/api/channel/${channelLink}/${boardId}` });
 
   return res;
