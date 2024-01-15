@@ -22,14 +22,11 @@ const Main = () => {
   const router = useRouter();
   const { channelPermission } = useChannels();
   const channelLink = router.query.channelLink;
-
-  const { data, isSuccess, refetch } = useQuery<MainContent | undefined>(
-    ['getMainContents', channelLink],
-    () => {
-      return fetchMainContents(channelLink as string);
-    },
-    { staleTime: 0, cacheTime: 0 },
-  );
+  
+  const { data, isSuccess, refetch } = useQuery<MainContent | undefined>({
+    queryKey: ['getMainContents', channelLink],
+    queryFn: () => fetchMainContents(channelLink as string),
+  });
 
   useEffect(() => {
     if (isSuccess && data) setMainContents(data);

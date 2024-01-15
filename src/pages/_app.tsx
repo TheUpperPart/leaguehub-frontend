@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import LastVisitedBoardListsProvider from '@components/providers/LastVisitedBoardListsProvider';
@@ -12,7 +12,7 @@ import ModalsProvider from '@components/providers/ModalProvider';
 import ShowModals from '@components/Modal/showModals';
 import MSWComponent from '@components/MSWComponent/MSWComponent';
 
-const isDevelopmentMode = process.env.NODE_ENV === 'development';
+const isDevelopmentMode = false;
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
@@ -30,7 +30,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     return (
       <MSWComponent>
         <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
             <ReactQueryDevtools initialIsOpen={false} />
             <ChannelsProvider>
               <ProfileProvider>
@@ -46,7 +46,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 </LastVisitedBoardListsProvider>
               </ProfileProvider>
             </ChannelsProvider>
-          </Hydrate>
+          </HydrationBoundary>
         </QueryClientProvider>
       </MSWComponent>
     );
@@ -54,7 +54,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
+      <HydrationBoundary state={pageProps.dehydratedState}>
         <ReactQueryDevtools initialIsOpen={false} />
         <ChannelsProvider>
           <ProfileProvider>
@@ -70,7 +70,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </LastVisitedBoardListsProvider>
           </ProfileProvider>
         </ChannelsProvider>
-      </Hydrate>
+      </HydrationBoundary>
     </QueryClientProvider>
   );
 }

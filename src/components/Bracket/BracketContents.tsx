@@ -11,15 +11,11 @@ interface Props {
 
 const BracketContents = (props: Props) => {
   const router = useRouter();
-
-  const { data, isSuccess, isError, isLoading } = useQuery(
-    ['bracketContents', props.curRound, router.query.channelLink],
-    () => {
-      if (typeof router.query.channelLink === 'string') {
-        return fetchBracketContents(router.query.channelLink, props.curRound);
-      }
-    },
-  );
+  
+  const { data, isSuccess, isError, isLoading } = useQuery({
+    queryKey: ['bracketContents', props.curRound, router.query.channelLink],
+    queryFn: () => fetchBracketContents(router.query.channelLink, props.curRound),
+  });
 
   const moveToCheckIn = (matchId: number) => {
     router.push(`/contents/${router.query.channelLink as string}/checkIn/${matchId}`);

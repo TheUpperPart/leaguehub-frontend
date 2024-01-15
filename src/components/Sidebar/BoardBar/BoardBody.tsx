@@ -20,9 +20,10 @@ const BoardBody = ({ channelLink }: Props) => {
   const [boards, setBoards] = useState<Channels[]>([]);
   const router = useRouter();
 
-  const { data, isSuccess } = useQuery(['getBoardLists', channelLink], () =>
-    fetchBoardLists(channelLink),
-  );
+  const { data, isSuccess } = useQuery({
+    queryKey: ['getBoardLists', channelLink],
+    queryFn: () => fetchBoardLists(channelLink),
+  });
 
   const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
   const { channelPermission } = useChannels();

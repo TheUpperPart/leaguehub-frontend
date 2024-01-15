@@ -10,9 +10,10 @@ import MainHeader from '@components/MainHeader/MainHeader';
 import { fetchChannelInfo } from '@apis/channels';
 
 const BoardBar = ({ channelLink }: { channelLink: string }) => {
-  const { data } = useQuery(['getBoard', channelLink], () => fetchChannelInfo(channelLink), {
-    staleTime: Infinity,
-    cacheTime: Infinity,
+  const { data } = useQuery({
+    queryKey: ['getBoard', channelLink],
+    queryFn: () => fetchChannelInfo(channelLink),
+    gcTime: Infinity,
     enabled: channelLink !== 'main',
   });
 
