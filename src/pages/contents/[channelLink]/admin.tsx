@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 
 import Modal from '@components/Modal';
-import Button from '@components/Button';
 import ModifyBracket from '@components/Modal/ModifyChannel/ModifyBracket';
 import ModifyChannel from '@components/Modal/ModifyChannel/ModifyChannel';
 
@@ -16,19 +15,13 @@ import { useEffect, useState } from 'react';
 import { connectToStomp } from '@config/stomp';
 import { Client, StompSubscription } from '@stomp/stompjs';
 import { useQuery } from '@tanstack/react-query';
-import authAPI from '@apis/authAPI';
-import { BracketHeader } from '@type/bracket';
 import RoundAlarmHeader from '@components/RoundAlarm/RoundAlarmHeader';
 import RoundAlarmBody from '@components/RoundAlarm/RoundAlarmBody';
 import { CallAdmin } from '@type/admin';
+import { fetchRoundInfo } from '@apis/roundInfo';
 interface Props {
   role: string;
 }
-
-const fetchRoundInfo = async (channelLink: string): Promise<BracketHeader> => {
-  const res = await authAPI<BracketHeader>({ method: 'get', url: `/api/match/${channelLink}` });
-  return res.data;
-};
 
 const Admin = ({ role }: Props) => {
   const router = useRouter();
@@ -78,47 +71,45 @@ const Admin = ({ role }: Props) => {
   return (
     <div>
       {' '}
-      <div>
-        <Container>
-          <Header>대회 설정</Header>
-          <BracketContainer>
-            <AdminButton
-              onClick={() =>
-                openModal(Modal, {
-                  onClose: () => closeModal(Modal),
-                  children: <ModifyBracket onClose={() => closeModal(Modal)} />,
-                })
-              }
-            >
-              대회 관리하기
-            </AdminButton>
-            <AdminButton
-              onClick={() =>
-                openModal(Modal, {
-                  onClose: () => closeModal(Modal),
-                  children: (
-                    <ModifyChannel
-                      channelLink={router.query.channelLink as string}
-                      onClose={() => closeModal(Modal)}
-                    />
-                  ),
-                })
-              }
-            >
-              채널 정보 수정하기
-            </AdminButton>
-          </BracketContainer>
-          <Header>대회 알림</Header>
-          <BracketContainer>
-            <RoundList>
-              {data?.roundList.map((ele) => {
-                return <RoundAlarmHeader liveRound={data.liveRound} curRound={ele} key={ele} />;
-              })}
-            </RoundList>
-          </BracketContainer>
-          {curRound && <RoundAlarmBody curRound={curRound} alramInfo={alramInfo} />}
-        </Container>
-      </div>
+      <Container>
+        <Header>대회 설정</Header>
+        <BracketContainer>
+          <AdminButton
+            onClick={() =>
+              openModal(Modal, {
+                onClose: () => closeModal(Modal),
+                children: <ModifyBracket onClose={() => closeModal(Modal)} />,
+              })
+            }
+          >
+            대회 관리하기
+          </AdminButton>
+          <AdminButton
+            onClick={() =>
+              openModal(Modal, {
+                onClose: () => closeModal(Modal),
+                children: (
+                  <ModifyChannel
+                    channelLink={router.query.channelLink as string}
+                    onClose={() => closeModal(Modal)}
+                  />
+                ),
+              })
+            }
+          >
+            채널 정보 수정하기
+          </AdminButton>
+        </BracketContainer>
+        <Header>대회 알림</Header>
+        <BracketContainer>
+          <RoundList>
+            {data?.roundList.map((ele) => {
+              return <RoundAlarmHeader liveRound={data.liveRound} curRound={ele} key={ele} />;
+            })}
+          </RoundList>
+        </BracketContainer>
+        {curRound && <RoundAlarmBody curRound={curRound} alramInfo={alramInfo} />}
+      </Container>
     </div>
   );
 };

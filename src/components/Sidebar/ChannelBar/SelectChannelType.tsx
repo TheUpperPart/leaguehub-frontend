@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { joinChannel } from '@apis/channels';
 import Button from '@components/Button';
 import SelectGame from '@components/MakeChannel/SelectGame';
 import SelectRule from '@components/MakeChannel/SelectRule';
@@ -29,12 +29,10 @@ const SelectChannelType = (props: Props) => {
 
   const fetchEnterNewChannel = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!channelInput) return;
 
     try {
-      const res = await authAPI<ChannelCircleProps>({
-        method: 'post',
-        url: `/api/${channelInput}/participant/observer`,
-      });
+      const res = await joinChannel(channelInput);
 
       const newChannel: ChannelCircleProps = {
         channelLink: res.data.channelLink,

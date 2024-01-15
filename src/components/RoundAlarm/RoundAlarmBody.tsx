@@ -1,10 +1,10 @@
-import authAPI from '@apis/authAPI';
 import Icon from '@components/Icon';
 import styled from '@emotion/styled';
 import { BracketContents } from '@type/bracket';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CallAdmin } from '@type/admin';
+import { fetchRoundInfo, navigateToCheckInPage } from '@apis/match';
 
 interface Props {
   curRound: number;
@@ -19,10 +19,7 @@ const RoundAlarmBody = ({ curRound, alramInfo }: Props) => {
   useEffect(() => {
     const getRoundInfo = async () => {
       try {
-        const res = await authAPI({
-          method: 'get',
-          url: `/api/match/${router.query.channelLink as string}/${curRound}`,
-        });
+        const res = await fetchRoundInfo(router.query.channelLink as string, curRound);
 
         setRoundInfo(res.data);
       } catch (error) {}
@@ -32,10 +29,7 @@ const RoundAlarmBody = ({ curRound, alramInfo }: Props) => {
   }, [router.query.channelLink as string]);
 
   const moveToCheckIn = (matchId: number) => {
-    authAPI({
-      method: 'post',
-      url: `/api/match/${router.query.channelLink as string}/${matchId}/call-off`,
-    });
+    navigateToCheckInPage(router.query.channelLink as string, matchId);
 
     router.push(`/contents/${router.query.channelLink as string}/checkIn/${matchId}`);
   };

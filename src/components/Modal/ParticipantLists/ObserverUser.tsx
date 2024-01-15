@@ -1,4 +1,4 @@
-import authAPI from '@apis/authAPI';
+import { fetchOberverUser, promoteToAdmin } from '@apis/channels';
 import { Participant } from '@components/Modal/ParticipantLists/ParticipantUser';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -11,10 +11,8 @@ const ObserverUser = () => {
   const { currentChannel, channelPermission } = useChannels();
 
   const fetchData = async () => {
-    const res = await authAPI<Participant[]>({
-      method: 'get',
-      url: `/api/${currentChannel}/observers`,
-    });
+    if (!currentChannel) return;
+    const res = await fetchOberverUser(currentChannel);
     setObservers(res.data);
   };
 
@@ -23,11 +21,9 @@ const ObserverUser = () => {
   };
 
   const onClickPromotionUser = async (observer: Participant) => {
+    if (!currentChannel) return;
     if (!confirm(`${observer.nickname}님을 관리자 권한을 부여하겠습니까?`)) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${currentChannel}/${observer.pk}/host`,
-    });
+    const res = await promoteToAdmin(currentChannel, observer.pk);
     if (res.status !== 200) return;
     const updatedObservers = observers?.filter((user) => user.pk !== observer.pk);
     setObservers(updatedObservers);

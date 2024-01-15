@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { useRef } from 'react';
-import authAPI from '@apis/authAPI';
+import { updateChannelInfo } from '@apis/channels';
 
 interface BasicInfoChannelProps {
   channelLink: string;
@@ -23,14 +22,7 @@ const BasicInfoChannel = ({ channelLink, leagueTitle, maxPlayer }: BasicInfoChan
       return;
     }
     if (!confirm('리그를 수정하시겠습니까?')) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/channel/${channelLink}`,
-      data: {
-        title: updatedLeagueTitle,
-        maxPlayer: updatedMaxPlayer,
-      },
-    });
+    const res = await updateChannelInfo(channelLink, updatedLeagueTitle, updatedMaxPlayer);
     if (res.status !== 200) return;
     alert('정보가 수정되었습니다');
   };

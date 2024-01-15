@@ -1,17 +1,8 @@
-import authAPI from '@apis/authAPI';
+import { fetchInitialMatchCount, updateRoundMatch } from '@apis/match';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
-import { MatchCountList } from '@type/channelConfig';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
-const fetchInitialMatchCount = async (channelLink: string) => {
-  const res = await authAPI<MatchCountList>({
-    method: 'get',
-    url: `/api/match/${channelLink}/count`,
-  });
-  return res.data;
-};
 
 const BracketInfoChannel = () => {
   const router = useRouter();
@@ -38,14 +29,7 @@ const BracketInfoChannel = () => {
     }
 
     try {
-      const res = await authAPI({
-        method: 'post',
-        url: `/api/match/${router.query.channelLink as string}/count`,
-        data: {
-          matchSetCountList: [...roundInfo].reverse(),
-        },
-      });
-
+      await updateRoundMatch(router.query.channelLink as string, [...roundInfo].reverse());
       alert('수정이 완료되었습니다!');
     } catch (error) {
       console.log(error);

@@ -1,6 +1,6 @@
-import authAPI from '@apis/authAPI';
+import { joinChannelParticipant } from '@apis/channels';
+import { fetchUserTier } from '@apis/utils';
 import Icon from '@components/Icon';
-import { SERVER_URL } from '@config/index';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useProfile from '@hooks/useProfile';
@@ -30,9 +30,7 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
       return;
     }
 
-    const userTier: string = (
-      await authAPI.get(SERVER_URL + `/api/participant/stat/${gameIdVal}/${gameTagVal}`)
-    ).data.tier;
+    const userTier: string = await fetchUserTier(gameIdVal, gameTagVal);
     setTier(userTier);
     setGameId(gameIdVal + '#' + gameTagVal);
   };
@@ -53,14 +51,7 @@ const JoinLeague = ({ onClose, channelLink }: JoinLeagueProps) => {
 
   const onClickSubmit: MouseEventHandler<HTMLElement> = async () => {
     if (!nickname || !checked) return;
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/${channelLink}/participant`,
-      data: {
-        gameId,
-        nickname,
-      },
-    });
+    const res = await joinChannelParticipant(channelLink, gameId, nickname);
 
     if (res.status !== 200) return;
 

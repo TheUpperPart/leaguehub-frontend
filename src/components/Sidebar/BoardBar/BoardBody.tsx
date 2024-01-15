@@ -3,52 +3,17 @@ import { MouseEventHandler, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import authAPI from '@apis/authAPI';
 
 import { Channels } from '@type/board';
 import Icon from '@components/Icon';
 import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
-import { NEWBOARD } from '@constants/MakeBoard';
 import useChannels from '@hooks/useChannels';
 import { css } from '@emotion/react';
+import { changeBoardOrder, createNewBoard, fetchBoardLists } from '@apis/boards';
 
 interface Props {
   channelLink: string;
 }
-
-interface NewBoard {
-  boardId: number;
-  boardTitle: string;
-  boardIndex: number;
-}
-
-interface BoardsInfo {
-  myMatchRound: number;
-  myMatchId: number;
-  channelBoardLoadDtoList: Channels[];
-}
-
-const fetchData = async (channelLink: string) => {
-  const res = await authAPI<BoardsInfo>({
-    method: 'get',
-    url: `/api/channel/${channelLink}/boards`,
-  });
-
-  return res.data;
-};
-
-const postData = async (channelLink: string) => {
-  const res = await authAPI<NewBoard>({
-    method: 'post',
-    url: `/api/channel/${channelLink}/new`,
-    data: {
-      title: NEWBOARD.DEFAULT_TITLE,
-      content: NEWBOARD.DEFAULT_CONTENT,
-    },
-  });
-
-  return res.data;
-};
 
 const BoardBody = ({ channelLink }: Props) => {
   const [selected, setSelected] = useState<string>('');
@@ -57,7 +22,7 @@ const BoardBody = ({ channelLink }: Props) => {
 
   const { data, isSuccess } = useQuery({
     queryKey: ['getBoardLists', channelLink],
-    queryFn: () => fetchData(channelLink),
+    queryFn: () => fetchBoardLists(channelLink),
   });
 
   const { lastVisitedBoardIdLists, handleBoard } = useLastVisitedBoardLists();
@@ -82,7 +47,7 @@ const BoardBody = ({ channelLink }: Props) => {
 
   const onClickNewBoard: MouseEventHandler<HTMLElement> = async () => {
     if (boards === undefined) return;
-    const res = await postData(channelLink);
+    const res = await createNewBoard(channelLink);
     const newBoard: Channels = {
       boardId: res.boardId,
       boardTitle: res.boardTitle,
@@ -94,14 +59,7 @@ const BoardBody = ({ channelLink }: Props) => {
   };
 
   const postCustomBoard = async (customedBoards: Channels[]) => {
-    const res = await authAPI({
-      method: 'post',
-      url: `/api/channel/${channelLink}/order`,
-      data: {
-        channelBoardLoadDtoList: customedBoards,
-      },
-    });
-
+    const res = await changeBoardOrder(channelLink, customedBoards);
     if (res.status === 200) setBoards(customedBoards);
   };
 

@@ -1,29 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import authAPI from '@apis/authAPI';
 
-import { BracketContents } from '@type/bracket';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { fetchBracketContents } from '@apis/bracketContents';
 
 interface Props {
   curRound: number;
 }
 
-const fetchBracket = async (channelLink: string, curRound: number) => {
-  const res = await authAPI<BracketContents>({
-    method: 'get',
-    url: `/api/match/${channelLink}/${curRound}`,
-  });
-
-  return res.data;
-};
-
 const BracketContents = (props: Props) => {
   const router = useRouter();
+
   const { data, isSuccess, isError, isLoading } = useQuery({
     queryKey: ['bracketContents', props.curRound, router.query.channelLink],
-    queryFn: () => fetchBracket(router.query.channelLink as string, props.curRound),
+    queryFn: () => fetchBracketContents(router.query.channelLink as string, props.curRound),
   });
 
   const moveToCheckIn = (matchId: number) => {

@@ -9,7 +9,7 @@ import checkEmailAddressValidation from 'src/utils/checkEmailAddressValidation';
 import { SERVER_URL } from '@config/index';
 import { MyPage } from '@type/mypage';
 import Icon from '@components/Icon';
-import authAPI from '@apis/authAPI';
+import { fetchMy, sendEmailVerification } from '@apis/mypage';
 
 interface Props {
   data: MyPage;
@@ -32,13 +32,7 @@ const Mypage = (props: Props) => {
     }
 
     try {
-      const res = await authAPI({
-        method: 'post',
-        url: '/api/member/auth/email',
-        data: {
-          email,
-        },
-      });
+      await sendEmailVerification(email);
       setSendEmail(true);
 
       alert(
@@ -51,10 +45,7 @@ const Mypage = (props: Props) => {
 
   const refreshMyInfo = async () => {
     try {
-      const res = await authAPI<MyPage>({
-        method: 'get',
-        url: '/api/member/mypage',
-      });
+      const res = await fetchMy();
       setInfo(res.data);
     } catch (error) {
       console.log(error);
