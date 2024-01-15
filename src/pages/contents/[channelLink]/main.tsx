@@ -22,7 +22,7 @@ const Main = () => {
   const router = useRouter();
   const { channelPermission } = useChannels();
   const channelLink = router.query.channelLink;
-  
+
   const { data, isSuccess, refetch } = useQuery<MainContent | undefined>({
     queryKey: ['getMainContents', channelLink],
     queryFn: () => fetchMainContents(channelLink as string),

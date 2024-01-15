@@ -11,10 +11,10 @@ interface Props {
 
 const BracketContents = (props: Props) => {
   const router = useRouter();
-  
+
   const { data, isSuccess, isError, isLoading } = useQuery({
     queryKey: ['bracketContents', props.curRound, router.query.channelLink],
-    queryFn: () => fetchBracketContents(router.query.channelLink, props.curRound),
+    queryFn: () => fetchBracketContents(router.query.channelLink as string, props.curRound),
   });
 
   const moveToCheckIn = (matchId: number) => {
