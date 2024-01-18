@@ -16,13 +16,13 @@ export const sendEmailVerification = async (email: string) => {
   });
 };
 
-export const fetchMy = async () => {
+export const fetchMyPageWithSSR = async () => {
   const res = await authAPI<MyPage>({
     method: 'get',
     url: '/api/member/mypage',
   });
 
-  return res;
+  return res.data;
 };
 
 export const fetchProfile = async () => {
