@@ -36,12 +36,13 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: ${({ theme }) => theme['bg-70']};
+  opacity: 0.8;
   z-index: 10;
 `;
 
 const ModalContent = styled.div`
-  background-color: #fffef9;
+  background-color: ${({ theme }) => theme['bg-100']};
   border-radius: 2rem;
   text-align: center;
   margin: 0 auto;
