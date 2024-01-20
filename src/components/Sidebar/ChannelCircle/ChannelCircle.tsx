@@ -1,44 +1,55 @@
 import { GameEnum } from '@constants/MakeGame';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 import { ChannelCircleProps } from 'src/@types/channelCircle';
 
 const ChannelCircle = ({
-  channelLink,
   title,
   gameCategory,
   imgSrc,
-  customChannelIndex,
-}: ChannelCircleProps) => {
+  channelLink,
+}: Omit<ChannelCircleProps, 'customChannelIndex'>) => {
+  const router = useRouter();
+
   return (
-    <ChannelBtn url={imgSrc}>
-      <ChannelName>{imgSrc ? '' : title.substring(0, 2)}</ChannelName>
-      <ChannelGame>{GameEnum[gameCategory]}</ChannelGame>
-    </ChannelBtn>
+    <ChannelContainer onClick={() => router.push(`/contents/${channelLink}/main`)}>
+      <ChannelBtn url={imgSrc}>{imgSrc ? '' : title.substring(0, 2)}</ChannelBtn>
+      <ChannelGame>{GameEnum[gameCategory] || gameCategory}</ChannelGame>
+    </ChannelContainer>
   );
 };
 
-export default ChannelCircle;
-
-const ChannelBtn = styled.div<{ url?: string }>`
-  position: relative;
+const ChannelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  width: 8rem;
-  height: 8rem;
-  border: 0;
-  margin: 12px 0;
-  border-radius: 34px;
 
+  position: relative;
+
+  width: 6rem;
+  height: 6rem;
+
+  margin: 1rem 0;
+`;
+
+const ChannelBtn = styled.div<{ url?: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 5rem;
+  height: 5rem;
+
+  margin-top: -1rem;
+
+  border-radius: 5rem;
   cursor: pointer;
   font-size: 1.2rem;
-  color: #000000;
   transition: border-radius 0.3s ease;
-
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme['bg-40']};
+  color: ${({ theme }) => theme['text']};
 
   ${(prop) =>
     prop.url &&
@@ -54,31 +65,19 @@ const ChannelBtn = styled.div<{ url?: string }>`
   }
 `;
 
-const ChannelName = styled.div`
-  height: 75%;
-  width: 4.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 900;
-  font-size: 1.2rem;
-`;
-
 const ChannelGame = styled.div`
   position: absolute;
-  width: 100%;
-  height: 25%;
+  width: 6rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  color: #ffffff;
-  background-color: #ff4655;
-  border: 0.2px solid #1e1e1e;
+
+  color: ${({ theme }) => theme['text']};
+  background-color: ${({ theme }) => theme['bg-80']};
 
   border-radius: 8px;
-  width: 3.1rem;
-  height: 1.2rem;
 
-  bottom: -5px;
+  bottom: 0rem;
 `;
+export default ChannelCircle;
