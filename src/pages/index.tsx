@@ -2,32 +2,20 @@ import { fetchGamePatchNote } from '@apis/boards';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
-const fetchNotice = async (board: string) => {
-  if (!board) return;
+const fetchNotice = async (board = 'main') => {
   const res = await fetchGamePatchNote(board);
   return res.data;
 };
 
 export default function Home() {
   const router = useRouter();
-  const [selectedBoard, setSelectedBoard] = useState<string>('');
 
   const { data } = useQuery({
-    queryKey: ['notice', router.query.selected as string],
+    queryKey: ['notice', router.query.selected || 'main'],
     queryFn: () => fetchNotice(router.query.selected as string),
-    enabled: selectedBoard !== '',
     staleTime: 60 * 60 * 24,
   });
-
-  useEffect(() => {
-    if (router.query.selected) {
-      setSelectedBoard(router.query.selected as string);
-    } else {
-      setSelectedBoard('main');
-    }
-  }, [router.query.selected as string]);
 
   return (
     <Main>
