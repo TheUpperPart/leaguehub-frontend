@@ -101,14 +101,17 @@ const RoundAlarm = ({ alarmInfo }: Props) => {
 };
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+
+  height: auto;
   column-gap: 2rem;
 `;
 
 const RoundGrid = styled.div`
+  height: 100%;
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: 1fr;
 
   background-color: ${({ theme }) => theme['bg-75']};
   border-radius: 1rem;
@@ -117,6 +120,7 @@ const RoundGrid = styled.div`
 
 const RoundContainer = styled.div`
   display: flex;
+  height: 7rem;
 `;
 
 const LeftLine = styled.div<{ status: bracketStatus }>`
@@ -162,6 +166,8 @@ const ExplainText = styled.div`
   }
 `;
 
-const GroupContainer = styled.div``;
+const GroupContainer = styled.div`
+  flex: 1;
+`;
 
 export default RoundAlarm;

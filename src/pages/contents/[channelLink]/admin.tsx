@@ -105,7 +105,7 @@ const Admin = ({ role }: Props) => {
         </BoardContent>
       </BoardSection>
       <BoardSection>
-        <BoardTitle>대화 알림</BoardTitle>
+        <BoardTitle>대회 알림</BoardTitle>
         <BoardContent>
           <RoundAlarm alarmInfo={alramInfo} />
         </BoardContent>

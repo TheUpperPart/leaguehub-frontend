@@ -82,7 +82,6 @@ const Button = styled.button`
   grid-template-columns: 2rem 1fr 2.5rem;
   column-gap: 2rem;
 
-  border-radius: 2rem;
   border: none;
   font-size: 1.6rem;
   font-weight: bold;
