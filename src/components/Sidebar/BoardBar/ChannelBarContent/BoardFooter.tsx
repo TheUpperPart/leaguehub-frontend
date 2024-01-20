@@ -6,17 +6,9 @@ import useModals from '@hooks/useModals';
 
 interface BoardFooterProps {
   channelLink: string;
-  leagueTitle: string;
-  maxPlayer: number;
-  updateChannelData: (leagueTitle: string, maxPlayer: number) => void;
 }
 
-const BoardFooter = ({
-  channelLink,
-  leagueTitle,
-  maxPlayer,
-  updateChannelData,
-}: BoardFooterProps) => {
+const BoardFooter = ({ channelLink }: BoardFooterProps) => {
   const { channelPermission } = useChannels();
   const { openModal, closeModal } = useModals();
 
