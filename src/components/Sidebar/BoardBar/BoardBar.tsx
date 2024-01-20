@@ -5,8 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import useChannels from '@hooks/useChannels';
 import { fetchChannelInfo } from '@apis/channels';
-import ChannelBar from './ChannelBar';
 import MainBar from './MainBar';
+import ChannelBoardBar from './ChannelBoardBar';
 
 const BoardBar = () => {
   const router = useRouter();
@@ -29,7 +29,7 @@ const BoardBar = () => {
 
   return (
     <Container>
-      <ContentContainer>{data ? <ChannelBar {...data} /> : <MainBar />}</ContentContainer>
+      <ContentContainer>{data ? <ChannelBoardBar {...data} /> : <MainBar />}</ContentContainer>
     </Container>
   );
 };
