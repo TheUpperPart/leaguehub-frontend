@@ -1,56 +1,16 @@
-import { GetServerSidePropsContext } from 'next';
-import { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { parse } from 'cookie';
-import axios from 'axios';
 
-import checkEmailAddressValidation from 'src/utils/checkEmailAddressValidation';
-import { SERVER_URL } from '@config/index';
-import { MyPage } from '@type/mypage';
 import Icon from '@components/Icon';
-import { fetchMy, sendEmailVerification } from '@apis/mypage';
+import withAuthServerSideProps from 'src/utils/withAuthentication';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { QUERY_MANAGEMENT } from '@constants/queryManagement';
+import useSendEmailMutation from '@hooks/mutation/useSendEmailMutation';
+import useMyPageQuery from '@hooks/query/useMyPageQuery';
 
-interface Props {
-  data: MyPage;
-}
-
-const Mypage = (props: Props) => {
-  const [info, setInfo] = useState<MyPage>(props.data);
-
-  const [email, setEmail] = useState<string>('');
-  const [sendEmail, setSendEmail] = useState<boolean>(false);
-
-  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const sendVerifyEmail = async () => {
-    if (!checkEmailAddressValidation(email)) {
-      alert('유효한 이메일 주소가 아닙니다! 다시 입력해주세요');
-      return;
-    }
-
-    try {
-      await sendEmailVerification(email);
-      setSendEmail(true);
-
-      alert(
-        '이메일 전송이 완료되었습니다.\n입력하신 이메일의 링크를 클릭하신 후 동기화 버튼을 눌러주세요!',
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const refreshMyInfo = async () => {
-    try {
-      const res = await fetchMy();
-      setInfo(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const Mypage = () => {
+  const { data, refetch } = useMyPageQuery();
+  const { email, setEmail, resetEmail, isSendVerifyEmail, mutate } = useSendEmailMutation();
 
   return (
     <Container>
@@ -60,23 +20,23 @@ const Mypage = (props: Props) => {
           <Content>
             <GridLabel>프로필</GridLabel>
             <GridValue>
-              <ProfileImage src={info.profileImageUrl} alt='profile' width='50' height='50' />
+              <ProfileImage src={data.profileImageUrl} alt='profile' width='50' height='50' />
             </GridValue>
           </Content>
           <Content>
             <GridLabel>이름</GridLabel>
-            <GridValue>{info.nickName}</GridValue>
+            <GridValue>{data.nickName}</GridValue>
           </Content>
           <Content>
             <GridLabel>이메일</GridLabel>
             <GridValue>
               <EmailForm>
-                {info.userEmailVerified ? (
-                  <EmailInput disabled value={info.email} />
+                {data.userEmailVerified ? (
+                  <EmailInput disabled value={data.email} />
                 ) : (
                   <>
-                    <EmailInput value={email} onChange={handleEmail} disabled={sendEmail} />
-                    <EmailSendBtn onClick={sendVerifyEmail} disabled={sendEmail}>
+                    <EmailInput value={email} onChange={setEmail} disabled={isSendVerifyEmail} />
+                    <EmailSendBtn onClick={() => mutate()} disabled={isSendVerifyEmail}>
                       <Icon kind='sendEmail' size='28' />
                     </EmailSendBtn>
                   </>
@@ -87,13 +47,13 @@ const Mypage = (props: Props) => {
           <Content>
             <GridLabel>이메일 인증</GridLabel>
             <GridValue>
-              {info.userEmailVerified ? '인증되었습니다.' : '미인증 상태입니다.'}
+              {data.userEmailVerified ? '인증되었습니다.' : '미인증 상태입니다.'}
             </GridValue>
           </Content>
           <Content>
             <GridLabel>정보 동기화</GridLabel>
             <GridValue>
-              <EmailSendBtn onClick={refreshMyInfo}>
+              <EmailSendBtn onClick={() => refetch()}>
                 <Icon kind='refresh' size='28' />
               </EmailSendBtn>
             </GridValue>
@@ -102,38 +62,6 @@ const Mypage = (props: Props) => {
       </Wrapper>
     </Container>
   );
-};
-
-export default Mypage;
-
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  try {
-    const cookies = parse(context.req.headers.cookie || 'no-cookie');
-
-    const accessToken = cookies.accessToken || undefined;
-
-    const res = await axios<MyPage>({
-      method: 'get',
-      url: SERVER_URL + '/api/member/mypage',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    return {
-      props: {
-        data: res.data,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-    };
-  }
 };
 
 const Container = styled.div`
@@ -207,3 +135,30 @@ const EmailSendBtn = styled.button`
 const ProfileImage = styled(Image)`
   border-radius: 50%;
 `;
+
+export default Mypage;
+
+const fetchMyPage = async () => {
+  const queryClient = new QueryClient();
+
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: [QUERY_MANAGEMENT.mypage.queryKey],
+      queryFn: QUERY_MANAGEMENT.mypage.queryFn,
+    });
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+};
+
+export const getServerSideProps = withAuthServerSideProps(fetchMyPage);
