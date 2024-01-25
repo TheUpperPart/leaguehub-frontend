@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { fetchRoundListInfo } from '@apis/roundInfo';
 import { useState } from 'react';
-import AlarmContent from './AlarmContent';
 import { CallAdmin } from '@type/admin';
+import AlarmButton from './AlarmButton';
 
 type bracketStatus = 'PAST' | 'PRESENT' | 'FUTURE';
 interface Props {
@@ -94,7 +94,7 @@ const RoundAlarm = ({ alarmInfo }: Props) => {
         ))}
       </RoundGrid>
       <GroupContainer>
-        {data && <AlarmContent selectedRound={selectedRound} alarmInfo={alarmInfo} />}
+        {data && <AlarmButton selectedRound={selectedRound} alarmInfo={alarmInfo} />}
       </GroupContainer>
     </Container>
   );
