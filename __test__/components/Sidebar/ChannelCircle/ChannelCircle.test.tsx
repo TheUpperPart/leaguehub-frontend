@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
 import { ChannelCircleProps } from '@type/channelCircle';
 
+jest.mock('next/router', () => require('next-router-mock'));
+
 describe('채널 테스트', () => {
   const initalState: ChannelCircleProps = {
     channelLink: 'ab5gx',

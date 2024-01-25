@@ -11,13 +11,15 @@ import Icon from '@components/Icon';
 import useModals from '@hooks/useModals';
 import useMakeGame from '@hooks/useMakeGame';
 import MainChannelCircle from '../ChannelCircle/MainChannelCircle';
+import { useRouter } from 'next/router';
 
 interface ChannelBarProps {
   channels: ChannelCircleProps[];
-  updateSelectedChannel: (channelId: string) => void;
 }
 
-const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
+const ChannelBar = ({ channels }: ChannelBarProps) => {
+  const router = useRouter();
+
   const { dragAndDropChannels } = useChannels();
   const { openModal, closeModal } = useModals();
 
@@ -39,56 +41,47 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
     <ChannelbarContainer>
       <ScrollContainer>
         <MainCircleContainer>
-          <MainChannelCircle updateSelectedChannel={updateSelectedChannel} />
-          <Line>
-            <svg
-              width='60'
-              height='4'
-              viewBox='0 0 60 4'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <rect width='60' height='4' rx='2' fill='white' />
-            </svg>
-          </Line>
+          <MainChannelCircle />
         </MainCircleContainer>
+        <Line>
+          <svg
+            width='60'
+            height='4'
+            viewBox='0 0 60 4'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <rect width='60' height='4' rx='2' fill='#3a3c3e' />
+          </svg>
+        </Line>
         <DragDropContext onDragEnd={dragEnd}>
           <Droppable droppableId='channels-drop' key='channelsKey'>
             {(provided, snapshot) => (
               <DropContainer ref={provided.innerRef} {...provided.droppableProps}>
                 {channels &&
-                  channels.map(
-                    ({ channelLink, title, gameCategory, customChannelIndex, imgSrc }, index) => (
-                      <Draggable
-                        draggableId={'channel-' + channelLink}
-                        index={index}
-                        key={channelLink}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            css={css`
-                              margin: 0 auto;
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-                            `}
-                            onClick={() => updateSelectedChannel(channelLink)}
-                          >
-                            <ChannelCircle
-                              channelLink={channelLink}
-                              title={title}
-                              gameCategory={gameCategory}
-                              customChannelIndex={customChannelIndex}
-                              imgSrc={imgSrc}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ),
-                  )}
+                  channels.map(({ channelLink, title, gameCategory, imgSrc }, index) => (
+                    <Draggable
+                      draggableId={'channel-' + channelLink}
+                      index={index}
+                      key={channelLink}
+                    >
+                      {(provided, snapshot) => (
+                        <ChannelContainer
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <ChannelCircle
+                            title={title}
+                            gameCategory={gameCategory}
+                            imgSrc={imgSrc}
+                            channelLink={channelLink}
+                          />
+                          {channelLink === (router.query.channelLink as string) && <SelectLine />}
+                        </ChannelContainer>
+                      )}
+                    </Draggable>
+                  ))}
                 {provided.placeholder}
               </DropContainer>
             )}
@@ -105,7 +98,7 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
             })
           }
         >
-          <CenteredIcon kind='plus' color='#FF4655' size={30} />
+          <Icon kind='plus' color='#FF4655' size={30} />
         </ChannelParticipate>
       </ScrollContainer>
     </ChannelbarContainer>
@@ -113,14 +106,12 @@ const ChannelBar = ({ channels, updateSelectedChannel }: ChannelBarProps) => {
 };
 
 const ChannelbarContainer = styled.div`
-  width: 11.2rem;
+  width: 9rem;
+  height: inherit;
 
-  background-color: #d9d9d9;
-
-  min-height: 100vh;
-  max-height: 100vh;
+  border-radius: 1rem;
+  background-color: ${({ theme }) => theme['bg-60']};
   overflow-y: auto;
-
   ::-webkit-scrollbar {
     width: 0rem;
   }
@@ -140,22 +131,29 @@ const Line = styled.div`
   margin-bottom: 12px;
 `;
 
+const ChannelContainer = styled.div`
+  width: 9rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
 const ChannelParticipate = styled.button`
-  width: 6.2rem;
-  height: 6.2rem;
+  width: 5rem;
+  height: 5rem;
+  margin-top: 1rem;
+
   border: 0;
   border-radius: 50%;
   cursor: pointer;
-  position: relative;
-  margin: 24px 0;
-  background: #ffffff;
-`;
 
-const CenteredIcon = styled(Icon)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: ${({ theme }) => theme['bg-40']};
 `;
 
 const DropContainer = styled.div`
@@ -163,6 +161,19 @@ const DropContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const SelectLine = styled.div`
+  width: 0.4rem;
+  height: 4rem;
+
+  position: absolute;
+  left: 0;
+  top: 1.5rem;
+
+  background-color: ${({ theme }) => theme.text};
+  border-top-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
 `;
 
 export default ChannelBar;

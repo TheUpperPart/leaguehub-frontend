@@ -1,5 +1,6 @@
 import authAPI from '@apis/authAPI';
 import { GetMatchPlayerScoreInfos } from '@components/RoundCheckIn';
+import { BracketContents } from '@type/bracket';
 import { MatchCountList } from '@type/channelConfig';
 
 export const fetchInitialMatchCount = async (channelLink: string) => {
@@ -21,12 +22,12 @@ export const fetchMatchInfos = async (channelLink: string, matchId: string) => {
 };
 
 export const fetchRoundInfo = async (channelLink: string, curRound: number) => {
-  const res = await authAPI({
+  const res = await authAPI<BracketContents>({
     method: 'get',
     url: `/api/match/${channelLink}/${curRound}`,
   });
 
-  return res;
+  return res.data;
 };
 
 export const updateRoundMatch = async (channelLink: string, matchSetCountList: number[]) => {

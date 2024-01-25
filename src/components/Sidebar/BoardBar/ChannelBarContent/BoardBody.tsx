@@ -10,6 +10,9 @@ import useLastVisitedBoardLists from '@hooks/useLastVisitedBoardLists';
 import useChannels from '@hooks/useChannels';
 import { css } from '@emotion/react';
 import { changeBoardOrder, createNewBoard, fetchBoardLists } from '@apis/boards';
+import useModals from '@hooks/useModals';
+import Modal from '@components/Modal';
+import JoinLeague from '@components/Modal/JoinLeague/JoinLeague';
 
 interface Props {
   channelLink: string;
@@ -19,6 +22,8 @@ const BoardBody = ({ channelLink }: Props) => {
   const [selected, setSelected] = useState<string>('');
   const [boards, setBoards] = useState<Channels[]>([]);
   const router = useRouter();
+
+  const { openModal, closeModal } = useModals();
 
   const { data, isSuccess } = useQuery({
     queryKey: ['getBoardLists', channelLink],
@@ -123,13 +128,9 @@ const BoardBody = ({ channelLink }: Props) => {
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {isSuccess && data.myMatchRound !== 0 && (
-                <div
-                  css={css`
-                    padding-left: 0.5rem;
-                  `}
-                >
-                  <Title>현재 라운드</Title>
-                  <BoardContainer
+                <BoardSection>
+                  <BoardTitle>현재 라운드</BoardTitle>
+                  <BoardContainer2
                     onClick={() => {
                       setSelected('CurrentRound');
                       router.push(`/contents/${channelLink}/checkIn/${data.myMatchId}`);
@@ -147,42 +148,83 @@ const BoardBody = ({ channelLink }: Props) => {
                         <RedCircle />
                       </div>
                     </CurrentRound>
-                  </BoardContainer>
-                </div>
+                  </BoardContainer2>
+                </BoardSection>
               )}
-              <AdminTable>
-                <Title>대회</Title>
-                <BoardContainer
-                  isSelected={selected === 'main'}
-                  data-id='main'
-                  data-board-title='메인'
-                  onClick={onClickBoard}
-                >
-                  홈
-                </BoardContainer>
-                {channelPermission === 0 && (
-                  <BoardContainer
-                    isSelected={selected === 'admin'}
-                    data-id='admin'
-                    data-board-title='관리자'
+              <BoardSection>
+                <BoardTitle>대회</BoardTitle>
+                <BoardList>
+                  <BoardContainer2
+                    isSelected={selected === 'main'}
+                    data-id='main'
+                    data-board-title='메인'
                     onClick={onClickBoard}
                   >
-                    대회 관리
-                    <Icon kind='lock' color='#637083' size='1.5rem' />
-                  </BoardContainer>
-                )}
+                    <BoardIcon>
+                      {selected === 'main' && (
+                        <svg
+                          width='1.5rem'
+                          height='1.5rem'
+                          version='1.1'
+                          xmlns='http://www.w3.org/2000/svg'
+                          viewBox='0 0 20 20'
+                        >
+                          <path d='M0 11l2-2 5 5 11-11 2 2-13 13z'></path>
+                        </svg>
+                      )}
+                    </BoardIcon>
+                    홈
+                  </BoardContainer2>
 
-                <BoardContainer
-                  isSelected={selected === 'bracket'}
-                  data-id='bracket'
-                  data-board-title='대진표'
-                  onClick={onClickBoard}
-                >
-                  대진표
-                </BoardContainer>
-              </AdminTable>
-              <NoticeTable>
-                <Title>공지사항</Title>
+                  {channelPermission === 0 && (
+                    <BoardContainer2
+                      isSelected={selected === 'admin'}
+                      data-id='admin'
+                      data-board-title='관리자'
+                      onClick={onClickBoard}
+                    >
+                      <BoardIcon>
+                        {selected === 'admin' && (
+                          <svg
+                            width='1.5rem'
+                            height='1.5rem'
+                            version='1.1'
+                            xmlns='http://www.w3.org/2000/svg'
+                            viewBox='0 0 20 20'
+                          >
+                            <path d='M0 11l2-2 5 5 11-11 2 2-13 13z'></path>
+                          </svg>
+                        )}
+                      </BoardIcon>
+                      대회 관리
+                    </BoardContainer2>
+                  )}
+
+                  <BoardContainer2
+                    isSelected={selected === 'bracket'}
+                    data-id='bracket'
+                    data-board-title='대진표'
+                    onClick={onClickBoard}
+                  >
+                    <BoardIcon>
+                      {selected === 'bracket' && (
+                        <svg
+                          width='1.5rem'
+                          height='1.5rem'
+                          version='1.1'
+                          xmlns='http://www.w3.org/2000/svg'
+                          viewBox='0 0 20 20'
+                        >
+                          <path d='M0 11l2-2 5 5 11-11 2 2-13 13z'></path>
+                        </svg>
+                      )}
+                    </BoardIcon>
+                    대진표
+                  </BoardContainer2>
+                </BoardList>
+              </BoardSection>
+              <BoardSection>
+                <BoardTitle>공지사항</BoardTitle>
                 <ScrollContainer>
                   <NoticeScrollContainer>
                     {boards &&
@@ -194,7 +236,7 @@ const BoardBody = ({ channelLink }: Props) => {
                             index={index}
                           >
                             {(provided) => (
-                              <BoardContainer
+                              <BoardContainer2
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
@@ -203,12 +245,25 @@ const BoardBody = ({ channelLink }: Props) => {
                                 onClick={onClickBoard}
                                 isSelected={board.boardId.toString() === selected}
                               >
+                                <BoardIcon>
+                                  {selected === board.boardId.toString() && (
+                                    <svg
+                                      width='1.5rem'
+                                      height='1.5rem'
+                                      version='1.1'
+                                      xmlns='http://www.w3.org/2000/svg'
+                                      viewBox='0 0 20 20'
+                                    >
+                                      <path d='M0 11l2-2 5 5 11-11 2 2-13 13z'></path>
+                                    </svg>
+                                  )}
+                                </BoardIcon>
                                 {board.boardTitle}
-                              </BoardContainer>
+                              </BoardContainer2>
                             )}
                           </Draggable>
                         ) : (
-                          <BoardContainer
+                          <BoardContainer2
                             key={board.boardId}
                             data-id={board.boardId}
                             data-board-title={board.boardTitle}
@@ -216,33 +271,54 @@ const BoardBody = ({ channelLink }: Props) => {
                             isSelected={selected === board.boardId.toString()}
                           >
                             {board.boardTitle}
-                          </BoardContainer>
+                          </BoardContainer2>
                         ),
                       )}
                     {channelPermission === 0 && (
-                      <BoardContainer isSelected={false} onClick={onClickNewBoard}>
+                      <BoardContainer2 isSelected={false} onClick={onClickNewBoard}>
+                        <BoardIcon></BoardIcon>
                         공지 추가하기
-                      </BoardContainer>
+                      </BoardContainer2>
+                    )}
+                    {channelPermission === 1 && (
+                      <BoardContainer2 isSelected={false} onClick={onClickNewBoard}>
+                        <BoardIcon></BoardIcon>
+                        리그 나가기
+                      </BoardContainer2>
+                    )}
+                    {channelPermission === 2 && (
+                      <BoardContainer2
+                        isSelected={false}
+                        onClick={() =>
+                          openModal(Modal, {
+                            onClose: () => closeModal(Modal),
+                            children: (
+                              <JoinLeague
+                                channelLink={channelLink}
+                                onClose={() => closeModal(Modal)}
+                              />
+                            ),
+                          })
+                        }
+                      >
+                        <BoardIcon></BoardIcon>
+                        리그 나가기
+                      </BoardContainer2>
                     )}
                   </NoticeScrollContainer>
                 </ScrollContainer>
-              </NoticeTable>
+              </BoardSection>
             </div>
           )}
         </Droppable>
       </DragDropContext>
-      <Boarder></Boarder>
     </Container>
   );
 };
 
 export default BoardBody;
 
-const Container = styled.ul`
-  color: #000000;
-  width: 20rem;
-  margin: 0 auto;
-`;
+const Container = styled.div``;
 
 const CurrentRound = styled.div`
   display: flex;
@@ -257,27 +333,11 @@ const RedCircle = styled.div`
   border-radius: 50%;
 `;
 
-const Boarder = styled.div`
-  margin: 1.4rem;
-  border-bottom: solid 1px #344051;
-`;
-
 const Title = styled.h2`
   width: 18.4rem;
   font-size: 1.2rem;
   color: #868686;
   text-align: left;
-`;
-
-const AdminTable = styled.div`
-  width: 18.4rem;
-
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  row-gap: 1rem;
 `;
 
 const ScrollContainer = styled.div`
@@ -298,44 +358,49 @@ const ScrollContainer = styled.div`
   }
 `;
 
-const NoticeTable = styled.div`
-  width: 18.4rem;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 1rem;
-  row-gap: 1rem;
-`;
-
 const NoticeScrollContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  row-gap: 1rem;
 `;
 
-const BoardContainer = styled.li<{ isSelected: boolean }>`
-  width: 18.4rem;
-  height: 4.8rem;
+const BoardSection = styled.section`
+  margin-bottom: 2rem;
+`;
+
+const BoardTitle = styled.h3`
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.text};
+`;
+
+const BoardList = styled.ul``;
+
+const BoardContainer2 = styled.div<{ isSelected: boolean }>`
+  width: 100%;
+  height: 3.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  column-gap: 1rem;
+
   display: flex;
   align-items: center;
-  padding-left: 1rem;
+
+  background-color: ${({ theme, isSelected }) => (isSelected ? theme['bg-60'] : theme['bg-80'])};
+  border-radius: 0.5rem;
+  color: ${({ theme }) => theme.text};
+  font-size: 1.2rem;
+
+  cursor: pointer;
 
   &:hover {
-    background-color: #ff4655;
-    color: #f2f2f2;
+    background-color: ${({ theme }) => theme['bg-60']};
   }
+`;
 
-  background-color: #ffffff;
-  font-size: 1.3rem;
-  cursor: pointer;
-  color: #020202;
-  border-radius: 0.6rem;
+const BoardIcon = styled.div`
+  width: 1.5rem;
 
-  ${({ isSelected }) =>
-    isSelected &&
-    `    background-color: #ff4655;
-    color: #f2f2f2;`}
+  > svg {
+    fill: ${({ theme }) => theme.text};
+  }
 `;

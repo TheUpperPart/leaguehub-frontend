@@ -13,28 +13,10 @@ import { useRouter } from 'next/router';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
+
   const { channels } = useChannels();
-  const [selectedChannelLink, setSelectedChannelLink] = useState<string | null>(null);
 
   const { status } = useProfile();
-
-  const updateSelectedChannel = (channelId: string) => {
-    setSelectedChannelLink(channelId);
-  };
-
-  useEffect(() => {
-    // 특정 채널에서 새로고침
-    if (router.pathname.startsWith('/content') && channels && status === 'success') {
-      const findIndex = channels.findIndex(
-        (chanel) => chanel.channelLink === (router.query.channelLink as string),
-      );
-      channels.length !== 0 && setSelectedChannelLink(channels[findIndex].channelLink);
-    }
-    // 그 이외
-    else {
-      setSelectedChannelLink('main');
-    }
-  }, [channels]);
 
   // 요청했을 때만
   if (status === 'pending') {
@@ -60,25 +42,31 @@ const Layout = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <>
+    <AuthLayout>
       <GlobalStyle />
-      <CommonLayout>
+      <AuthCommonLayout>
+        <SidebarWrapper>{channels && <ChannelBar channels={channels} />}</SidebarWrapper>
         <SidebarWrapper>
-          {channels && (
-            <ChannelBar channels={channels} updateSelectedChannel={updateSelectedChannel} />
-          )}
-        </SidebarWrapper>
-        <SidebarWrapper>
-          {selectedChannelLink && <BoardBar channelLink={selectedChannelLink} />}
+          <BoardBar />
         </SidebarWrapper>
         <Wrapper>
           <Header />
           <Main>{children}</Main>
         </Wrapper>
-      </CommonLayout>
-    </>
+      </AuthCommonLayout>
+    </AuthLayout>
   );
 };
+
+const AuthLayout = styled.div`
+  padding: 2rem;
+  background-color: ${({ theme }) => theme.bg};
+`;
+
+const AuthCommonLayout = styled.div`
+  display: flex;
+  height: calc(100vh - 4rem);
+`;
 
 const CommonLayout = styled.div`
   display: flex;
@@ -86,19 +74,22 @@ const CommonLayout = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100vh;
-  background-image: url('/img/board/main.png');
+  height: 100%;
+  /* background-image: url('/img/board/main.png');
   background-size: 100% 100vh;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 `;
 
 const SidebarWrapper = styled.div`
+  height: inherit;
   flex: 0 0;
 `;
 
 const Main = styled.main`
+  color: ${({ theme }) => theme.text};
   overflow-y: auto;
-  max-height: calc(100vh - 5.5rem);
+  margin-top: 2rem;
+  height: calc(100vh - 10.5rem);
   ::-webkit-scrollbar {
     width: 1rem;
   }
