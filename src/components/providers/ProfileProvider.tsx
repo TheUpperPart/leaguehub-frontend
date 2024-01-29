@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import ProfileContext from '@contexts/ProfileContext';
 import { Profile } from '@type/profile';
-import Cookies from 'js-cookie';
 import { fetchProfile } from '@apis/mypage';
 
 interface ProfileAPI {
@@ -17,8 +16,6 @@ interface ProfileProviderProps {
 
 const ProfileProvider = ({ children }: ProfileProviderProps) => {
   // 유저가 로그인 되어있는지 확인
-
-  const isHaveAccessToken = Cookies.get('accessToken');
 
   const [profile, setProfile] = useState<Profile | null>(null);
 
