@@ -22,8 +22,8 @@ export default function Home() {
       <List>
         {data?.map((notice, index) => {
           return (
-            <Item>
-              <ItemHeader key={index}>
+            <Item key={index}>
+              <ItemHeader>
                 <ItemIndex>{index + 1}.</ItemIndex>
                 <ItemLink href={notice.noticeLink} target='_blank'>
                   {notice.noticeTitle}
