@@ -1,10 +1,8 @@
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 
 import SelectChannelType from '@components/Sidebar/ChannelBar/SelectChannelType';
 import ChannelCircle from '@components/Sidebar/ChannelCircle/ChannelCircle';
-import { ChannelCircleProps } from '@type/channelCircle';
 import useChannels from '@hooks/useChannels';
 import Modal from '@components/Modal';
 import Icon from '@components/Icon';
@@ -13,14 +11,10 @@ import useMakeGame from '@hooks/useMakeGame';
 import MainChannelCircle from '../ChannelCircle/MainChannelCircle';
 import { useRouter } from 'next/router';
 
-interface ChannelBarProps {
-  channels: ChannelCircleProps[];
-}
-
-const ChannelBar = ({ channels }: ChannelBarProps) => {
+const ChannelBar = () => {
   const router = useRouter();
 
-  const { dragAndDropChannels } = useChannels();
+  const { channels, dragAndDropChannels } = useChannels();
   const { openModal, closeModal } = useModals();
 
   const { resetState } = useMakeGame();
