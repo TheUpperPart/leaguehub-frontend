@@ -1,10 +1,9 @@
 import axios from 'axios';
+import { serialize } from 'cookie';
 import { GetServerSideProps } from 'next';
 
-import { Login } from '@type/login';
 import { SERVER_URL } from '@config/index';
-
-import { serialize } from 'cookie';
+import { Login } from '@type/login';
 
 const Auth = () => {
   return <div></div>;
@@ -24,14 +23,14 @@ export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (co
 
     const { accessToken, refreshToken } = res.data;
 
-    const cookie1 = serialize('accessToken', accessToken, {
+    const accessTokens = serialize('accessToken', accessToken, {
       maxAge: 60 * 60 * 24 * 7,
     });
-    const cookie2 = serialize('refreshToken', refreshToken, {
+    const refreshTokens = serialize('refreshToken', refreshToken, {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    context.res.setHeader('set-Cookie', [cookie1, cookie2]);
+    context.res.setHeader('set-Cookie', [accessTokens, refreshTokens]);
 
     return {
       redirect: {
@@ -40,11 +39,10 @@ export const getServerSideProps: GetServerSideProps<{ data: Login }> = async (co
       },
     };
   } catch (error) {
-    // 실패 시 login 페이지로 redirect
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/login',
       },
     };
   }
