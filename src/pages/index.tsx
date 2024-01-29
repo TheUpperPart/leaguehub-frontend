@@ -60,6 +60,6 @@ const ItemIndex = styled.div`
   width: 3rem;
 `;
 const ItemLink = styled.a`
-  color: black;
+  color: ${({ theme }) => theme.text};
   text-decoration: none;
 `;
