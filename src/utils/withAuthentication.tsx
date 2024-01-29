@@ -9,7 +9,12 @@ const withAuthServerSideProps = (getServerSidePropsFunction: () => Promise<any>)
     const accessToken = parse(cookies).accessToken;
 
     if (!accessToken) {
-      throw new Error('401 Unauthorized');
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
     }
 
     authAPI.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
