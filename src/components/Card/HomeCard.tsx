@@ -21,7 +21,8 @@ const Container = styled.div<{ hasOnClick: boolean }>`
   display: flex;
   align-items: center;
   text-align: center;
-  background-color: white;
+  background-color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.bg};
   border-radius: 1rem;
   font-size: 1.6rem;
   justify-content: center;

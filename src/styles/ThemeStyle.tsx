@@ -10,6 +10,7 @@ interface Theme {
   green: string;
   white: string;
   gray: string;
+  'modal-bg': string;
 }
 
 interface Themes {
@@ -30,6 +31,7 @@ const themes: Themes = {
     green: '#31b65b',
     white: '#ffffff',
     gray: '#aaaaaa',
+    'modal-bg': '#d9d9d9a1',
   },
 
   dark: {
@@ -44,6 +46,7 @@ const themes: Themes = {
     green: '#31b65b',
     white: '#ffffff',
     gray: '#aaaaaa',
+    'modal-bg': '#060505a1',
   },
 };
 

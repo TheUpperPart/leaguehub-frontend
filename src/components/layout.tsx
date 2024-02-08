@@ -60,6 +60,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 
 const AuthLayout = styled.div`
   padding: 2rem;
+  color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.bg};
 `;
 
