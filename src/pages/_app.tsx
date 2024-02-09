@@ -3,10 +3,6 @@ import { useEffect, useState } from 'react';
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import LastVisitedBoardListsProvider from '@components/providers/LastVisitedBoardListsProvider';
-import ProfileProvider from '@components/providers/ProfileProvider';
-import MakeGameProvider from '@components/providers/MakeGameProvider';
-import ChannelsProvider from '@components/providers/ChannelsProvider';
 import Layout from '@components/layout';
 import ModalsProvider from '@components/providers/ModalProvider';
 import ShowModals from '@components/Modal/showModals';
@@ -25,6 +21,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
+            staleTime: 0,
           },
         },
       }),
@@ -47,20 +44,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <QueryClientProvider client={queryClient}>
             <HydrationBoundary state={pageProps.dehydratedState}>
               <ReactQueryDevtools initialIsOpen={false} />
-              <ChannelsProvider>
-                <ProfileProvider>
-                  <LastVisitedBoardListsProvider>
-                    <MakeGameProvider>
-                      <ModalsProvider>
-                        <ShowModals />
-                        <Layout>
-                          <Component {...pageProps} />
-                        </Layout>
-                      </ModalsProvider>
-                    </MakeGameProvider>
-                  </LastVisitedBoardListsProvider>
-                </ProfileProvider>
-              </ChannelsProvider>
+              <ModalsProvider>
+                <ShowModals />
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ModalsProvider>
             </HydrationBoundary>
           </QueryClientProvider>
         </MSWComponent>
@@ -73,20 +62,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <ChannelsProvider>
-            <ProfileProvider>
-              <LastVisitedBoardListsProvider>
-                <MakeGameProvider>
-                  <ModalsProvider>
-                    <ShowModals />
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </ModalsProvider>
-                </MakeGameProvider>
-              </LastVisitedBoardListsProvider>
-            </ProfileProvider>
-          </ChannelsProvider>
+          <ModalsProvider>
+            <ShowModals />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ModalsProvider>
         </HydrationBoundary>
       </QueryClientProvider>
     </ThemeProvider>

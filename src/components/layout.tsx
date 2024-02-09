@@ -1,84 +1,72 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import styled from '@emotion/styled';
 
 import ChannelBar from '@components/Sidebar/ChannelBar/ChannelBar';
 import BoardBar from '@components/Sidebar/BoardBar/BoardBar';
 import GlobalStyle from 'src/styles/GlobalStyle';
 import Header from '@components/Header/Header';
-import useChannels from '@hooks/useChannels';
-import useProfile from '@hooks/useProfile';
-import NoAuthMain from './Main/NoAuthMain';
-import Loading from './Loading/Loading';
+
 import { useRouter } from 'next/router';
+import ChannelsProvider from './providers/ChannelsProvider';
+import ProfileProvider from './providers/ProfileProvider';
+import LastVisitedBoardListsProvider from './providers/LastVisitedBoardListsProvider';
+import MakeGameProvider from './providers/MakeGameProvider';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
 
-  const { channels } = useChannels();
-
-  const { status } = useProfile();
-
-  // 요청했을 때만
-  if (status === 'pending') {
+  if (router.pathname.startsWith('/login')) {
     return (
       <>
+        <GlobalStyle />
         <CommonLayout>
-          <GlobalStyle />
-          <Loading />
-        </CommonLayout>
-      </>
-    );
-  }
-
-  if (status === 'error') {
-    return (
-      <>
-        <CommonLayout>
-          <GlobalStyle />
-          <NoAuthMain />
+          <Wrapper>{children}</Wrapper>
         </CommonLayout>
       </>
     );
   }
 
   return (
-    <AuthLayout>
+    <LayoutContainer>
+      <ChannelsProvider>
+        <ProfileProvider>
+          <LastVisitedBoardListsProvider>
+            <MakeGameProvider>
+              <CommonLayout>
+                <SidebarWrapper>
+                  <ChannelBar />
+                </SidebarWrapper>
+                <SidebarWrapper>
+                  <BoardBar />
+                </SidebarWrapper>
+                <Wrapper>
+                  <Header />
+                  <Main>{children}</Main>
+                </Wrapper>
+              </CommonLayout>
+            </MakeGameProvider>
+          </LastVisitedBoardListsProvider>
+        </ProfileProvider>
+      </ChannelsProvider>
       <GlobalStyle />
-      <AuthCommonLayout>
-        <SidebarWrapper>{channels && <ChannelBar channels={channels} />}</SidebarWrapper>
-        <SidebarWrapper>
-          <BoardBar />
-        </SidebarWrapper>
-        <Wrapper>
-          <Header />
-          <Main>{children}</Main>
-        </Wrapper>
-      </AuthCommonLayout>
-    </AuthLayout>
+    </LayoutContainer>
   );
 };
 
-const AuthLayout = styled.div`
+const LayoutContainer = styled.div`
   padding: 2rem;
   color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.bg};
 `;
 
-const AuthCommonLayout = styled.div`
-  display: flex;
-  height: calc(100vh - 4rem);
-`;
-
 const CommonLayout = styled.div`
   display: flex;
+  height: calc(100vh - 4rem);
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  /* background-image: url('/img/board/main.png');
-  background-size: 100% 100vh;
-  background-repeat: no-repeat; */
 `;
 
 const SidebarWrapper = styled.div`

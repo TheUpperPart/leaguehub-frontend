@@ -155,7 +155,8 @@ const fetchMyPage = async () => {
   } catch (error) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
+        permanent: false,
       },
     };
   }
