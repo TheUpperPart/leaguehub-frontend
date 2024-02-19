@@ -34,6 +34,7 @@
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.12",
     "react-markdown": "^8.0.7"
   },
   "devDependencies": {
